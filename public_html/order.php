@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>CPSC 304 Post Office - Order Page</title>
+		<title>Order Page - CPSC 304 Post Office</title>
 	</head>
 
 	<body>
@@ -14,16 +14,16 @@
 				Address:<br>
 				<input type="text" name="fromaddress"><br>
 				Province:<br>
-				<input type="radio" name="fromprovince" value="bc">British Columbia<br>
-				<input type="radio" name="fromprovince" value="ab">Alberta<br>
-				<input type="radio" name="fromprovince" value="sk">Saskatchewan<br>
-				<input type="radio" name="fromprovince" value="mb">Manitoba<br>
-				<input type="radio" name="fromprovince" value="on">Ontario<br>
-				<input type="radio" name="fromprovince" value="qc">Quebec<br>
-				<input type="radio" name="fromprovince" value="nb">New Brunswick<br>
-				<input type="radio" name="fromprovince" value="pe">Prince Edward Islands<br>
-				<input type="radio" name="fromprovince" value="nl">Newfoundland Labrador<br>
-				<input type="radio" name="fromprovince" value="ns">Nova Scotia<br>
+				<input type="radio" name="fromprovince" value="British Columbia">British Columbia<br>
+				<input type="radio" name="fromprovince" value="Alberta">Alberta<br>
+				<input type="radio" name="fromprovince" value="Saskatchewan">Saskatchewan<br>
+				<input type="radio" name="fromprovince" value="Manitoba">Manitoba<br>
+				<input type="radio" name="fromprovince" value="Ontario">Ontario<br>
+				<input type="radio" name="fromprovince" value="Quebec">Quebec<br>
+				<input type="radio" name="fromprovince" value="New Brunswick">New Brunswick<br>
+				<input type="radio" name="fromprovince" value="Prince Edward Island">Prince Edward Islands<br>
+				<input type="radio" name="fromprovince" value="Newfoundland and Labrador">Newfoundland andLabrador<br>
+				<input type="radio" name="fromprovince" value="Nova Scotia">Nova Scotia<br>
 				Phone:<br>
 				<input type="text" name="fromphone"><br>
 			</fieldset>
