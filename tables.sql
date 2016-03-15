@@ -1,11 +1,30 @@
-drop table order;
 drop table price;
-drop table provincialrate;
-drop table packagetype;
-drop table postoffice;
+drop table orders;
 drop table deliverytype;
+drop table postoffice;
+drop table packagetype;
+drop table provincialrate;
 
-create table order
+create table provincialrate
+	(pro_province_name char(2) not null,
+	pr_price float(1),
+	primary key (pro_province_name));
+
+create table packagetype
+	(pt_type varchar(25) not null,
+	pt_price float(1),
+	primary key (pt_type));
+
+create table postoffice
+	(po_province_name char(2) not null,
+	primary key (po_province_name));
+
+create table deliverytype
+	(dt_type varchar(25) not null,
+	dt_price float(1),
+	primary key (dt_type));
+
+create table orders
 	(tracking_number char(4) not null,
 	status varchar(80),
 	src_address varchar(80),
@@ -19,39 +38,13 @@ create table price
 	total_price float(1) not null,
 	pr_province_name char(2),
 	dt_type varchar(15),
-	pt_type char(6),
+	pt_type varchar(25),
 	primary key (tracking_number, total_price),
-	foreign key (pr_province_name) references provincialrate
-		ON DELETE NO ACTION
-		ON UPDATE CASCADE,
-	foreign key (dt_type) references deliverytype
-		ON DELETE NO ACTION
-		ON UPDATE CASCADE,
-	foreign key (pt_type) references packagetype
-		ON DELETE NO ACTION
-		ON UPDATE CASCADE,
-	foreign key (tracking_number) references order
-		ON DELETE CASCADE 
-		ON UPDATE CASCADE);
-
-create table provincialrate
-	(pro_province_name char(2) not null,
-	pr_price float(1),
-	primary key (pro_province_name));
-
-create table packagetype
-	(pt_type char(6) not null,
-	pt_price float(1),
-	primary key (pt_type));
-
-create table postoffice
-	(po_province_name char(2) not null,
-	primary key (po_province_name));
-
-create table deliverytype
-	(dt_type varchar(25) not null.
-	dt_price float(1)
-	primary key (dt_type));
+	foreign key (pr_province_name) references provincialrate,
+	foreign key (dt_type) references deliverytype,
+	foreign key (pt_type) references packagetype,
+	foreign key (tracking_number) references orders ON DELETE CASCADE);
+		
 
 // Assuming our app will be used only in BC
 insert into provincialrate values ('BC', 1.0);
