@@ -6,7 +6,7 @@
 	<body>
 		<p><a href="index.php">HOME - TRACK YOUR ORDER</a></p>
 		<h1>Place An Order</h1>
-		<form action="oracle-test.php" method="post">
+		<form action="order_confirmation.php" method="post">
 			<fieldset>
 				<legend>From</legend>
 				Name:<br>
