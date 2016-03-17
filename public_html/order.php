@@ -1,3 +1,15 @@
+<?php 
+session_save_path('/home/g/g3d9/public_html');
+session_start();
+require_once 'functions.php';
+require_once 'getTrackingNumber.php';
+setTN();
+$tracking_num = shareTN();
+$_SESSION['tracking_num'] = $tracking_num;
+
+?>
+
+
 <html>
 	<head>
 		<title>Order Page - CPSC 304 Post Office</title>
@@ -77,11 +89,12 @@
 <?php
 
 //include 'functions.php';
-require 'functions.php';
-include 'getTrackingNumber.php';
+// require_once 'functions.php';
+// require_once 'getTrackingNumber.php';
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = dbConnect();
-$tracking_num = $id;
+// setTN();
+// $tracking_num = shareTN();
 
 
 // // Tracking # = client_id
