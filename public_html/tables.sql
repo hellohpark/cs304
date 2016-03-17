@@ -1,10 +1,10 @@
+drop table client;
 drop table price;
 drop table orders;
 drop table deliverytype;
 drop table postoffice;
 drop table packagetype;
 drop table provincialrate;
-drop table client;
 
 
 create table provincialrate
@@ -29,11 +29,18 @@ create table deliverytype
 create table orders
 	(tracking_number char(4) not null,
 	status varchar(80),
-	src_address varchar(80),
-	dst_address varchar(80),
-	po_province_name char(2),
+	src_name varchar(80),
+	src_addr varchar(80),
+	src_prov char(2),
+	src_phone varchar(15),
+	dst_name varchar(80),
+	dst_addr varchar(80),
+	dst_prov char(2),
+	dst_phone varchar(15),
+	dl_type varchar(25),
+	pk_type varchar(25),
 	primary key (tracking_number),
-	foreign key (po_province_name) references postoffice);
+	foreign key (src_prov) references postoffice);
 
 create table price
 	(tracking_number char(4) not null,
@@ -46,21 +53,6 @@ create table price
 	foreign key (dt_type) references deliverytype,
 	foreign key (pt_type) references packagetype,
 	foreign key (tracking_number) references orders ON DELETE CASCADE);
-
-create table client
-	(cid char(4) not null,
-	src_name varchar(80),
-	src_addr varchar(80),
-	src_prov char(2),
-	src_phone varchar(15),
-	dst_name varchar(80),
-	dst_addr varchar(80),
-	dst_prov char(2),
-	dst_phone varchar(15),
-	deliverytype varchar(15),
-	prate varchar(25),
-	primary key (cid));
-
 		
 
 // Assuming our app will be used only in BC

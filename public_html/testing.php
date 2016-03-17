@@ -1,3 +1,20 @@
+<!--Test Oracle file for UBC CPSC304 2011 Winter Term 2
+  Created by Jiemin Zhang
+  Modified by Simona Radu
+  This file shows the very basics of how to execute PHP commands
+  on Oracle.  
+  specifically, it will drop a table, create a table, insert values
+  update values, and then query for values
+ 
+  IF YOU HAVE A TABLE CALLED "tab1" IT WILL BE DESTROYED
+
+  The script assumes you already have a server set up
+  All OCI commands are commands to the Oracle libraries
+  To get the file to work, you must place it somewhere where your
+  Apache server can run it, and you must rename it to have a ".php"
+  extension.  You must also change the username and password on the 
+  OCILogon below to be your ORACLE username and password -->
+
 <html>
 	<head>
 		<title>Order Page - CPSC 304 Post Office</title>
@@ -6,8 +23,7 @@
 	<body>
 		<p><a href="index.php">HOME - TRACK YOUR ORDER</a></p>
 		<h1>Place An Order</h1>
-		<!--TODO: change destination for action after submit pressed-->
-		<form action="order.php" method="post">
+		<form action="testing.php" method="post">
 			<fieldset>
 				<legend>From</legend>
 				Name:<br>
@@ -61,14 +77,16 @@
 				<input type="radio" name="deliverytype" value="Express">Express<br>
 				<input type="radio" name="deliverytype" value="Priority">Priority<br>
 			</fieldset>
-			
+
 			<input type="submit" name="submit" value="Submit">
 
 		</form>
-		<form method="POST" action="order.php">
+
+		<form method="POST" action="testing.php">
    
-		<p><input type="submit" value="Reset" name="reset"></p>
-		</form>
+	<p><input type="submit" value="Reset" name="reset"></p>
+	</form>
+
 
 	</body>
 </html>	
@@ -76,20 +94,13 @@
 
 <?php
 
-//include 'functions.php';
-require 'functions.php';
-include 'getTrackingNumber.php';
+include 'functions.php';
+
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = dbConnect();
-$tracking_num = $id;
 
-
-// // Tracking # = client_id
-// $tracking_num = getTrackingNum();
-// $client_id = $tracking_num;
-
-// $_SESSION['tracking_num'] = $tracking_num;
-// //setClientID($client_id);
+$client_id = getClientID();
+$tracking_num = getTrackingNum();
 
 if ($db_conn) {
 
@@ -97,47 +108,33 @@ if ($db_conn) {
 	if (array_key_exists('reset', $_POST)) {
 		// Drop old table...
 		echo "<br> Removing all rows <br>";
-		//executePlainSQL("delete from client", $db_conn, $success);
-		executePlainSQL("delete from orders", $db_conn, $success);
+		executePlainSQL("delete from client", $db_conn, $success);
 
 		// // Create new table...
 		// echo "<br> creating new table <br>";
 		// executePlainSQL("create table tab1 (nid number, name varchar2(30), primary key (nid))");
 		OCICommit($db_conn);
 
-		if ($_POST && $success) {
-		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		header("location: order.php");	//TODO: will throw an error
-	}
-
 	} else 
 		if (array_key_exists('submit', $_POST)) {
 
 
-			//collectClientInfo($client_id, $db_conn, $success);
+			collectClientInfo($client_id, $db_conn, $success);
 			placeOrder($tracking_num, $db_conn, $success);
-			header("location: tracking_confirmation.php");
 
-		}
+	}
 
 
-		// 	if ($_POST && $success) {
-		// //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		// header("location: order.php");
-		// //TODO: resetting will take client to tracking_confirmation
-		// }
-		// else {
-			
-		$orders = executePlainSQL("select * from orders", $db_conn, $success);
-		printResult($orders);
-
-		//}
-
-		//TODO: Error handling
-
-	
-
+	if ($_POST && $success) {
+		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
+		header("location: order.php");	//TODO: will throw an error
+	} else {
+	// Select data...
+		$result = executePlainSQL("select * from client", $db_conn, $success);
+		printResult($result);	
+	}
 }
+
 
 		//Commit to save changes...
 	dbLogout($db_conn);
@@ -146,6 +143,7 @@ if ($db_conn) {
 // 		$e = OCI_Error(); // For OCILogon errors pass no handle
 // 		echo htmlentities($e['message']);
 // 	}
+
 
 ?>
 
