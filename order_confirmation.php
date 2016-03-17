@@ -3,6 +3,7 @@ require_once('functions.php');
 
 $db_conn = dbConnect();
 
+$cid;
 $success = true;
 $fromname;
 $fromaddress;
@@ -15,39 +16,41 @@ $tophone;
 $deliverytype;
 $packagetype;
 
-function getClientInfo() {
+// function getClientInfo() {
 
-	global $fromname, $fromaddress, $fromprovince, $fromphone,
-	$toname, $toaddress, $toprovince, $tophone, $deliverytype, $packagetype, $db_conn;
+// 	global $fromname, $fromaddress, $fromprovince, $fromphone,
+// 	$toname, $toaddress, $toprovince, $tophone, $deliverytype, $packagetype, $db_conn,
+// 	$cid;
 
-	$client_id = fetchClientID();
-	$sql = "select * from client where cid=:bind1";
-	$statement = OCIParse($db_conn, $sql);
-	OCIBindByName($statement, ':bind1', $client_id);
-	OCIExecute($statement, OCI_DEFAULT);
+// 	$cid = fetchClientID();
 
-	$row = OCI_Fetch_Array($statement, OCI_BOTH);
-	$fromname = $row[1];
-	$fromaddress = $row[2];
-	$fromprovince = $row[3];
-	$fromphone = $row[4];
-	$toname = $row[5];
-	$toaddress = $row[6];
-	$toprovince = $row[7];
-	$tophone = $row[8];
-	$deliverytype = $row[9];
-	$packagetype = $row[10];
-}
+// 	// $sql = "select * from client where cid=:bind1";
+// 	// $statement = OCIParse($db_conn, $sql);
+// 	// OCIBindByName($statement, ':bind1', $client_id);
+// 	// OCIExecute($statement, OCI_DEFAULT);
 
-if ($db_conn) {
-	$clients = executePlainSQL("select * from client", $db_conn, $success);
-	printResult($clients);
-	$orders = executePlainSQL("select * from orders", $db_conn, $success);
-	printResult($orders);
+// 	// $row = OCI_Fetch_Array($statement, OCI_BOTH);
+// 	// $fromname = $row[1];
+// 	// $fromaddress = $row[2];
+// 	// $fromprovince = $row[3];
+// 	// $fromphone = $row[4];
+// 	// $toname = $row[5];
+// 	// $toaddress = $row[6];
+// 	// $toprovince = $row[7];
+// 	// $tophone = $row[8];
+// 	// $deliverytype = $row[9];
+// 	// $packagetype = $row[10];
+// }
 
-	getClientInfo();
-	echo $toprovince;
-}
+// if ($db_conn) {
+// 	$clients = executePlainSQL("select * from client", $db_conn, $success);
+// 	printResult($clients);
+// 	$orders = executePlainSQL("select * from orders", $db_conn, $success);
+// 	printResult($orders);
+
+// 	getClientInfo();
+// 	echo $cid;
+// }
 
 
 

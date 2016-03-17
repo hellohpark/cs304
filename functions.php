@@ -1,6 +1,6 @@
 <?php
 
-$cid;
+$client_id;
 
 function dbConnect() {
 	return OCILogon("ora_g3d9", "a30775134", "ug");
@@ -10,12 +10,14 @@ function dbLogout($db_conn) {
 	OCILogoff($db_conn);
 }
 
-function setClientID($client_id) {
-	global $cid;
-	$cid = $client_id;
+//set $var = $cid
+function setClientID($cid) {
+	global $client_id;
+	$client_id = $cid;
 }
-function fetchClientID() {
-	return $cid;
+function fetchClientID(&$var) {
+	global $client_id;
+	$var = $client_id;
 }
 
 function getTrackingNum() {

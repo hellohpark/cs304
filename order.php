@@ -1,3 +1,17 @@
+<?php 
+include 'functions.php';
+// NOTE: Make sure to change session path to point to your own public_html dir
+session_save_path('/home/g/g3d9/public_html');
+session_start();
+// Tracking # = client_id
+$tracking_num = getTrackingNum();
+$client_id = $tracking_num;
+
+$_SESSION['tracking_num'] = $tracking_num;
+
+?>
+
+
 <html>
 	<head>
 		<title>Order Page - CPSC 304 Post Office</title>
@@ -5,7 +19,7 @@
 
 	<body>
 		<p><a href="index.php">HOME - TRACK YOUR ORDER</a></p>
-		<h1>Place An Order</h1>
+		<h1>Place An Order HIHIHIHIHIHIH</h1>
 		<!--TODO: change destination for action after submit pressed-->
 		<form action="order.php" method="post">
 			<fieldset>
@@ -76,15 +90,18 @@
 
 <?php
 
-include 'functions.php';
+//include 'functions.php';
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = dbConnect();
 
-// Tracking # = client_id
-$tracking_num = getTrackingNum();
-$client_id = $tracking_num;
-setClientID($client_id);
+
+// // Tracking # = client_id
+// $tracking_num = getTrackingNum();
+// $client_id = $tracking_num;
+
+// $_SESSION['tracking_num'] = $tracking_num;
+// //setClientID($client_id);
 
 if ($db_conn) {
 
@@ -111,16 +128,24 @@ if ($db_conn) {
 
 			collectClientInfo($client_id, $db_conn, $success);
 			placeOrder($tracking_num, $db_conn, $success);
+		}
 
 			if ($_POST && $success) {
 		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		header("location: order_confirmation.php");	//TODO: will throw an error
+		header("location: tracking_confirmation.php");
+		//TODO: resetting will take client to tracking_confirmation
+		}
+		else {
+			$clients = executePlainSQL("select * from client", $db_conn, $success);
+		printResult($clients);
+		$orders = executePlainSQL("select * from orders", $db_conn, $success);
+		printResult($orders);
+
 		}
 
-	}
+	
 
 }
-
 
 		//Commit to save changes...
 	dbLogout($db_conn);
