@@ -115,4 +115,62 @@ function placeOrder($tracking_num, $db_conn, $success) {
 }
 
 
+function getClientInfo($tracking_number, $db) {
+
+	$db_conn = $db;
+
+	//Fetch tracking number provided by client
+	$tn = $tracking_number;
+
+	$sql = "select * from orders where tracking_number=:bind";
+	$statement = OCIParse($db_conn, $sql);
+	OCIBindByName($statement, ':bind', $tn);
+	OCIExecute($statement, OCI_DEFAULT);
+
+	$result = OCI_Fetch_Array($statement, OCI_BOTH);
+	return $result;
+
+
+//4016
+
+}
+
+function getStatus($tracking_number, $db) {
+	$r = getClientInfo($tracking_number, $db);
+	echo nl2br($r[1]."\n");
+}
+
+function getSrcInfo($tracking_number, $db){
+	$r = getClientInfo($tracking_number, $db);
+	echo nl2br("Name: ".$r[2]."\n");
+	echo nl2br("Address: ".$r[3]."\n");
+	echo nl2br("Province: ".$r[4]."\n");
+	echo nl2br("Phone: ".$r[5]."\n");
+}
+
+function getDstInfo($tracking_number, $db) {
+	$r = getClientInfo($tracking_number, $db);
+	echo nl2br("Name: ".$r[6]."\n");
+	echo nl2br("Address: ".$r[7]."\n");
+	echo nl2br("Province: ".$r[8]."\n");
+	echo nl2br("Phone: ".$r[9]."\n");
+
+}
+
+function getDeliveryType($tracking_number, $db) {
+	$r = getClientInfo($tracking_number, $db);
+	echo nl2br($r[10]."\n");
+
+}
+
+function getPackageType($tracking_number, $db) {
+	$r = getClientInfo($tracking_number, $db);
+	echo nl2br($r[11]."\n");
+}
+
+
+
+
+
+
 ?>
