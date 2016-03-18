@@ -1,0 +1,15 @@
+insert into orders values ('1111', 'pending', NULL, NULL, 'BC', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('2222', 'being processed', NULL, NULL, 'BC', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('3333', 'in transit', NULL, NULL, 'BC', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('4444', 'delivered', NULL, NULL, 'AB', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('5555', 'being processed', NULL, NULL, 'SK', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('6666', 'being processed', NULL, NULL, 'MB', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('7777', 'being processed', NULL, NULL, 'ON', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('8888', 'being processed', NULL, NULL, 'QC', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('9999', 'being processed', NULL, NULL, 'NB', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('1234', 'being processed', NULL, NULL, 'PE', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('2345', 'being processed', NULL, NULL, 'NL', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('3456', 'being processed', NULL, NULL, 'NS', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('4567', 'being processed', NULL, NULL, 'ON', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('5678', 'being processed', NULL, NULL, 'ON', NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+insert into orders values ('6789', 'being processed', NULL, NULL, 'BC', NULL,NULL,NULL,NULL,NULL,NULL,NULL);

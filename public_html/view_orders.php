@@ -2,106 +2,64 @@
 include 'functions.php';
 ?>
 
+<html>
+	<head>
+		<title>View Orders</title>
+	</head>
 
-<p>Insert values into tab1 below:</p>
-<p><font size="2"> Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-Name</font></p>
-<form method="POST" action="oracle-test.php">
-<!--refresh page when submit-->
-
-   <p><input type="text" name="insNo" size="6"><input type="text" name="insName" 
-size="18">
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="insert" name="insertsubmit"></p>
-</form>
-<!-- create a form to pass the values. See below for how to 
-get the values--> 
-
-<p> Update the name by inserting the old and new values below: </p>
-<p><font size="2"> Old Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-New Name</font></p>
-<form method="POST" action="oracle-test.php">
-<!--refresh page when submit-->
-
-   <p><input type="text" name="oldName" size="6"><input type="text" name="newName" 
-size="18">
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="update" name="updatesubmit"></p>
-<input type="submit" value="run hardcoded queries" name="dostuff"></p>
-</form>
-
+	<body>
+	</body>
+</html>	
+			
 <?php
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
-$success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_c4w9a", "a50851147", "ug");
+$success = True;
+$db_conn = dbConnect();
 
+function printResultViewOrder($result) { 
+	echo "<fieldset>
+				<legend>Province</legend>";
+	echo "<table>";
+	echo "<tr><th>Tracking Number</th><th>Status</th><th>Source Address</th><th>Destination Address</th><th>Current Location</th><th>Edit</th></tr>";
+
+	
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		echo "<tr><td>" . $row["TRACKING_NUMBER"] . "</td><td>" . $row["STATUS"] . "</td><td>" . $row["SRC_NAME"] . "</td><td>" . $row["SRC_ADDR"] . "</td><td>" . $row["SRC_PROV"] . "</td><td>" . $row["SRC_PHONE"] . "</td><td>" . $row["DST_NAME"] . "</td><td>" . $row["DST_ADDR"] . "</td><td>" . $row["DST_PROV"] . "</td><td>" . $row["DST_PHONE"] . "</td><td>" . $row["DL_TYPE"] . "</td><td>" . $row["PK_TYPE"] . "</td></tr>"; //or just use "echo $row[0]" 
+	}
+	echo "</table>";
+	echo "</fieldset>";
+
+}
 
 // Connect Oracle...
 if ($db_conn) {
 
-		if (array_key_exists('insertsubmit', $_POST)) {
-			//Getting the values from user and insert data into the table
-			$tuple = array (
-				":bind1" => $_POST['insNo'],
-				":bind2" => $_POST['insName']
-			);
-			$alltuples = array (
-				$tuple
-			);
-			executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $alltuples);
-			OCICommit($db_conn);
-
-		} else
-			if (array_key_exists('updatesubmit', $_POST)) {
-				// Update tuple using data from user
-				$tuple = array (
-					":bind1" => $_POST['oldName'],
-					":bind2" => $_POST['newName']
-				);
-				$alltuples = array (
-					$tuple
-				);
-				executeBoundSQL("update tab1 set name=:bind2 where name=:bind1", $alltuples);
-				OCICommit($db_conn);
-
-			} else
-				if (array_key_exists('dostuff', $_POST)) {
-					// Insert data into table...
-					executePlainSQL("insert into tab1 values (10, 'Frank')");
-					// Inserting data into table using bound variables
-					$list1 = array (
-						":bind1" => 6,
-						":bind2" => "All"
-					);
-					$list2 = array (
-						":bind1" => 7,
-						":bind2" => "John"
-					);
-					$allrows = array (
-						$list1,
-						$list2
-					);
-					executeBoundSQL("insert into tab1 values (:bind1, :bind2)", $allrows); //the function takes a list of lists
-					// Update data...
-					//executePlainSQL("update tab1 set nid=10 where nid=2");
-					// Delete data...
-					//executePlainSQL("delete from tab1 where nid=1");
-					OCICommit($db_conn);
-				}
-
-	if ($_POST && $success) {
-		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		header("location: oracle-test.php");
-	} else {
-		// Select data...
-		$result = executePlainSQL("select * from tab1");
-		printResult($result);
-	}
+		$result = executePlainSQL("select * from orders", $db_conn, $success);
+		$resultBC = executePlainSQL("select * from orders where src_prov = 'BC'", $db_conn, $success);
+		$resultAB = executePlainSQL("select * from orders where src_prov = 'AB'", $db_conn, $success);
+		$resultSK = executePlainSQL("select * from orders where src_prov = 'SK'", $db_conn, $success);
+		$resultMA = executePlainSQL("select * from orders where src_prov = 'MA'", $db_conn, $success);
+		$resultON = executePlainSQL("select * from orders where src_prov = 'ON'", $db_conn, $success);
+		$resultQC = executePlainSQL("select * from orders where src_prov = 'QC'", $db_conn, $success);
+		$resultNB = executePlainSQL("select * from orders where src_prov = 'NB'", $db_conn, $success);
+		$resultPE = executePlainSQL("select * from orders where src_prov = 'PE'", $db_conn, $success);
+		$resultNL = executePlainSQL("select * from orders where src_prov = 'NL'", $db_conn, $success);
+		$resultNS = executePlainSQL("select * from orders where src_prov = 'NS'", $db_conn, $success);
+		
+		printResultViewOrder($result);
+		printResultViewOrder($resultBC);
+		printResultViewOrder($resultAB);
+		printResultViewOrder($resultSK);
+		printResultViewOrder($resultMA);
+		printResultViewOrder($resultON);
+		printResultViewOrder($resultQC);
+		printResultViewOrder($resultNB);
+		printResultViewOrder($resultPE);
+		printResultViewOrder($resultNL);
+		printResultViewOrder($resultNS);
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
@@ -111,5 +69,9 @@ if ($db_conn) {
 	echo htmlentities($e['message']);
 }
 
+
+
+
+	
 ?>
 

@@ -3,7 +3,7 @@
 $client_id;
 
 function dbConnect() {
-	return OCILogon("ora_g3d9", "a30775134", "ug");
+	return OCILogon("ora_c4w9a", "a50851147", "ug");
 }
 
 function dbLogout($db_conn) {
