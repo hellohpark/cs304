@@ -2,7 +2,6 @@
 session_save_path('/home/g/g3d9/public_html');
 session_start();
 require_once 'functions.php';
-require_once 'getTrackingNumber.php';
 
 $tracking_num = getTrackingNumber();
 $_SESSION['tracking_num'] = $tracking_num;
