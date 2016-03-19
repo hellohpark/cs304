@@ -3,6 +3,7 @@
 $client_id;
 
 function dbConnect() {
+	// NOTE: Change DB information to your own
 	return OCILogon("ora_g3d9", "a30775134", "ug");
 }
 
@@ -10,17 +11,8 @@ function dbLogout($db_conn) {
 	OCILogoff($db_conn);
 }
 
-//set $var = $cid
-function setClientID($cid) {
-	global $client_id;
-	$client_id = $cid;
-}
-function fetchClientID(&$var) {
-	global $client_id;
-	$var = $client_id;
-}
 
-function getTrackingNum() {
+function getTrackingNumber() {
 	$tracking_num = mt_rand(1111, 9999);
 	return $tracking_num;
 }
@@ -129,9 +121,6 @@ function getClientInfo($tracking_number, $db) {
 
 	$result = OCI_Fetch_Array($statement, OCI_BOTH);
 	return $result;
-
-
-//4016
 
 }
 

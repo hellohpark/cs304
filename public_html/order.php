@@ -3,22 +3,22 @@ session_save_path('/home/g/g3d9/public_html');
 session_start();
 require_once 'functions.php';
 require_once 'getTrackingNumber.php';
-setTN();
-$tracking_num = shareTN();
+
+$tracking_num = getTrackingNumber();
 $_SESSION['tracking_num'] = $tracking_num;
 
 ?>
 
 
+<!--TODO: Prevent empty forms from being submitted-->
 <html>
 	<head>
 		<title>Order Page - CPSC 304 Post Office</title>
 	</head>
 
 	<body>
-		<p><a href="index.php">HOME - TRACK YOUR ORDER</a></p>
+		<p><a href="index.php">HOME - TRACK YOUR ORDER </a></p>
 		<h1>Place An Order</h1>
-		<!--TODO: change destination for action after submit pressed-->
 		<form action="order.php" method="post">
 			<fieldset>
 				<legend>From</legend>
@@ -87,78 +87,38 @@ $_SESSION['tracking_num'] = $tracking_num;
 
 
 <?php
-
-//include 'functions.php';
-// require_once 'functions.php';
-// require_once 'getTrackingNumber.php';
-$success = True; //keep track of errors so it redirects the page only if there are no errors
+$success = True; 
 $db_conn = dbConnect();
-// setTN();
-// $tracking_num = shareTN();
-
-
-// // Tracking # = client_id
-// $tracking_num = getTrackingNum();
-// $client_id = $tracking_num;
-
-// $_SESSION['tracking_num'] = $tracking_num;
-// //setClientID($client_id);
 
 if ($db_conn) {
 
-	// TODO: Not working properly
 	if (array_key_exists('reset', $_POST)) {
-		// Drop old table...
-		echo "<br> Removing all rows <br>";
-		//executePlainSQL("delete from client", $db_conn, $success);
+		
 		executePlainSQL("delete from orders", $db_conn, $success);
-
-		// // Create new table...
-		// echo "<br> creating new table <br>";
-		// executePlainSQL("create table tab1 (nid number, name varchar2(30), primary key (nid))");
 		OCICommit($db_conn);
 
-		if ($_POST && $success) {
-		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		header("location: order.php");	//TODO: will throw an error
-	}
-
-	} else 
-		if (array_key_exists('submit', $_POST)) {
-
-
-			//collectClientInfo($client_id, $db_conn, $success);
-			placeOrder($tracking_num, $db_conn, $success);
-			header("location: tracking_confirmation.php");
-
+		if ($_POST && $success) {		
+			header("location: order.php");
 		}
 
-
-		// 	if ($_POST && $success) {
-		// //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
-		// header("location: order.php");
-		// //TODO: resetting will take client to tracking_confirmation
-		// }
-		// else {
+	} else if (array_key_exists('submit', $_POST)) {
+		placeOrder($tracking_num, $db_conn, $success);
+		header("location: tracking_confirmation.php");
+	}
 			
-		$orders = executePlainSQL("select * from orders", $db_conn, $success);
-		printResult($orders);
+	$orders = executePlainSQL("select * from orders", $db_conn, $success);
+	printResult($orders);
 
-		//}
-
-		//TODO: Error handling
-
-	
-
-}
-
-		//Commit to save changes...
 	dbLogout($db_conn);
-// } else {
-// 		echo "cannot connect";
-// 		$e = OCI_Error(); // For OCILogon errors pass no handle
-// 		echo htmlentities($e['message']);
-// 	}
+
+
+} 
+else {
+//TODO: Error handling
+	echo "cannot connect";
+	$e = OCI_Error(); // For OCILogon errors pass no handle
+	echo htmlentities($e['message']);
+}
 
 ?>
 
