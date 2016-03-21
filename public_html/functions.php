@@ -82,7 +82,6 @@ function printResult($result) {
 	echo "<br>Got data from table client:<br>";
 	echo "<table>";
 	//echo "<tr><th>TrackingNumber</th><th>Status</th></tr><th>Src_Addr</th></tr><th>Dst_Addr</th></tr><th>CurrentProvince</th></tr>";
-
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; 
 	}
@@ -104,11 +103,13 @@ function placeOrder($tracking_num, $db_conn, $success) {
 				":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:null,
 				":bind10" => isset($_POST['tophone'])? $_POST['tophone']:null,
 				":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:null,
- 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:null
+ 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:null,
+ 				$totalprice
 			);
 			$alltuples = array (
 				$tuple
 			);
+
 			executeBoundSQL("insert into orders values (:bind1, :bind2, :bind3, :bind4, :bind5,
 				:bind6, :bind7, :bind8, :bind9, :bind10, :bind11, :bind12)", $alltuples, $db_conn, $success);
 			OCICommit($db_conn);

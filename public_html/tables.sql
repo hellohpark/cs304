@@ -23,7 +23,7 @@ create table postoffice
 
 create table deliverytype
 	(dt_type varchar(25) not null,
-	dt_price float(1),
+	dt_price float(2),
 	primary key (dt_type));
 
 create table orders
@@ -90,8 +90,7 @@ insert into deliverytype values ('standard', 1.0);
 insert into deliverytype values ('express', 5.0);
 insert into deliverytype values ('priority', 10.0);
 
-
-
-
-
-		
+CREATE view pricematrix as
+SELECT * from provincialrate
+CROSS JOIN packagetype
+CROSS JOIN deliverytype;
