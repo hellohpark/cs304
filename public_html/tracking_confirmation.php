@@ -13,8 +13,7 @@
 	$tn = $_SESSION['tracking_num'];
 	echo $tn;
 
-	require_once 'functions.php';
-	require_once 'getTrackingNumber.php';
+	require 'functions.php';
 	$db_conn = dbConnect();
 	$success = true;
 
