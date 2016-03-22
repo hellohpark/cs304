@@ -7,7 +7,7 @@
 	<p>Your tracking number is
 	<?php
 	// NOTE: Make sure to change session path to point to your own public_html dir
-	session_save_path('/home/g/v7e8/public_html');
+	session_save_path('/home/g/g3d9/public_html');
 	session_start();
 
 	$tn = $_SESSION['tracking_num'];

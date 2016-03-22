@@ -1,7 +1,5 @@
 <?php
 
-$client_id;
-
 function dbConnect() {
 	// NOTE: Change DB information to your own
 	return OCILogon("ora_g3d9", "a30775134", "ug");
@@ -18,6 +16,7 @@ function getTrackingNumber() {
 }
 
 function executePlainSQL($cmdstr, $db_conn, $success) { 
+
 	$statement = OCIParse($db_conn, $cmdstr); 
 
 	if (!$statement) {
@@ -71,7 +70,7 @@ function executePlainSQL($cmdstr, $db_conn, $success) {
 }
 
 function printResult($result) { 
-	echo "<br>Got data from table client:<br>";
+	echo "<br>Got data from table:<br>";
 	echo "<table>";
 	//echo "<tr><th>TrackingNumber</th><th>Status</th></tr><th>Src_Addr</th></tr><th>Dst_Addr</th></tr><th>CurrentProvince</th></tr>";
 
@@ -114,12 +113,57 @@ function placeOrder($tracking_num, $db_conn, $success) {
 			executeBoundSQL("insert into orders values (:bind1, :bind2, :bind3, :bind4, :bind5,
 				:bind6, :bind7, :bind8, :bind9, :bind10, :bind11, :bind12, :bind13)", $alltuples, $db_conn, $success);
 
-		executeBoundSQL("insert into price values (:bind1,
-  			(select pr_price + pt_price + dt_price
-	  		from pricematrix
-	  		where pro_province_name = :bind9 and dt_type = :bind11 and pt_type = :bind12),
-  			:bind9, :bind11, ':bind12')", $alltuples, $db_conn, $success);
 		OCICommit($db_conn);
+
+}
+
+function getPrice($tracking_num, $db_conn, $success) {
+	
+	$pr = isset($_POST['toprovince'])? $_POST['toprovince']:null;
+	$dt = isset($_POST['deliverytype'])? $_POST['deliverytype']:null;
+	$pt = isset($_POST['packagetype'])? $_POST['packagetype']:null;
+
+	$temp = executePlainSQL("select pr_price + pt_price + dt_price from pricematrix where 
+			pro_province_name='$pr' and dt_type='$dt' and pt_type='$pt'", $db_conn, $success);
+	$total_price;
+	while ($row = OCI_Fetch_Array($temp, OCI_BOTH)) {
+		echo $row[0];
+		$total_price = $row[0];
+
+	}	
+
+	$tuple = array (
+				":bind1" => $tracking_num,
+				":bind2" => $total_price,
+				":bind3" => isset($_POST['toprovince'])? $_POST['toprovince']:null,
+				":bind4" => isset($_POST['deliverytype'])? $_POST['deliverytype']:null,
+ 				":bind5" => isset($_POST['packagetype'])? $_POST['packagetype']:null
+			);
+	$alltuples = array (
+				$tuple
+	);	
+
+	$price = executeBoundSQL("insert into price values (:bind1, :bind2, :bind3, :bind4, :bind5)", $alltuples, $db_conn, $success);
+	OCICommit($db_conn);
+
+}
+
+function getTotalPrice($tracking_number, $pr, $dt, $pt, $db_conn, $success){
+	$temp = executePlainSQL("select pr_price from provincialrate where pro_province_name='$pr'", $db_conn, $success);
+	while ($row = OCI_Fetch_Array($temp, OCI_BOTH)) {
+		echo nl2br("Provincial Rate for ".$pr." = "."$".$row[0]."\n");
+	}
+
+	$temp = executePlainSQL("select dt_price from deliverytype where dt_type='$dt'", $db_conn, $success);
+	while ($row = OCI_Fetch_Array($temp, OCI_BOTH)) {
+		echo nl2br("Delivery Rate for ".$dt." = "."$".$row[0]."\n");
+
+	}
+	$temp = executePlainSQL("select pt_price from packagetype where pt_type='$pt'", $db_conn, $success);
+	while ($row = OCI_Fetch_Array($temp, OCI_BOTH)) {
+		echo nl2br("Package Rate for ".$pt." = "."$".$row[0]."\n");
+	}
+
 }
 
 
