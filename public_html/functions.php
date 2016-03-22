@@ -92,27 +92,30 @@ function printResult($result) {
 function placeOrder($tracking_num, $db_conn, $success) {
 	$status = 'pending';
 	$tuple = array (
-				":bind1" => $tracking_num,
-				":bind2" => $status,
-				":bind3" => isset($_POST['fromname'])? $_POST['fromname']:null,
-				":bind4" => isset($_POST['fromaddress'])? $_POST['fromaddress']:null,
-				":bind5" => isset($_POST['fromprovince'])? $_POST['fromprovince']:null,
-				":bind6" => isset($_POST['fromphone'])? $_POST['fromphone']:null,
-				":bind7" => isset($_POST['toname'])? $_POST['toname']:null,
-				":bind8" => isset($_POST['toaddress'])? $_POST['toaddress']:null,
-				":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:null,
-				":bind10" => isset($_POST['tophone'])? $_POST['tophone']:null,
-				":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:null,
- 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:null,
- 				$totalprice
-			);
-			$alltuples = array (
-				$tuple
-			);
-
-			executeBoundSQL("insert into orders values (:bind1, :bind2, :bind3, :bind4, :bind5,
-				:bind6, :bind7, :bind8, :bind9, :bind10, :bind11, :bind12)", $alltuples, $db_conn, $success);
-			OCICommit($db_conn);
+		":bind1" => $tracking_num,
+		":bind2" => $status,
+		":bind3" => isset($_POST['fromname'])? $_POST['fromname']:null,
+		":bind4" => isset($_POST['fromaddress'])? $_POST['fromaddress']:null,
+		":bind5" => isset($_POST['fromprovince'])? $_POST['fromprovince']:null,
+		":bind6" => isset($_POST['fromphone'])? $_POST['fromphone']:null,
+		":bind7" => isset($_POST['toname'])? $_POST['toname']:null,
+		":bind8" => isset($_POST['toaddress'])? $_POST['toaddress']:null,
+		":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:null,
+		":bind10" => isset($_POST['tophone'])? $_POST['tophone']:null,
+		":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:null,
+		":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:null,
+	);
+	$alltuples = array (
+		$tuple
+	);
+	executeBoundSQL("insert into orders values (:bind1, :bind2, :bind3, :bind4, :bind5,
+		:bind6, :bind7, :bind8, :bind9, :bind10, :bind11, :bind12)", $alltuples, $db_conn, $success);
+	executeBoundSQL("insert into price values (:bind1,
+  		(select pr_price + pt_price + dt_price
+  		from pricematrix
+  		where pro_province_name = :bind9 and dt_type = :bind11 and pt_type = :bind12),
+  		:bind9, :bind11, ':bind12')", $alltuples, $db_conn, $success);
+	OCICommit($db_conn);
 }
 
 

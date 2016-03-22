@@ -22,6 +22,8 @@
 	
 		$orders = executePlainSQL("select * from orders", $db_conn, $success);
 		printResult($orders);
+		$prices = executePlainSQL("select * from price", $db_conn, $success);
+		printResult($prices);
 	}
 
 	dbLogout($db_conn);
