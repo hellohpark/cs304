@@ -5,13 +5,14 @@
 	</head>
 
 	<body>
-		<h1>Welcome to .... hi HAHAHAHAHHA</h1>
+		<h1>Send 'N Track</h1>
 		<p><a href="order.php">PLACE AN ORDER</a></p>
+		<p><a href="admin.php">ADMIN LOGIN</a></p>
 		<form action="clientinfo.php" method="post">
 			<fieldset>
 				<legend>Track your order:</legend>
 				Tracking Number:<br>
-				<input type="text" name="trackingnumber"><br>
+				<input type="text" name="trackingnumber" required><br>
 			</fieldset>
 
 			<input type="submit" name='submit' value="Get My Order">
