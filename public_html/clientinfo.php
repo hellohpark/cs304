@@ -13,9 +13,35 @@ $tn = $_POST['trackingnumber'];
 	<a href="index.php">Go back to HOME</a></p>
 	<a href="order.php">PLACE A NEW ORDER</a></p>
 
-	<h3>Your Information</h3>
 
-	<h4> Status of Your Package </h4>
+<?php
+
+if (isset($_POST['status'])) {
+	getStatus($tn, $db_conn);
+
+}
+if (isset($_POST['from'])) {
+	getSrcInfo($tn, $db_conn);
+
+}
+if (isset($_POST['to'])) {
+	getDstInfo($tn, $db_conn);
+
+}
+if (isset($_POST['dt'])) {
+	getDeliveryType($tn, $db_conn);
+
+}
+if (isset($_POST['pt'])) {
+	getPackageType($tn, $db_conn);
+
+}
+
+dbLogout($db_conn); ?>
+
+
+
+	<!-- <h4> Status of Your Package </h4>
 	<?php getStatus($tn, $db_conn); ?>
 	<br>
 	<h4>From</h4>
@@ -28,6 +54,4 @@ $tn = $_POST['trackingnumber'];
 	<?php getDeliveryType($tn, $db_conn); ?>
 	<br>
 	<h4>Package Type</h4>
-	<?php getPackageType($tn, $db_conn); ?>
-
-<?php dbLogout($db_conn); ?>
+	<?php getPackageType($tn, $db_conn); ?> -->

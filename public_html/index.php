@@ -13,6 +13,12 @@
 				<legend>Track your order:</legend>
 				Tracking Number:<br>
 				<input type="text" name="trackingnumber" required><br>
+				<p>Please select order information you'd like to see</p>
+				<input type="checkbox" name="status" value="status">Status of package<br>
+				<input type="checkbox" name="from" value="from">Source Information<br>
+				<input type="checkbox" name="to" value="to">Destination Information<br>
+				<input type="checkbox" name="dt" value="dt">Delivery Type<br>
+				<input type="checkbox" name="pt" value="pt">Package Type<br>
 			</fieldset>
 
 			<input type="submit" name='submit' value="Get My Order">
