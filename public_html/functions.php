@@ -256,45 +256,42 @@ function getPackageType($tracking_number, $db) {
 	echo nl2br("Package Type: ".$r[0]."\n");
 }
 
-
-// function getStatus($tracking_number, $db) {
-// 	$r = getClientInfo($tracking_number, $db);
-// 	echo nl2br("Tracking Number: ".$r[0]."\n");
-// 	echo nl2br("Status of package: ".$r[1]."\n");
-// 	echo nl2br("Current location of package: ".$r[12]."\n");
-// }
-
-// function getSrcInfo($tracking_number, $db){
-// 	$r = getClientInfo($tracking_number, $db);
-// 	echo nl2br("Name: ".$r[2]."\n");
-// 	echo nl2br("Address: ".$r[3]."\n");
-// 	echo nl2br("Province: ".$r[4]."\n");
-// 	echo nl2br("Phone: ".$r[5]."\n");
-// }
-
-// function getDstInfo($tracking_number, $db) {
-// 	$r = getClientInfo($tracking_number, $db);
-// 	echo nl2br("Name: ".$r[6]."\n");
-// 	echo nl2br("Address: ".$r[7]."\n");
-// 	echo nl2br("Province: ".$r[8]."\n");
-// 	echo nl2br("Phone: ".$r[9]."\n");
-
-// }
-
-// function getDeliveryType($tracking_number, $db) {
-// 	$r = getClientInfo($tracking_number, $db);
-// 	echo nl2br($r[10]."\n");
-
-// }
-
-// function getPackageType($tracking_number, $db) {
-// 	$r = getClientInfo($tracking_number, $db);
-// 	echo nl2br($r[11]."\n");
-// }
+function estimatePrice($db_conn, $success) {
+	$pr = isset($_POST['toprovince'])? $_POST['toprovince']:null;
+	$dt = isset($_POST['deliverytype'])? $_POST['deliverytype']:null;
+	$pt = isset($_POST['packagetype'])? $_POST['packagetype']:null;
 
 
+	if (isset($_POST['estimatepr'])) {
+		$temp = executePlainSQL("select pr_price from provincialrate where pro_province_name='$pr'", $db_conn, $success);
+		while ($r = OCI_Fetch_Array($temp, OCI_BOTH)) {
+		echo nl2br($pr." Provincial Rate: "."$".$r[0]."\n");
+		}
+	}
+	if (isset($_POST['estimatedt'])) {
+		$temp = executePlainSQL("select dt_price from deliverytype where dt_type='$dt'", $db_conn, $success);
+		while ($r = OCI_Fetch_Array($temp, OCI_BOTH)) {
+			echo nl2br($dt." Delivery Type Price: "."$".$r[0]."\n");
 
+		}
+	}
+	if (isset($_POST['estimatept'])) {
+		$temp = executePlainSQL("select pt_price from packagetype where pt_type='$pt'", $db_conn, $success);
+		while ($r= OCI_Fetch_Array($temp, OCI_BOTH)) {
+			echo nl2br($pt." Package Type Price: "."$".$r[0]."\n");
 
+		}
+	}
+	if (isset($_POST['estimatetotal'])) {
+		$temp = executePlainSQL("select pr_price + pt_price + dt_price from provincialrate cross join deliverytype
+		cross join packagetype where pro_province_name='$pr' and dt_type='$dt' and pt_type='$pt'", $db_conn, $success);
+		while ($r = OCI_Fetch_Array($temp, OCI_BOTH)) {
+			echo nl2br("Total Price: "."$".$r[0]."\n");
 
+		}	
+	}
+}
 
 ?>
+
+
