@@ -108,10 +108,21 @@ if ($db_conn) {
 		}
 
 	} else if (array_key_exists('submit', $_POST)) {
-		placeOrder($tracking_num, $db_conn, $success);
-		getPrice($tracking_num, $db_conn, $success);
+
+		//Invalid phone number
+		if (checkValidOrder($_POST['tophone'])&&checkValidOrder($_POST['fromphone'])&&
+			checkValidOrder($_POST['toname'])&&checkValidOrder($_POST['fromname'])) {
+				placeOrder($tracking_num, $db_conn, $success);
+				getPrice($tracking_num, $db_conn, $success);
 		//header("location: tracking_confirmation.php");
-		header("location: price.php");
+				header("location: price.php");
+		}
+		else {
+		echo " <script>
+		alert('Please input valid names and phone numbers');
+		window.location='order.php';
+		</script>";
+		}
 	}
 
 		$orders = executePlainSQL("select * from orders", $db_conn, $success);

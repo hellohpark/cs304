@@ -16,24 +16,32 @@ $tn = $_POST['trackingnumber'];
 
 <?php
 
-if (isset($_POST['status'])) {
-	getStatus($tn, $db_conn);
+//Tracking number is invalid
+if (!preg_match('/([0-9][0-9][0-9][0-9])/', $tn)) {
+
+	echo " <script>
+		alert('Please input 4 valid numbers for the tracking number');
+		window.location='index.php';
+		</script>";
 
 }
-if (isset($_POST['from'])) {
-	getSrcInfo($tn, $db_conn);
 
-}
-if (isset($_POST['to'])) {
-	getDstInfo($tn, $db_conn);
+else if (isset($_POST['status'])||isset($_POST['from'])||isset($_POST['to'])||
+	isset($_POST['dt'])||isset($_POST['pt'])) {
 
+	if (isset($_POST['status'])) {getStatus($tn, $db_conn);}
+	if (isset($_POST['from'])) {getSrcInfo($tn, $db_conn);}
+	if (isset($_POST['to'])) {getDstInfo($tn, $db_conn);}
+	if (isset($_POST['dt'])) {getDeliveryType($tn, $db_conn);}
+	if (isset($_POST['pt'])) {getPackageType($tn, $db_conn);}
 }
-if (isset($_POST['dt'])) {
-	getDeliveryType($tn, $db_conn);
-
-}
-if (isset($_POST['pt'])) {
-	getPackageType($tn, $db_conn);
+//Tracking number is valid BUT at least one checkbox isn't checked off
+else if (!isset($_POST['status'])&& !isset($_POST['from'])&& !isset($_POST['to'])&&
+	!isset($_POST['dt'])&&!isset($_POST['pt'])){
+	echo " <script>
+		alert('Please select at least one of the order information you would like to see');
+		window.location='index.php';
+		</script>";
 
 }
 

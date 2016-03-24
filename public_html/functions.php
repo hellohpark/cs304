@@ -292,6 +292,19 @@ function estimatePrice($db_conn, $success) {
 	}
 }
 
+
+
+function checkValidOrder($phonenum, $name) {
+	// Invalid phone number
+	if (!preg_match('/([0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9])/', $phonenum) ||
+		!preg_match('/^[A-Za-z]+$/', $name)) {
+		return false;
+}
+else return true;
+}
+
+
+
 ?>
 
 

@@ -11,7 +11,7 @@
 		<p><a href="admin.php">ADMIN LOGIN</a></p>
 		<p><a href="estimateprice.php">Estimate Price</a></p>
 		<!--=========================================-->
-		<form action="clientinfo.php" method="post">
+		<form id="home" action="clientinfo.php" method="post">
 			<fieldset>
 				<legend>Track your order:</legend>
 				Tracking Number:<br>
@@ -28,13 +28,3 @@
 		</form>
 	</body>
 </html>
-
-<?php 
-
-// TODO: Prevent clients from clicking submit without any input
-if (array_key_exists('submit', $_POST)) {
-	header("location: clientinfo.php");
-}
-
-
-?>
