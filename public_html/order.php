@@ -114,14 +114,12 @@ if ($db_conn) {
 			checkValidOrder($_POST['toname'])&&checkValidOrder($_POST['fromname'])) {
 				placeOrder($tracking_num, $db_conn, $success);
 				getPrice($tracking_num, $db_conn, $success);
-		//header("location: tracking_confirmation.php");
 				header("location: price.php");
 		}
 		else {
-		echo " <script>
-		alert('Please input valid names and phone numbers');
-		window.location='order.php';
-		</script>";
+			echo "<script> alert('Please input valid names and phone numbers:\\nNames should be composed of upper and lower case only\\nPhone numbers should consist of numbers from 0-9 and be in the form: xxx-xxx-xxxx');
+			window.location = 'order.php';</script>";
+		
 		}
 	}
 
