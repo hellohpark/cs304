@@ -39,7 +39,7 @@ function executePlainSQL($cmdstr, $db_conn, $success) {
 	return $statement;
 }
 
-function executeBoundSQL($cmdstr, $list, $db_conn, $success) {
+	function executeBoundSQL($cmdstr, $list, $db_conn, $success) {
 	
 	$statement = OCIParse($db_conn, $cmdstr);
 
@@ -83,7 +83,8 @@ function printResult($result) {
 
 
 function signIn($db_conn, $success){
-		$orders = executePlainSQL("select * from login", $db_conn, $success);	
+		$orders = executePlainSQL("select * from login", $db_conn, $success);
+	
 	
 }
 
@@ -166,73 +167,94 @@ function getTotalPrice($tracking_number, $pr, $dt, $pt, $db_conn, $success){
 }
 
 
-function getClientInfo($tn, $db_conn, $success) {
+function getClientInfo($tracking_number, $db) {
 
-	//Check if order exists
-	$sql = "select tracking_number from orders where tracking_number=:bind";
+	$db_conn = $db;
+
+	//Fetch tracking number provided by client
+	$tn = $tracking_number;
+
+	$sql = "select * from orders where tracking_number=:bind";
+	$statement = OCIParse($db_conn, $sql);
+	OCIBindByName($statement, ':bind', $tn);
+	OCIExecute($statement, OCI_DEFAULT);
+
+	$result = OCI_Fetch_Array($statement, OCI_BOTH);
+	return $result;
+
+}
+
+
+function getStatus($tracking_number, $db) {
+
+	$db_conn = $db; 
+	$tn = $tracking_number;
+
+	$sql = "select tracking_number, status, curr_location from orders where tracking_number=:bind";
 	$statement = OCIParse($db_conn, $sql);
 	OCIBindByName($statement, ':bind', $tn);
 	OCIExecute($statement, OCI_DEFAULT);
 	$r = OCI_Fetch_Array($statement, OCI_BOTH);
+	echo nl2br("Tracking Number: ".$r[0]."\n");
+	echo nl2br("Status of package: ".$r[1]."\n");
+	echo nl2br("Current location of package: ".$r[2]."\n");
+}
 
-	if ($r[0] == 0) {
-		echo " <script>
-		alert('An order with the tracking number you have provided does not exist.');
-		window.location='index.php';
-		</script>";
-		return;
-	}
-	if (isset($_POST['status'])) {
-		$sql = "select tracking_number, status, curr_location from orders where tracking_number=:bind";
-		$statement = OCIParse($db_conn, $sql);
-		OCIBindByName($statement, ':bind', $tn);
-		OCIExecute($statement, OCI_DEFAULT);
-		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Tracking Number: ".$r[0]."\n");
-		echo nl2br("Status of package: ".$r[1]."\n");
-		echo nl2br("Current location of package: ".$r[2]."\n");
-	}
-	if (isset($_POST['from'])) {
-		$sql = "select src_name, src_addr, src_prov, src_phone from orders where tracking_number=:bind";
-		$statement = OCIParse($db_conn, $sql);
-		OCIBindByName($statement, ':bind', $tn);
-		OCIExecute($statement, OCI_DEFAULT);
-		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Name: ".$r[1]."\n");
-		echo nl2br("Address: ".$r[2]."\n");
-		echo nl2br("Province: ".$r[3]."\n");
-		echo nl2br("Phone: ".$r[4]."\n");
-	}
-	if (isset($_POST['to'])) {
-		$sql = "select dst_name, dst_addr, dst_prov, dst_phone from orders where tracking_number=:bind";
-		$statement = OCIParse($db_conn, $sql);
-		OCIBindByName($statement, ':bind', $tn);
-		OCIExecute($statement, OCI_DEFAULT);
-		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Name: ".$r[1]."\n");
-		echo nl2br("Address: ".$r[2]."\n");
-		echo nl2br("Province: ".$r[3]."\n");
-		echo nl2br("Phone: ".$r[4]."\n");
-	}
-	if (isset($_POST['dt'])) {
-		$sql = "select dl_type from orders where tracking_number=:bind";
-		$statement = OCIParse($db_conn, $sql);
-		OCIBindByName($statement, ':bind', $tn);
-		OCIExecute($statement, OCI_DEFAULT);
-		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Delivery Type: ".$r[0]."\n");
-	}
-	if (isset($_POST['pt'])) {
-		$sql = "select pt_type from orders where tracking_number=:bind";
-		$statement = OCIParse($db_conn, $sql);
-		OCIBindByName($statement, ':bind', $tn);
-		OCIExecute($statement, OCI_DEFAULT);
-		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Package Type: ".$r[0]."\n");
-	}
+function getSrcInfo($tracking_number, $db){
+	$db_conn = $db; 
+	$tn = $tracking_number;
+
+	$sql = "select src_name, src_addr, src_prov, src_phone from orders where tracking_number=:bind";
+	$statement = OCIParse($db_conn, $sql);
+	OCIBindByName($statement, ':bind', $tn);
+	OCIExecute($statement, OCI_DEFAULT);
+	$r = OCI_Fetch_Array($statement, OCI_BOTH);
+	echo nl2br("Name: ".$r[1]."\n");
+	echo nl2br("Address: ".$r[2]."\n");
+	echo nl2br("Province: ".$r[3]."\n");
+	echo nl2br("Phone: ".$r[4]."\n");
+}
+
+function getDstInfo($tracking_number, $db) {
+	$db_conn = $db; 
+	$tn = $tracking_number;
+
+	$sql = "select dst_name, dst_addr, dst_prov, dst_phone from orders where tracking_number=:bind";
+	$statement = OCIParse($db_conn, $sql);
+	OCIBindByName($statement, ':bind', $tn);
+	OCIExecute($statement, OCI_DEFAULT);
+	$r = OCI_Fetch_Array($statement, OCI_BOTH);
+	echo nl2br("Name: ".$r[1]."\n");
+	echo nl2br("Address: ".$r[2]."\n");
+	echo nl2br("Province: ".$r[3]."\n");
+	echo nl2br("Phone: ".$r[4]."\n");
 
 }
 
+function getDeliveryType($tracking_number, $db) {
+	$db_conn = $db; 
+	$tn = $tracking_number;
+
+	$sql = "select dl_type from orders where tracking_number=:bind";
+	$statement = OCIParse($db_conn, $sql);
+	OCIBindByName($statement, ':bind', $tn);
+	OCIExecute($statement, OCI_DEFAULT);
+	$r = OCI_Fetch_Array($statement, OCI_BOTH);
+	echo nl2br("Delivery Type: ".$r[0]."\n");
+
+}
+
+function getPackageType($tracking_number, $db) {
+	$db_conn = $db; 
+	$tn = $tracking_number;
+
+	$sql = "select pt_type from orders where tracking_number=:bind";
+	$statement = OCIParse($db_conn, $sql);
+	OCIBindByName($statement, ':bind', $tn);
+	OCIExecute($statement, OCI_DEFAULT);
+	$r = OCI_Fetch_Array($statement, OCI_BOTH);
+	echo nl2br("Package Type: ".$r[0]."\n");
+}
 
 function estimatePrice($db_conn, $success) {
 	$pr = isset($_POST['toprovince'])? $_POST['toprovince']:null;
@@ -277,8 +299,8 @@ function checkValidOrder($phonenum, $name) {
 	if (!preg_match('/([0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9])/', $phonenum) ||
 		!preg_match('/^[A-Za-z]+$/', $name)) {
 		return false;
-	}
-	else return true;
+}
+else return true;
 }
 
 
