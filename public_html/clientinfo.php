@@ -2,6 +2,7 @@
 require ('functions.php');
 $db_conn = dbConnect();
 $tn = $_POST['trackingnumber'];
+$success = true;
 
 //Error-handling
 //case1: when tracking number does not exist --> no record
@@ -17,7 +18,7 @@ $tn = $_POST['trackingnumber'];
 <?php
 
 //Tracking number is invalid
-if (!preg_match('/([0-9][0-9][0-9][0-9])/', $tn)) {
+if (!preg_match('[0-9][0-9][0-9][0-9]', $tn)) {
 
 	echo " <script>
 		alert('Please input 4 valid numbers for the tracking number');
@@ -28,12 +29,7 @@ if (!preg_match('/([0-9][0-9][0-9][0-9])/', $tn)) {
 
 else if (isset($_POST['status'])||isset($_POST['from'])||isset($_POST['to'])||
 	isset($_POST['dt'])||isset($_POST['pt'])) {
-
-	if (isset($_POST['status'])) {getStatus($tn, $db_conn);}
-	if (isset($_POST['from'])) {getSrcInfo($tn, $db_conn);}
-	if (isset($_POST['to'])) {getDstInfo($tn, $db_conn);}
-	if (isset($_POST['dt'])) {getDeliveryType($tn, $db_conn);}
-	if (isset($_POST['pt'])) {getPackageType($tn, $db_conn);}
+	getClientInfo($tn, $db_conn, $success);
 }
 //Tracking number is valid BUT at least one checkbox isn't checked off
 else if (!isset($_POST['status'])&& !isset($_POST['from'])&& !isset($_POST['to'])&&
@@ -46,20 +42,3 @@ else if (!isset($_POST['status'])&& !isset($_POST['from'])&& !isset($_POST['to']
 }
 
 dbLogout($db_conn); ?>
-
-
-
-	<!-- <h4> Status of Your Package </h4>
-	<?php getStatus($tn, $db_conn); ?>
-	<br>
-	<h4>From</h4>
-	<?php getSrcInfo($tn, $db_conn); ?>
-	<br>
-	<h4>To</h4>
-	<?php getDstInfo($tn, $db_conn); ?>
-	<br>
-	<h4>Delivery Type</h4>
-	<?php getDeliveryType($tn, $db_conn); ?>
-	<br>
-	<h4>Package Type</h4>
-	<?php getPackageType($tn, $db_conn); ?> -->
