@@ -1,0 +1,117 @@
+body {
+    background: black;
+}
+
+h1 {
+    font-family: arial;
+}
+
+.header {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 900px;
+    display: inline;
+}
+
+.mainpanel {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 900px;
+}
+
+.content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 800px;
+    float: right;
+    padding: 50px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: lightblue;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 5;
+}
+
+.dropdown-content a {
+    color: black;
+    font-family: arial;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    color: #808080;
+    
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content section {
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+section:last-child {
+    border-bottom: 1px solid black;
+}
+
+li{
+    float: left;
+}
+li a, .dropbtn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 30px;
+    text-align: center;
+    font-family: arial;
+}
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: #f1f1f1;
+    color: #808080;
+    -webkit-animation-name: example;
+    -webkit-animation-duration: 0.5s;
+}
+
+li a.active {
+    background-color: yellow;
+    color: red;
+}
+
+@keyframes example {
+    0%   {background-color: lightblue;
+          color: black}
+    100%  {background-color: #f1f1f1;
+          color: #808080}
