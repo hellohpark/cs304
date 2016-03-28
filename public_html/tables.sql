@@ -125,5 +125,5 @@ CROSS JOIN deliverytype;
 insert into price select '1111',pr_price + pt_price + dt_price,'BC','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
 insert into price select '2222',pr_price + pt_price + dt_price,'BC','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
 insert into price select '3333',pr_price + pt_price + dt_price,'BC','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
-insert into price select '4444',pr_price + pt_price + dt_price,'AB','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
-insert into price select '5555',pr_price + pt_price + dt_price,'SK','express','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
+insert into price select '4444',pr_price + pt_price + dt_price,'AB','standard','regular letter' from pricematrix where pro_province_name='AB' and dt_type='standard' and pt_type='regular letter';
+insert into price select '5555',pr_price + pt_price + dt_price,'SK','express','regular letter' from pricematrix where pro_province_name='SK' and dt_type='express' and pt_type='regular letter';

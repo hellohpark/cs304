@@ -32,8 +32,39 @@ function printResultViewOrder($result) {
 
 	
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["TRACKING_NUMBER"] . "</td><td>" . $row["STATUS"] . "</td><td>" . $row["SRC_NAME"]. ", " .$row["SRC_ADDR"]. ", " .$row["SRC_PROV"]. ", " .$row["SRC_PHONE"] . "</td><td>" . $row["DST_NAME"]. ", " .$row["DST_ADDR"]. ", " .$row["DST_PROV"]. ", " .$row["DST_PHONE"] . "</td><td>" . $row["CURR_LOCATION"] . "</td><td>" . $row["DL_TYPE"] . "</td><td>" . $row["PK_TYPE"] . "</td>";
-		echo "<td><form action='edit_orders.php' method='POST'><input type='hidden' name='tracking_number' value=".$row["TRACKING_NUMBER"]."><input type='submit' name='submit-btn' value='Update Details' /></form></td></tr>";
+		$TRACKING_NUMBER = strtolower($row["TRACKING_NUMBER"]);
+		$DST_PROV = $row["DST_PROV"];
+		$DL_TYPE = strtolower($row["DL_TYPE"]);
+		$PK_TYPE = strtolower($row["PK_TYPE"]);
+		
+		
+		echo "<tr><td>" . 
+		$row["TRACKING_NUMBER"] . "</td><td>" . 
+		$row["STATUS"] . "</td><td>" . 
+		$row["SRC_NAME"]. ", " .
+		$row["SRC_ADDR"]. ", " .
+		$row["SRC_PROV"]. ", " .
+		$row["SRC_PHONE"] . "</td><td>" . 
+		$row["DST_NAME"]. ", " .
+		$row["DST_ADDR"]. ", " .
+		$row["DST_PROV"]. ", " .
+		$row["DST_PHONE"] . "</td><td>" . 
+		$row["CURR_LOCATION"] . "</td><td>" . 
+		$row["DL_TYPE"] . "</td><td>" . 
+		$row["PK_TYPE"] . "</td>";
+		echo "<td>
+		<form action='edit_orders.php' method='POST'>
+		<input type='hidden' name='tracking_number' value='$TRACKING_NUMBER'>
+		<input type='submit' name='submit-btn' value='Update Details' />
+		</form>
+		<form action='view_order_price.php' method='GET'>
+		<input type='hidden' name='tracking_number' value='$TRACKING_NUMBER'>
+		<input type='hidden' name='toprovince' value='$DST_PROV'>
+		<input type='hidden' name='deliverytype' value='$DL_TYPE'>
+		<input type='hidden' name='packagetype' value='$PK_TYPE'>
+		<input type='submit' name='price' value='Price' />
+		</form></td>
+		</tr>";
 		
 	}
 	echo "</table>";
