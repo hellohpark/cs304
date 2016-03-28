@@ -2,7 +2,7 @@
 	
 	require_once 'functions.php';
 	
-	session_save_path('/home/c/c4w9a/public_html');
+	session_save_path('/home/g/g3d9/public_html');
 	session_start();
 
 	$authentication = $_SESSION['authenticated'];

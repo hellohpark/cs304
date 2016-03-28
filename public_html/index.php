@@ -8,7 +8,7 @@
 		<h1>Send 'N Track</h1>
 		<!-- 3 links below should be part of a menu -->
 		<p><a href="order.php">PLACE AN ORDER</a></p>
-		<p><a href="admin.php">ADMIN LOGIN</a></p>
+		<p><a href="login.php">ADMIN LOGIN</a></p>
 		<p><a href="estimateprice.php">Estimate Price</a></p>
 		<!--=========================================-->
 		<form id="home" action="clientinfo.php" method="post">

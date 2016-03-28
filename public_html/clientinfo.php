@@ -18,7 +18,7 @@ $success = true;
 <?php
 
 //Tracking number is invalid
-if (!preg_match('[0-9][0-9][0-9][0-9]', $tn)) {
+if (!preg_match('/^[0-9][0-9][0-9][0-9]$/', $tn)) {
 
 	echo " <script>
 		alert('Please input 4 valid numbers for the tracking number');
