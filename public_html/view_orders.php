@@ -1,18 +1,19 @@
 <?php
 require_once 'functions.php';
-	session_save_path('/home/c/c4w9a/public_html');
-	session_start();
+session_save_path('/home/c/c4w9a/public_html');
+session_start();
 
-	$authentication = $_SESSION['authenticated'];
+$authentication = $_SESSION['authenticated'];
 ?>
 
 <html>
 	<head>
-		<title>View Orders</title>
+		<title>View Orders - view all orders in the orders table</title>
 	</head>
 
 	<body>
 	<h1>Orders in Province</h1>
+	<p><a href="select_province.php">Go back to select a post office</a></p>
 	</body>
 </html>	
 			

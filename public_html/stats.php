@@ -14,12 +14,13 @@
 	
 <html>
 	<head>
-		<title>Select Province</title>
+		<title>Select Province - view nested aggregation query result</title>
 	</head>
 
 	<body>
 	
 	<h1>Orders Statistics</h1>
+	<p><a href="select_province.php">Go back to select a post office</a></p>
 	
 	
 	
@@ -31,7 +32,7 @@
 
 function inputResultMaxMin($maxminresult){
 	echo "<fieldset>
-				<legend>Post Office with Highest Average Order Worth</legend>";
+				<legend>Post Office with Highest Average Order Worth - nested aggregation query</legend>";
 		echo "<table>";		
 		echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
 				

@@ -9,11 +9,12 @@
 
 <html>
 	<head>
-		<title>Edit Orders</title>
+		<title>Edit Order - edit an order with update constraints</title>
 	</head>
 
 	<body>
 	<h1>Edit Order</h1>
+	<p><a href="view_orders.php">Go back to view orders</a></p>
 
 	</body>
 </html>	
@@ -195,9 +196,6 @@ if ($db_conn) {
 	
 
 	inputResultEditOrder($result);
-	
-	//deletePrice($db_conn, $success);
-	//recalculatePrice($db_conn, $success);
 	
 	
 	//Commit to save changes...

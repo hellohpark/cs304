@@ -1,18 +1,19 @@
 <?php
 require_once 'functions.php';
-	session_save_path('/home/c/c4w9a/public_html');
-	session_start();
+session_save_path('/home/c/c4w9a/public_html');
+session_start();
 
-	$authentication = $_SESSION['authenticated'];
+$authentication = $_SESSION['authenticated'];
 ?>
 
 <html>
 	<head>
-		<title>View Order Price</title>
+		<title>View Order Price - view price of an order, recalculate price at each page load</title>
 	</head>
 
 	<body>
 	<h1>Order Price</h1>
+	<p><a href="view_orders.php">Go back to view orders</a></p>
 	</body>
 </html>	
 			
@@ -30,16 +31,7 @@ function deletePrice($db_conn, $success) {
 
 	$cmdstring = "DELETE FROM price WHERE tracking_number ='".strval($_GET['tracking_number'])."'";
 	echo "<br>".$cmdstring."<br>";
-	// $tracking = array (
-		// ":bind1" => isset($_GET['tracking_number'])? "'".$_GET['tracking_number']."'":null
-	// );
 
-	// $alltrackingtuples = array (
-		// $tracking
-	// );
-
-	// executeBoundSQL("DELETE FROM price WHERE tracking_number = :bind1", $alltrackingtuples, $db_conn, $success);
-		
 	executePlainSQL($cmdstring,$db_conn, $success);
 	
 	OCICommit($db_conn);	
@@ -48,24 +40,11 @@ function deletePrice($db_conn, $success) {
 function recalculatePrice($db_conn, $success) {
 
 
-	// $tuple = array (
-		// ":bind1" => "'".$_GET['tracking_number']."'",
-		// ":bind2" => isset($_GET['toprovince'])? "'".$_GET['toprovince']."'":null,
-		// ":bind3" => isset($_GET['deliverytype'])? "'".$_GET['deliverytype']."'":null,
-		// ":bind4" => isset($_GET['packagetype'])? "'".$_GET['packagetype']."'":null,
-	// );
-	// $alltuples = array (
-		// $tuple
-	// );
-	// executeBoundSQL("insert into price select :bind1, pr_price + pt_price + dt_price, :bind2, :bind3, :bind4 from pricematrix where pro_province_name= :bind2 and dt_type= :bind3 and pt_type = :bind4", $alltuples, $db_conn, $success);
-
-
 	$tracking_number = strval($_GET['tracking_number']);
 	$toprovince = isset($_GET['toprovince'])? $_GET['toprovince']:null;
 	$deliverytype = isset($_GET['deliverytype'])? $_GET['deliverytype']:null;
 	$packagetype = isset($_GET['packagetype'])? $_GET['packagetype']:null;
 	
-	// $cmdstring = "insert into price select ".$tracking_number." ,pr_price + pt_price + dt_price, ".$toprovince." , ".$deliverytype.", ".$packagetype." from pricematrix where pro_province_name= ".$toprovince." and dt_type= ".$deliverytype." and pt_type = ".$packagetype."";
 		
 		$cmdstring = "insert into price select '".$tracking_number."' ,pr_price + pt_price + dt_price, '".$toprovince."' , '".$deliverytype."', '".$packagetype."' from pricematrix where pro_province_name= '".$toprovince."' and dt_type= '".$deliverytype."' and pt_type = '".$packagetype."'";
 		
@@ -118,16 +97,11 @@ if ($db_conn) {
 		if (array_key_exists('delete_price', $_GET)) {
 
 
-			//collectClientInfo($client_id, $db_conn, $success);
 			deletePrice($db_conn, $success);
 			header("location: view_orders.php");
 		}
 
-			// if ((isset($_GET['toprovince'])||isset($_GET['to_province_now']))&&(isset($_GET['deliverytype'])||isset($_GET['deliverytype_now']))&&(isset($_GET['packagetype'])||(isset($_GET['packagetype_now'])))){
-				// echo "true";
-				// deletePrice($db_conn, $success);
-				// recalculatePrice($db_conn, $success);
-			// }		
+
 	
 	deletePrice($db_conn, $success);
 	recalculatePrice($db_conn, $success);

@@ -2,14 +2,14 @@
 
 require_once 'functions.php';
 $success = True;
-	$db_conn = dbConnect();
+$db_conn = dbConnect();
 	
 session_save_path('/home/c/c4w9a/public_html');
 session_start();
 $_SESSION['authenticated'] = 0;
 ?>
 
-<h1>Administration Login --> Only admin will have access to view all orders from each province</h1>
+<h1>Administration Login --> Only admin will have access to view all orders from each post office</h1>
 	<p><a href="index.php">Go back to main</a></p>
 	<form action="login.php" method="post">
 		<fieldset>

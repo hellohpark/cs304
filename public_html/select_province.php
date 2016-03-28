@@ -14,12 +14,13 @@
 	
 <html>
 	<head>
-		<title>Select Province</title>
+		<title>Select Province - allow admin to select a post office and view order statistics</title>
 	</head>
 
 	<body>
 	
 	<h1>Orders Statistics</h1>
+	<p><a href="login.php">Log out</a></p>
 	
 	<form method="GET" action="view_orders.php">
 	<fieldset>
@@ -42,7 +43,7 @@
 	
 		<form action="select_province.php" method="post">
 			<fieldset>
-			<legend>Shutdown a Post Office:</legend>
+			<legend>Shutdown a Post Office - deletion on cascade for orders, not allowed if order has a price associated</legend>
 				<br>
 				<input type="radio" name="province" value="BC">British Columbia<br>
 				<input type="radio" name="province" value="AB">Alberta<br>
@@ -78,7 +79,7 @@
 
 function inputResultProvince($result){
 	echo "<fieldset>
-				<legend>Post Office Order Status</legend>";
+				<legend>Post Office Order Status - aggregation query</legend>";
 		echo "<table>";		
 		echo "<tr><th>Post Office</th><th>Number of Orders</th></tr>";		
 				
@@ -99,7 +100,7 @@ function inputResultProvince($result){
 
 function inputResultPriority($result){
 	echo "<fieldset>
-				<legend>Post Office with High Priority Status</legend>";
+				<legend>Post Office with High Priority Status - division query</legend>";
 		echo "<table>";		
 		echo "<tr><th>Post Office</th></tr>";		
 				
@@ -118,7 +119,7 @@ function inputResultPriority($result){
 
 function inputResultMaxMin($maxminresult){
 	echo "<fieldset>
-				<legend>Post Office with Highest Average Order Worth</legend>";
+				<legend>Post Office with Highest Average Order Worth - nested aggregation query</legend>";
 		echo "<table>";		
 		echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
 				
@@ -145,24 +146,7 @@ if ($db_conn) {
 		header("location: login.php");
 	}
 
-		// if (array_key_exists('login', $_POST)) {
 
-			// $password = $_POST['password'];
-			// $username = $_POST['username'];
-
-			// $cmdstring = "select * from login where username ='".$username."' and password= '".strval($password)."'";
-			// echo $cmdstring;
-			// $result = executePlainSQL($cmdstring,$db_conn, $success);
-			
-			// if ($result){
-				// $_SESSION['authenticated'] = 1;
-			// } else {
-				// $_SESSION['authenticated'] = 0;
-				// header("location: login.php");
-			// }
-
-		// }
-		
 		if (array_key_exists('shut', $_POST)) {
 
 			$province = $_POST['province'];
