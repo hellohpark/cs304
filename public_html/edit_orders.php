@@ -83,7 +83,7 @@ function inputResultEditOrder($result) {
 		
 		echo "<form action='edit_orders.php' method='post'> 
 		Tracking Number:  <input type='text' name='tracking_number' value='$tracking_number' readonly><br> 
-		Status:  <input type='text' name='status' value='$status' readonly><br>
+		Status (SELECT AN OPTION REQUIRED):  <input type='text' name='status' value='$status' readonly><br>	
 				<input type='radio' name='status_new' value='pending'>pending<br>
 				<input type='radio' name='status_new' value='delivered'>delivered<br>
 				<input type='radio' name='status_new' value='being processed'>being processed<br>
@@ -145,17 +145,17 @@ function inputResultEditOrder($result) {
 			<fieldset>	
 				<legend>Package Type</legend>
 				<input type='text' name='packagetype_now' value='$PK_TYPE' readonly><br>
-				<input type='radio' name='packagetype' value='Regular Letter'>Regular Letter<br>
-				<input type='radio' name='packagetype' value='Regular Parcel'>Regular Parcel<br>
-				<input type='radio' name='packagetype' value='Large Letter'>Large Letter<br>
-				<input type='radio' name='packagetype' value='Large Parcel'>Large Parcel<br>
+				<input type='radio' name='packagetype' value='regular letter'>Regular Letter<br>
+				<input type='radio' name='packagetype' value='regular parcel'>Regular Parcel<br>
+				<input type='radio' name='packagetype' value='large letter'>Large Letter<br>
+				<input type='radio' name='packagetype' value='large parcel'>Large Parcel<br>
 			</fieldset>
 			<fieldset>
 				<legend>Delivery Type</legend>
 				<input type='text' name='deliverytype_now' value='$DL_TYPE' readonly><br>
-				<input type='radio' name='deliverytype' value='Standard'>Standard<br>
-				<input type='radio' name='deliverytype' value='Express'>Express<br>
-				<input type='radio' name='deliverytype' value='Priority'>Priority<br>
+				<input type='radio' name='deliverytype' value='standard'>Standard<br>
+				<input type='radio' name='deliverytype' value='express'>Express<br>
+				<input type='radio' name='deliverytype' value='priority'>Priority<br>
 			</fieldset>
 			
 			<input type='submit' name='submit' value='Submit'>

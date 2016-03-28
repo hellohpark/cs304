@@ -109,10 +109,10 @@ insert into orders values ('5555', 'being processed', 'John Smith', '10 Main Mal
 insert into orders values ('6666', 'being processed', 'Mike Park', '3000 University Ave.', 'BC', '111-111-1111','James Bond','200 Roast Kong Rd','MA','999-999-9999','express','regular parcel','SK');
 insert into orders values ('7777', 'being processed', 'Hannah', '100 College St', 'BC', '111-111-8888','James Bond','200 King Loan Rd','ON','999-999-9999','express','regular parcel','ON');
 insert into orders values ('8888', 'being processed', 'Haoran', '86 Purple Sagaway', 'BC', '111-111-1111','James Bond','200 King Surplus Rd','QC','999-999-9999','express','regular parcel','ON');
-insert into orders values ('9999', 'being processed', 'Nicole', '10 Threadneedle Rd', 'BC', '222-111-1111','James Bond','200 King Transfer Rd','NB','999-999-9999','priority','regular parcel','ON');
+insert into orders values ('9999', 'being processed', 'Nicole', '10 Threadneedle Rd', 'BC', '222-111-1111','James Bond','200 King Transfer Rd','NB','999-999-9999','priority','regular letter','ON');
 insert into orders values ('1234', 'being processed', 'John Smith', '5100 Don Mills Road', 'BC', '111-111-1111','James Bond','200 King Kong Rd','PE','999-999-9999','priority','large letter','ON');
-insert into orders values ('2345', 'being processed', 'Kent Kennedy', '100 German Mills Rd', 'BC', '111-111-1111','James Bond','200 King Kong Rd','NL','999-999-9999','priority','large letter','ON');
-insert into orders values ('3456', 'in transit', 'John Smith', '5000 Finch Ave', 'BC', '111-333-1111','James Bond','200 King Kong Rd','NS','999-999-9999','priority','large letter','ON');
+insert into orders values ('2345', 'being processed', 'Kent Kennedy', '100 German Mills Rd', 'BC', '111-111-1111','James Bond','200 King Kong Rd','NL','999-999-9999','express','large letter','ON');
+insert into orders values ('3456', 'in transit', 'John Smith', '5000 Finch Ave', 'BC', '111-333-1111','James Bond','200 King Kong Rd','NS','999-999-9999','standard','large letter','ON');
 insert into orders values ('4567', 'in transit', 'Donald Trump', '5100 Leslie Ave', 'BC', '111-111-4444','James Bond','200 King Kong Rd','ON','999-999-9999','priority','large parcel','ON');
 insert into orders values ('5678', 'in transit', 'Hilary Clinton', '2000 Steeles Ave East', 'BC', '111-111-1111','James Bond','200 King Kong Rd','ON','999-999-9999','priority','large parcel','ON');
 insert into orders values ('6789', 'in transit', 'John Smith', '300 White House Blvd', 'BC', '111-666-1111','James Bond','200 King Kong Rd','BC','999-999-9999','priority','large parcel','BC');
