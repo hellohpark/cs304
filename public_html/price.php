@@ -31,8 +31,6 @@
 			
 	}
 
-	dbLogout($db_conn);
-
 	?> 
 	<br>
 	<form action='payment.php'>
