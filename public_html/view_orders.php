@@ -28,13 +28,13 @@ function printResultViewOrder($result) {
 	echo "<fieldset>
 				<legend>Orders</legend>";
 	echo "<table>";
-	echo "<tr><th>Tracking Number</th><th>Status</th><th>Source Address</th><th>Destination Address</th><th>Current Location</th><th>Edit</th></tr>";
+	echo "<tr><th>Tracking Number</th><th>Status</th><th>Source Address</th><th>Destination Address</th><th>Current Location</th><th>Delivery Type</th><th>Package Type</th><th>Edit</th></tr>";
 
 	
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["TRACKING_NUMBER"] . "</td><td>" . $row["STATUS"] . "</td><td>" . $row["SRC_NAME"] . "</td><td>" . $row["SRC_ADDR"] . "</td><td>" . $row["SRC_PROV"] . "</td>";
-		echo "<td><form action='edit_orders.php' method='GET'><input type='hidden' name='orderId' value=".$row["TRACKING_NUMBER"]."><input type='submit' name='submit-btn' value='Update Details' /></form></td>";
-		echo "<td>" . $row["SRC_PHONE"] . "</td><td>" . $row["DST_NAME"] . "</td><td>" . $row["DST_ADDR"] . "</td><td>" . $row["DST_PROV"] . "</td><td>" . $row["DST_PHONE"] . "</td><td>" . $row["DL_TYPE"] . "</td><td>" . $row["PK_TYPE"] . "</td></tr>"; //or just use "echo $row[0]" 
+		echo "<tr><td>" . $row["TRACKING_NUMBER"] . "</td><td>" . $row["STATUS"] . "</td><td>" . $row["SRC_NAME"]. ", " .$row["SRC_ADDR"]. ", " .$row["SRC_PROV"]. ", " .$row["SRC_PHONE"] . "</td><td>" . $row["DST_NAME"]. ", " .$row["DST_ADDR"]. ", " .$row["DST_PROV"]. ", " .$row["DST_PHONE"] . "</td><td>" . $row["CURR_LOCATION"] . "</td><td>" . $row["DL_TYPE"] . "</td><td>" . $row["PK_TYPE"] . "</td>";
+		echo "<td><form action='edit_orders.php' method='POST'><input type='hidden' name='tracking_number' value=".$row["TRACKING_NUMBER"]."><input type='submit' name='submit-btn' value='Update Details' /></form></td></tr>";
+		
 	}
 	echo "</table>";
 	echo "</fieldset>";
@@ -80,7 +80,7 @@ function executeBoundSQLs($cmdstr, $list, $db_conn, $success) {
 
 
 function processPage($db_conn, $success) {
-			//echo strtoupper($_GET['prov']);
+			echo "select * from orders where curr_location =".strtoupper($_GET['prov']);
 			$province = array (
  				":bind1" => isset($_GET['prov'])? strtoupper($_GET['prov']):null
 				//":bind1" => strtoupper($_GET['prov'])
@@ -90,37 +90,29 @@ function processPage($db_conn, $success) {
 				$province
 			);
 
-		$results = executeBoundSQLs("select * from orders where src_prov = :bind1", $allprovincetuples, $db_conn, $success);
-		// $resultBC = executePlainSQL("select * from orders where src_prov = 'BC'", $db_conn, $success);
-		// $resultAB = executePlainSQL("select * from orders where src_prov = 'AB'", $db_conn, $success);
-		// $resultSK = executePlainSQL("select * from orders where src_prov = 'SK'", $db_conn, $success);
-		// $resultMA = executePlainSQL("select * from orders where src_prov = 'MA'", $db_conn, $success);
-		// $resultON = executePlainSQL("select * from orders where src_prov = 'ON'", $db_conn, $success);
-		// $resultQC = executePlainSQL("select * from orders where src_prov = 'QC'", $db_conn, $success);
-		// $resultNB = executePlainSQL("select * from orders where src_prov = 'NB'", $db_conn, $success);
-		// $resultPE = executePlainSQL("select * from orders where src_prov = 'PE'", $db_conn, $success);
-		// $resultNL = executePlainSQL("select * from orders where src_prov = 'NL'", $db_conn, $success);
-		// $resultNS = executePlainSQL("select * from orders where src_prov = 'NS'", $db_conn, $success);
+		$results = executeBoundSQLs("select * from orders where curr_location = :bind1", $allprovincetuples, $db_conn, $success);
 		
-		
-		
-		printResultViewOrder($results);
-		// printResultViewOrder($resultBC);
-		// printResultViewOrder($resultAB);
-		// printResultViewOrder($resultSK);
-		// printResultViewOrder($resultMA);
-		// printResultViewOrder($resultON);
-		// printResultViewOrder($resultQC);
-		// printResultViewOrder($resultNB);
-		// printResultViewOrder($resultPE);
-		// printResultViewOrder($resultNL);
-		// printResultViewOrder($resultNS);
+		return $results;
+
 	}
 
 // Connect Oracle...
 if ($db_conn) {
 
-	processPage($db_conn, $success);
+	$province = $_GET['prov'];
+	
+	if (!isset($_GET['prov'])){
+		$query_result = executePlainSQL("select * from orders", $db_conn, $success);
+		echo "select * from orders";
+	} else if (isset($_GET['prov'])){
+		$query_result = processPage($db_conn, $success);
+	} else {
+		$query_result = executePlainSQL("select * from orders", $db_conn, $success);
+		echo "select * from orders";
+	}
+	
+	
+	printResultViewOrder($query_result);
 
 	//Commit to save changes...
 	OCILogoff($db_conn);
@@ -129,9 +121,6 @@ if ($db_conn) {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-
-
-
 
 	
 ?>

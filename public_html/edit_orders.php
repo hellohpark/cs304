@@ -29,26 +29,31 @@ $db_conn = dbConnect();
 
 
 
+
 function updateOrder($db_conn, $success) {
 	$tuple = array (
-				":bind1" => $_POST['trackingno'],
-				":bind2" => $_POST['status'],
+				":bind1" => $_POST['tracking_number'],
+				":bind2" => isset($_POST['status_new'])? $_POST['status_new']:null, //$_POST['status'], UPDATE CONSTRAINT
+				":bind13" => isset($_POST['curr_location_new'])? $_POST['curr_location_new']:$_POST['curr_location'],
 				":bind3" => isset($_POST['fromname'])? $_POST['fromname']:null,
 				":bind4" => isset($_POST['fromaddress'])? $_POST['fromaddress']:null,
-				":bind5" => isset($_POST['fromprovince'])? $_POST['fromprovince']:null,
+				":bind5" => isset($_POST['fromprovince'])? $_POST['fromprovince']:$_POST['from_province_current'],
 				":bind6" => isset($_POST['fromphone'])? $_POST['fromphone']:null,
 				":bind7" => isset($_POST['toname'])? $_POST['toname']:null,
 				":bind8" => isset($_POST['toaddress'])? $_POST['toaddress']:null,
-				":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:null,
+				":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:$_POST['to_province_now'],
 				":bind10" => isset($_POST['tophone'])? $_POST['tophone']:null,
-				":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:null,
- 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:null
+				":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:$_POST['deliverytype_now'],
+ 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:$_POST['packagetype_now']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("update orders set status=:bind2, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
+			executeBoundSQL("update orders set status=:bind2, curr_location=:bind13, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
 				SRC_PHONE=:bind6, DST_NAME=:bind7, DST_ADDR=:bind8, DST_PROV=:bind9, DST_PHONE=:bind10, DL_TYPE=:bind11, PK_TYPE=:bind12 where TRACKING_NUMBER=:bind1", $alltuples, $db_conn, $success);
+			
+								
+			
 			OCICommit($db_conn);
 }
 
@@ -57,13 +62,10 @@ function updateOrder($db_conn, $success) {
 function inputResultEditOrder($result) { 
 	echo "<fieldset>
 				<legend>Edit Orders</legend>";
-
-	
-	
 	
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		
-		$trackingno = $row['TRACKING_NUMBER'];
+		$tracking_number = $row['TRACKING_NUMBER'];
 		$status = $row['STATUS'];
 		$SRC_NAME = $row["SRC_NAME"];
 		$SRC_ADDR = $row["SRC_ADDR"];
@@ -75,11 +77,28 @@ function inputResultEditOrder($result) {
 		$DST_PHONE = $row["DST_PHONE"];
 		$DL_TYPE = $row["DL_TYPE"];
 		$PK_TYPE = $row["PK_TYPE"];
+		$CURR_LOCATION = $row["CURR_LOCATION"];
 		
 		
 		
-		echo "<form action='edit_orders.php' method='post'> Tracking Number:  <input type='text' name='trackingno' value='$trackingno' readonly><br> Status:  <input type='text' name='status' value='$status' readonly><br>";
-			
+		echo "<form action='edit_orders.php' method='post'> 
+		Tracking Number:  <input type='text' name='tracking_number' value='$tracking_number' readonly><br> 
+		Status:  <input type='text' name='status' value='$status' readonly><br>
+				<input type='radio' name='status_new' value='pending'>pending<br>
+				<input type='radio' name='status_new' value='delivered'>delivered<br>
+				<input type='radio' name='status_new' value='being processed'>being processed<br>
+				<input type='radio' name='status_new' value='in transit'>in transit<br>				
+		Current Location:  <input type='text' name='curr_location' value='$CURR_LOCATION' readonly><br>
+				<input type='radio' name='curr_location_new' value='BC'>British Columbia<br>
+				<input type='radio' name='curr_location_new' value='AB'>Alberta<br>
+				<input type='radio' name='curr_location_new' value='SK'>Saskatchewan<br>
+				<input type='radio' name='curr_location_new' value='MA'>Manitoba<br>
+				<input type='radio' name='curr_location_new' value='ON'>Ontario<br>
+				<input type='radio' name='curr_location_new' value='QC'>Quebec<br>
+				<input type='radio' name='curr_location_new' value='NB'>New Brunswick<br>
+				<input type='radio' name='curr_location_new' value='PE'>Prince Edward Islands<br>
+				<input type='radio' name='curr_location_new' value='NL'>Newfoundland andLabrador<br>
+				<input type='radio' name='curr_location_new' value='NS'>Nova Scotia<br>";	
 			
 		echo	"<fieldset>
 				<legend>From</legend>
@@ -143,13 +162,12 @@ function inputResultEditOrder($result) {
 
 		</form>		";
 
-		
-		
 	}
 
 	echo "</fieldset>";
-
 }
+
+
 
 
 // Connect Oracle...
@@ -161,17 +179,21 @@ if ($db_conn) {
 
 			//collectClientInfo($client_id, $db_conn, $success);
 			updateOrder($db_conn, $success);
-			header("location: view_orders.php?prov=bc");
-
+			header("location: view_orders.php");
 		}
 		
 
-	//echo $_GET['orderId'];
-	$cmdstring = "select * from orders where TRACKING_NUMBER =".strval($_GET['orderId']);
+		
+	//echo $_POST['tracking_number'];
+	$cmdstring = "select * from orders where TRACKING_NUMBER =".strval($_POST['tracking_number']);
 	echo $cmdstring;
 	$result = executePlainSQL($cmdstring,$db_conn, $success);
+	
+
 	inputResultEditOrder($result);
 	
+	//deletePrice($db_conn, $success);
+	//recalculatePrice($db_conn, $success);
 	
 	
 	//Commit to save changes...
@@ -181,9 +203,6 @@ if ($db_conn) {
 	$e = OCI_Error(); // For OCILogon errors pass no handle
 	echo htmlentities($e['message']);
 }
-
-
-
 
 	
 ?>

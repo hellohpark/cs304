@@ -4,21 +4,19 @@ session_start();
 $_SESSION['authenticated'] = 0;
 ?>
 
-<html>
-	<head>
-		<title>Login</title>
-	</head>
-
-	<body>
-	<h1>Admin Login</h1>
-	
-	<form action="select_province.php">
-	  Username: <input type="text" name="user">
-	  <br><br>
-	  Password: <input type="text" name="password">
-	  <br><br>
-	  <input type="submit">
-	</form>	
-	
+<h1>Administration Login --> Only admin will have access to view all orders from each province</h1>
+	<p><a href="index.php">Go back to main</a></p>
+	<form action="select_province.php" method="post">
+		<fieldset>
+			<legend>Admin Login:</legend>
+				Username:<br>
+				<input type="text" name="username" required><br>
+				Password:<br>
+				<input type="password" name="password" required><br>
+		</fieldset>
+			<input type="submit" name='login' value="Login">
+		</form>
 	</body>
-</html>	
+</html>
+
+	
