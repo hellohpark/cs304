@@ -52,6 +52,7 @@ if ($db_conn) {
 		executePlainSQL("delete from orders where tracking_number='$tn'", $db_conn, $success);
 		executePlainSQL("delete from price where tracking_number='$tn'", $db_conn, $success);
 		OCICommit($db_conn);
+		header("location: index.php");
 	}
 
 	if ($_POST && $success) {		

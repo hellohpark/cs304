@@ -15,6 +15,23 @@ function getTrackingNumber() {
 	return $tracking_num;
 }
 
+function isUniqueTrackingNumber($db_conn) {
+
+	//Check if tracking number is already used
+	do {
+		$tn = getTrackingNumber();
+		$sql = "select tracking_number from orders where tracking_number=:bind";
+		$statement = OCIParse($db_conn, $sql);
+		OCIBindByName($statement, ':bind', $tn);
+		OCIExecute($statement, OCI_DEFAULT);
+		$r = OCI_Fetch_Array($statement, OCI_BOTH);
+	} while ($r[0] == $tn);
+
+	return $tn;
+
+
+}
+
 function executePlainSQL($cmdstr, $db_conn, $success) { 
 
 	$statement = OCIParse($db_conn, $cmdstr); 
@@ -274,11 +291,14 @@ function estimatePrice($db_conn, $success) {
 
 function checkValidOrder($phonenum, $name) {
 	// Invalid phone number
-	if (!preg_match('/([0-9][0-9][0-9]-[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9])/', $phonenum) ||
-		!preg_match('/^[A-Za-z]+$/', $name)) {
+	
+	if (!preg_match("/^[0-9][0-9][0-9][-][0-9][0-9][0-9][-][0-9][0-9][0-9][0-9]$/", $phonenum) ||
+		!preg_match("/^[a-zA-Z ]*$/", $name)) {
 		return false;
 	}
 	else return true;
+	
+
 }
 
 

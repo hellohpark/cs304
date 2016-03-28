@@ -3,7 +3,11 @@ session_save_path('/home/g/g3d9/public_html');
 session_start();
 require 'functions.php';
 
-$tracking_num = getTrackingNumber();
+$success = True; 
+$db_conn = dbConnect();
+
+//$tracking_num = getTrackingNumber();
+$tracking_num = isUniqueTrackingNumber($db_conn);
 $_SESSION['tracking_num'] = $tracking_num;
 
 ?>
@@ -86,8 +90,6 @@ $_SESSION['tracking_num'] = $tracking_num;
 
 
 <?php
-$success = True; 
-$db_conn = dbConnect();
 
 $_SESSION['toprovince'] = $_POST['toprovince'];
 $_SESSION['packagetype'] = $_POST['packagetype'];
@@ -110,8 +112,7 @@ if ($db_conn) {
 	} else if (array_key_exists('submit', $_POST)) {
 
 		//Invalid phone number
-		if (checkValidOrder($_POST['tophone'])&&checkValidOrder($_POST['fromphone'])&&
-			checkValidOrder($_POST['toname'])&&checkValidOrder($_POST['fromname'])) {
+		if (checkValidOrder($_POST['tophone'],$_POST['toname'])&&checkValidOrder($_POST['fromphone'],$_POST['fromname'])) {
 				placeOrder($tracking_num, $db_conn, $success);
 				getPrice($tracking_num, $db_conn, $success);
 				header("location: price.php");
