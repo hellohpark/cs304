@@ -138,19 +138,30 @@ function inputResultMaxMin($maxminresult){
 
 if ($db_conn) {
 
-		if (array_key_exists('login', $_POST)) {
 
-			$password = $_POST['password'];
-			$username = $_POST['username'];
+	if ($authentication){
+		
+	} else {
+		header("location: login.php");
+	}
 
-			$cmdstring = "select * from admin where username =".$username."and password=".strval($password);
-			echo $cmdstring;
-			$result = executePlainSQL($cmdstring,$db_conn, $success);
+		// if (array_key_exists('login', $_POST)) {
+
+			// $password = $_POST['password'];
+			// $username = $_POST['username'];
+
+			// $cmdstring = "select * from login where username ='".$username."' and password= '".strval($password)."'";
+			// echo $cmdstring;
+			// $result = executePlainSQL($cmdstring,$db_conn, $success);
 			
-			
-			header("location: select_province.php");
+			// if ($result){
+				// $_SESSION['authenticated'] = 1;
+			// } else {
+				// $_SESSION['authenticated'] = 0;
+				// header("location: login.php");
+			// }
 
-		}
+		// }
 		
 		if (array_key_exists('shut', $_POST)) {
 

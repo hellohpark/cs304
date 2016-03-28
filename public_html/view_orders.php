@@ -129,6 +129,12 @@ function processPage($db_conn, $success) {
 
 // Connect Oracle...
 if ($db_conn) {
+	
+	if ($authentication){
+		
+	} else {
+		header("location: login.php");
+	}
 
 	$province = $_GET['prov'];
 	

@@ -172,7 +172,11 @@ function inputResultEditOrder($result) {
 
 // Connect Oracle...
 if ($db_conn) {
-
+	if ($authentication){
+		
+	} else {
+		header("location: login.php");
+	}
 
 		if (array_key_exists('submit', $_POST)) {
 

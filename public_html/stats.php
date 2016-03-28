@@ -50,7 +50,11 @@ function inputResultMaxMin($maxminresult){
 
 
 if ($db_conn) {
-
+	if ($authentication){
+		
+	} else {
+		header("location: login.php");
+	}
 		if (array_key_exists('login', $_POST)) {
 
 			$password = $_POST['password'];

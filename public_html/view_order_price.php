@@ -110,7 +110,11 @@ function inputResultPrice($priceresult){
 
 // Connect Oracle...
 if ($db_conn) {
-
+	if ($authentication){
+		
+	} else {
+		header("location: login.php");
+	}
 		if (array_key_exists('delete_price', $_GET)) {
 
 
