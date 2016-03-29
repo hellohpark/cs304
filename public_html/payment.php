@@ -1,19 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment - CPSC 304 Post Office</title>
+<link rel="stylesheet" type="text/css" href="postyle.css">
+</head>
+
+<body>
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Payment</h1>
+			<p><b>Provide payment</b> to place your order</p>
+		</div>
+
+<div class="content">
 <?php 
-session_save_path('/home/g/g3d9/public_html');
+session_save_path('/home/g/v7e8/public_html');
 session_start();
 require 'functions.php';
 
 $tn = $_SESSION['tracking_num'];
 
 ?>
-
-<h1>Payment</h1>
 	<form action="tracking_confirmation.php" method="post">
-			<fieldset>
-				<legend>Payment Card</legend>
-				Card Number: <input type="text" name="cardname"><br>
-				Security Code: <input type="text" name="securitycode"><br>
-				Expiration Month:
+				<h4>Card Number:</h4>
+				<input type="text" name="cardname"><br>
+
+				<h4>Security Code:</h4>
+				<input type="text" name="securitycode"><br>
+				
+				<h4>Expiration Month:</h4>
 				<!--TODO: Drop down menu using Bootstrap-->
 				<select name="expmonths">
 					<option value="January">January</option>
@@ -31,7 +66,7 @@ $tn = $_SESSION['tracking_num'];
 				</select>
 				<br>
 					
-				Expiration Year:
+				<h4>Expiration Year:</h4>
 				<!--TODO: Drop down menu using Bootstrap, years from 2016 to 2025-->
 				<select name="expyear">
 					<option value="2016">2016</option>
@@ -45,9 +80,7 @@ $tn = $_SESSION['tracking_num'];
 					<option value="2024">2024</option>
 					<option value="2025">2025</option>
 				</select>
-
-			</fieldset>
-			
+			<br>
 			<input type="submit" name="submit" value="continue">
 		</form>
 
@@ -73,3 +106,13 @@ if ($db_conn) {
 	}
 }
 ?>
+</div>
+<!-- Footer -->
+<div class="footer">
+<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+</a><br>
+I am a logo! CPSC 304 2016
+<!-- End Footer -->
+</div>
+</body>
+</html>

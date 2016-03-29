@@ -33,6 +33,7 @@ h1 {
     padding: 50px;
     background-color: #2671b7;
     color: white;
+    text-align: center;
 }
 
 ul.nav {
@@ -105,13 +106,27 @@ form {
 	right: 0;
 	margin: auto;
 	overflow: auto;
+	text-align: left;
+	padding: 0;
 }
 
-input[type=text] {
-	height: 20px;
+input[type=text], input[type=password] {
+	height: 25px;
 	width: 390px;
 	border-radius: 5px;
+	border: none;
 	margin: 15px 0;
+	padding: 10px;
+	font-size: 16px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+	border: 2px solid #4cfff9;
+	border-radius: 5px;
+	margin: 14px 0;
+	height: 24px;
+	width: 389px;
+	padding: 10px;
 }
 
 input[type=submit] {

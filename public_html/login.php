@@ -7,20 +7,59 @@ $db_conn = dbConnect();
 session_save_path('/home/g/g3d9/public_html');
 session_start();
 $_SESSION['authenticated'] = 0;
-?>
+?><!DOCTYPE html>
+<html>
+	<head>
+		<title>Admin Login - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
+	</head>
 
-<h1>Administration Login --> Only admin will have access to view all orders from each post office</h1>
-	<p><a href="index.php">Go back to main</a></p>
+	<body>
+
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Administration Login</h1>
+			<p><b>Login</b> as an administrator to view orders</p>
+		</div>
+
+	<div class="content">
 	<form action="login.php" method="post">
-		<fieldset>
-			<legend>Admin Login:</legend>
-				Username:<br>
+				<h4>Username:</h4>
 				<input type="text" name="username" required><br>
-				Password:<br>
+				<h4>Password:</h4>
 				<input type="password" name="password" required><br>
-		</fieldset>
 			<input type="submit" name='login' value="Login">
 		</form>
+		</div>
+
+		<!-- Footer -->
+		<div class="footer">
+		<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+		</a><br>
+		I am a logo! CPSC 304 2016
+		<!-- End Footer -->
+		</div>
+
 	</body>
 </html>
 
