@@ -7,7 +7,7 @@
 
 <body>
     <div class="mainpanel">
-        <a href="index.php" style="float:left" name="I am a logo!"><img src="everseii.gif"></a>
+        <a href="index.php" style="float:left" title="I am a logo!"><img src="everseii.gif"></a>
 		<ul class="nav">
   			<li><a href="index.php">Track Your Order</a></li>
   			<li class="dropdown">

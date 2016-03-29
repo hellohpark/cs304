@@ -1,28 +1,16 @@
 body {
-    background: black;
+    background: lightblue;
 }
 
 h1 {
     font-family: arial;
 }
 
-.header {
-    position: absolute;
-    top: 50px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    width: 900px;
-    display: inline;
-}
-
 .mainpanel {
     position: absolute;
-    top: 50px;
     left: 0;
     right: 0;
     margin: auto;
-    width: 900px;
 }
 
 .content {
@@ -30,11 +18,8 @@ h1 {
     left: 0;
     right: 0;
     margin: auto;
-    width: 800px;
-    float: right;
     padding: 50px;
     background-color: white;
-    border-radius: 20px;
 }
 
 ul.nav {
@@ -43,7 +28,6 @@ ul.nav {
     padding: 0;
     background-color: lightblue;
     overflow: hidden;
-    border-radius: 10px;
 }
 
 li.dropdown {
@@ -89,12 +73,12 @@ section:last-child {
 }
 
 li{
-    float: left;
+    float: right;
 }
 li a, .dropbtn {
     display: inline-block;
     text-decoration: none;
-    padding: 10px 30px;
+    padding: 30px 30px;
     text-align: center;
     font-family: arial;
 }
