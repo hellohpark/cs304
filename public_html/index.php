@@ -19,7 +19,7 @@
         			<section>
        					<a href="order.php">PLACE AN ORDER</a>
        					</section><section>
-        				<a href="#">PRICE CALCULATOR</a>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
     				</section>
     			</div>
   			</li>
@@ -57,8 +57,7 @@
 
 		<!-- Footer -->
 		<div class="footer">
-		<a href="index.php" title="I am a logo!">
-			<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+		<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
 		</a><br>
 		I am a logo! CPSC 304 2016
 		<!-- End Footer -->

@@ -44,6 +44,7 @@ ul.nav {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 100;
 }
 
 li.dropdown {
@@ -98,7 +99,7 @@ li a:hover, .dropdown:hover .dropbtn {
 }
 
 form {
-	max-width: 400px;
+	max-width: 450px;
 	position: relative;
 	left: 0;
 	right: 0;
@@ -117,8 +118,8 @@ input[type=submit] {
 	background-color: #093f72;
 	border: none;
 	color: white;
-	padding: 10px 32px;
-	margin: 15px 0;
+	padding: 10px 38px;
+	margin: 25px 0;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;

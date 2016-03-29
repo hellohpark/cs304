@@ -15,26 +15,37 @@ $tn = $_SESSION['tracking_num'];
 				Security Code: <input type="text" name="securitycode"><br>
 				Expiration Month:
 				<!--TODO: Drop down menu using Bootstrap-->
-				<input list="expmonths">
-					<datalist id="expmonths">
-						<option value="January">
-						<option value="February">
-						<option value="March">
-						<option value="April">
-						<option value="May">
-						<option value="June">
-						<option value="July">
-						<option value="August">
-						<option value="September">
-						<option value="October">
-						<option value="November">
-						<option value="December">
-					</datalist>
+				<select name="expmonths">
+					<option value="January">January</option>
+					<option value="February">February</option>
+					<option value="March">March</option>
+					<option value="April">April</option>
+					<option value="May">May</option>
+					<option value="June">June</option>
+					<option value="July">July</option>
+					<option value="August">August</option>
+					<option value="September">September</option>
+					<option value="October">October</option>
+					<option value="November">November</option>
+					<option value="December">December</option>
+				</select>
 				<br>
 					
 				Expiration Year:
 				<!--TODO: Drop down menu using Bootstrap, years from 2016 to 2025-->
-				
+				<select name="expyear">
+					<option value="2016">2016</option>
+					<option value="2017">2017</option>
+					<option value="2018">2018</option>
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+				</select>
+
 			</fieldset>
 			
 			<input type="submit" name="submit" value="continue">
