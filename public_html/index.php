@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Home - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
 	</head>
 
 	<body>
