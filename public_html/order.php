@@ -14,8 +14,7 @@ $_SESSION['tracking_num'] = $tracking_num;
 
 
 <!--TODO: Prevent empty forms from being submitted-->
-<html>
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Order - CPSC 304 Post Office</title>
@@ -29,11 +28,9 @@ $_SESSION['tracking_num'] = $tracking_num;
 			<a href="index.php" style="float:left" title="I am a logo!">
 				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li class="dropdown">
-  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
-  				<div class="dropdown-content">
-  					<section>
-  						<a href="index.php">LOGOUT</a></section></div></li>
+			<!-- WHY DOESN'T THIS WORK D; -->
+
+			
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -53,6 +50,7 @@ $_SESSION['tracking_num'] = $tracking_num;
 			<h1>Place An Order</h1>
 			<p><b>Place</b> a new order</p>
 		</div>
+
 		<div class="content">
 
 		<div class="icons"><img src="images/order.png"></div>

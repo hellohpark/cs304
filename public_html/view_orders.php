@@ -140,7 +140,9 @@ function executeBoundSQLs($cmdstr, $list, $db_conn, $success) {
 
 
 function processPage($db_conn, $success) {
+	echo "<div class=\"hidden\">";
 			echo "select * from orders where curr_location =".strtoupper($_GET['prov']);
+			echo "</div>";
 			$province = array (
  				":bind1" => isset($_GET['prov'])? strtoupper($_GET['prov']):null
 				//":bind1" => strtoupper($_GET['prov'])
