@@ -103,8 +103,10 @@
 	I am a logo! CPSC 304 2016
 	<!-- End Footer -->
 	</div>
-	</body>
-</html>	
+
+	<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+
 
 <?php
 
@@ -231,3 +233,7 @@ if ($db_conn) {
 }
 		
 ?>	
+</span>
+
+	</body>
+</html>	

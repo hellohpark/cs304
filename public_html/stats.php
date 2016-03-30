@@ -134,6 +134,16 @@ if ($db_conn) {
 		I am a logo! CPSC 304 2016
 		<!-- End Footer -->
 		</div>
+
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
 	
+<?php 
+$maxmin = $_POST["maxmin_OPTION"];
+echo "SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select ".$maxmin."(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))";
+
+?>
+</span>
+
 	</body>
 </html>	

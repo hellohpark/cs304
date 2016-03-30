@@ -46,18 +46,7 @@
 			<p><b>Edit</b> your order</p>
 		</div>
 		<div class="content">
-	<p><a href="view_orders.php">Go back to view orders</a></p>
-</div>
 
-		<!-- Footer -->
-		<div class="footer">
-		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
-		</a><br>
-		I am a logo! CPSC 304 2016
-		<!-- End Footer -->
-		</div>
-	</body>
-</html>	
 
 
 <?php
@@ -101,8 +90,6 @@ function updateOrder($db_conn, $success) {
 
 
 function inputResultEditOrder($result) { 
-	echo "<fieldset>
-				<legend>Edit Orders</legend>";
 	
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		
@@ -123,12 +110,12 @@ function inputResultEditOrder($result) {
 		
 		
 		echo "<form action='edit_orders.php' method='post'> 
-		Tracking Number:  <input type='text' name='tracking_number' value='$tracking_number' readonly><br> 
+		Tracking Number:  <input type='text' name='tracking_number' value='$tracking_number' readonly><br> <br>
 		Status (SELECT AN OPTION REQUIRED):  <input type='text' name='status' value='$status' readonly><br>	
 				<input type='radio' name='status_new' value='pending'>pending<br>
 				<input type='radio' name='status_new' value='delivered'>delivered<br>
 				<input type='radio' name='status_new' value='being processed'>being processed<br>
-				<input type='radio' name='status_new' value='in transit'>in transit<br>				
+				<input type='radio' name='status_new' value='in transit'>in transit<br>	<br>		
 		Current Location:  <input type='text' name='curr_location' value='$CURR_LOCATION' readonly><br>
 				<input type='radio' name='curr_location_new' value='BC'>British Columbia<br>
 				<input type='radio' name='curr_location_new' value='AB'>Alberta<br>
@@ -139,15 +126,14 @@ function inputResultEditOrder($result) {
 				<input type='radio' name='curr_location_new' value='NB'>New Brunswick<br>
 				<input type='radio' name='curr_location_new' value='PE'>Prince Edward Islands<br>
 				<input type='radio' name='curr_location_new' value='NL'>Newfoundland andLabrador<br>
-				<input type='radio' name='curr_location_new' value='NS'>Nova Scotia<br>";	
+				<input type='radio' name='curr_location_new' value='NS'>Nova Scotia<br><br>";	
 			
-		echo	"<fieldset>
-				<legend>From</legend>
-				Name:<br>
+		echo	"<h3>From</h3>
+				<h4>Name:</h4>
 				<input type='text' name='fromname' value='$SRC_NAME'><br>
-				Address:<br>
+				<h4>Address:</h4>
 				<input type='text' name='fromaddress' value='$SRC_ADDR'><br>
-				Province:<br>
+				<h4>Province:</h4>
 				<input type='text' name='from_province_current' value='$SRC_PROV' readonly><br>
 				<input type='radio' name='fromprovince' value='BC'>British Columbia<br>
 				<input type='radio' name='fromprovince' value='AB'>Alberta<br>
@@ -159,16 +145,14 @@ function inputResultEditOrder($result) {
 				<input type='radio' name='fromprovince' value='PE'>Prince Edward Islands<br>
 				<input type='radio' name='fromprovince' value='NL'>Newfoundland andLabrador<br>
 				<input type='radio' name='fromprovince' value='NS'>Nova Scotia<br>
-				Phone:<br>
+				<h4>Phone:</h4>
 				<input type='text' name='fromphone' value='$SRC_PHONE'><br>
-			</fieldset>
-			<fieldset>	
-				<legend>To</legend>
-				Name:<br>
+				<h3>To</h3>
+				<h4>Name:</h4>
 				<input type='text' name='toname' value='$DST_NAME'><br>
-				Address:<br>
+				<h4>Address:</h4>
 				<input type='text' name='toaddress' value='$DST_ADDR'><br>
-				Province:<br>
+				<h4>Province:</h4>
 				<input type='text' name='to_province_now' value='$DST_PROV' readonly><br>
 				<input type='radio' name='toprovince' value='BC'>British Columbia<br>
 				<input type='radio' name='toprovince' value='AB'>Alberta<br>
@@ -180,32 +164,25 @@ function inputResultEditOrder($result) {
 				<input type='radio' name='toprovince' value='PE'>Prince Edward Islands<br>
 				<input type='radio' name='toprovince' value='NL'>Newfoundland andLabrador<br>
 				<input type='radio' name='toprovince' value='NS'>Nova Scotia<br>
-				Phone:<br>
-				<input type='text' name='tophone' value='$DST_PHONE'><br>
-			</fieldset>
-			<fieldset>	
-				<legend>Package Type</legend>
+				<h4>Phone:</h4>
+				<input type='text' name='tophone' value='$DST_PHONE'><br><br>
+				<h4>Package Type</h4>
 				<input type='text' name='packagetype_now' value='$PK_TYPE' readonly><br>
 				<input type='radio' name='packagetype' value='regular letter'>Regular Letter<br>
 				<input type='radio' name='packagetype' value='regular parcel'>Regular Parcel<br>
 				<input type='radio' name='packagetype' value='large letter'>Large Letter<br>
 				<input type='radio' name='packagetype' value='large parcel'>Large Parcel<br>
-			</fieldset>
-			<fieldset>
-				<legend>Delivery Type</legend>
+				<h4>Delivery Type</h4>
 				<input type='text' name='deliverytype_now' value='$DL_TYPE' readonly><br>
 				<input type='radio' name='deliverytype' value='standard'>Standard<br>
 				<input type='radio' name='deliverytype' value='express'>Express<br>
-				<input type='radio' name='deliverytype' value='priority'>Priority<br>
-			</fieldset>
+				<input type='radio' name='deliverytype' value='priority'>Priority<br><br>
 			
 			<input type='submit' name='submit' value='Submit'>
 
 		</form>		";
 
 	}
-
-	echo "</fieldset>";
 }
 
 
@@ -231,7 +208,7 @@ if ($db_conn) {
 		
 	//echo $_POST['tracking_number'];
 	$cmdstring = "select * from orders where TRACKING_NUMBER =".strval($_POST['tracking_number']);
-	echo $cmdstring;
+	//echo $cmdstring;
 	$result = executePlainSQL($cmdstring,$db_conn, $success);
 	
 
@@ -248,3 +225,26 @@ if ($db_conn) {
 
 	
 ?>
+
+	<p><a href="view_orders.php" class="button">Go back to view orders</a></p>
+</div>
+
+		<!-- Footer -->
+		<div class="footer">
+		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+		</a><br>
+		I am a logo! CPSC 304 2016
+		<!-- End Footer -->
+		</div>
+
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+
+<?php 	$cmdstring = "select * from orders where TRACKING_NUMBER =".strval($_POST['tracking_number']);
+	echo $cmdstring; ?>
+
+</span>
+
+
+	</body>
+</html>	

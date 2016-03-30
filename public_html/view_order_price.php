@@ -60,7 +60,7 @@ function deletePrice($db_conn, $success) {
 
 
 	$cmdstring = "DELETE FROM price WHERE tracking_number ='".strval($_GET['tracking_number'])."'";
-	echo "<br>".$cmdstring."<br>";
+	//echo "<br>".$cmdstring."<br>";
 
 	executePlainSQL($cmdstring,$db_conn, $success);
 	
@@ -78,7 +78,7 @@ function recalculatePrice($db_conn, $success) {
 		
 		$cmdstring = "insert into price select '".$tracking_number."' ,pr_price + pt_price + dt_price, '".$toprovince."' , '".$deliverytype."', '".$packagetype."' from pricematrix where pro_province_name= '".$toprovince."' and dt_type= '".$deliverytype."' and pt_type = '".$packagetype."'";
 		
-	echo $cmdstring;
+	//echo $cmdstring;
 	
 	executePlainSQL($cmdstring,$db_conn, $success);
 		
@@ -87,8 +87,6 @@ function recalculatePrice($db_conn, $success) {
 
 
 function inputResultPrice($priceresult){
-	echo "<fieldset>
-				<legend>Order Price</legend>";
 				
 		while ($row = OCI_Fetch_Array($priceresult, OCI_BOTH)) {
 		
@@ -112,8 +110,6 @@ function inputResultPrice($priceresult){
 			
 		}
 	
-	
-	echo "</fieldset>";	
 }
 
 
@@ -137,7 +133,7 @@ if ($db_conn) {
 	recalculatePrice($db_conn, $success);
 	
 	$cmdstring2 = "select * from price where TRACKING_NUMBER = '".strval($_GET['tracking_number'])."'";
-	echo "<br>".$cmdstring2."<br>";
+	//echo "<br>".$cmdstring2."<br>";
 	$priceresult = executePlainSQL($cmdstring2,$db_conn, $success);
 
 	
@@ -164,5 +160,32 @@ if ($db_conn) {
 		I am a logo! CPSC 304 2016
 		<!-- End Footer -->
 		</div>
+
+
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+
+		<?php
+		$cmdstring = "DELETE FROM price WHERE tracking_number ='".strval($_GET['tracking_number'])."'";
+		echo "<br>".$cmdstring."<br>";
+
+		$cmdstring2 = "select * from price where TRACKING_NUMBER = '".strval($_GET['tracking_number'])."'";
+		echo "<br>".$cmdstring2."<br>";
+
+		$tracking_number = strval($_GET['tracking_number']);
+		$toprovince = isset($_GET['toprovince'])? $_GET['toprovince']:null;
+		$deliverytype = isset($_GET['deliverytype'])? $_GET['deliverytype']:null;
+		$packagetype = isset($_GET['packagetype'])? $_GET['packagetype']:null;
+	
+		
+		$cmdstring = "insert into price select '".$tracking_number."' ,pr_price + pt_price + dt_price, '".$toprovince."' , '".$deliverytype."', '".$packagetype."' from pricematrix where pro_province_name= '".$toprovince."' and dt_type= '".$deliverytype."' and pt_type = '".$packagetype."'";
+		
+		echo $cmdstring;
+
+		$cmdstring2 = "select * from price where TRACKING_NUMBER = '".strval($_GET['tracking_number'])."'";
+		echo "<br>".$cmdstring2."<br>";
+		?>
+</span>
+
 	</body>
 </html>	

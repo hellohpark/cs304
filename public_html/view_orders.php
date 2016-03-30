@@ -140,9 +140,7 @@ function executeBoundSQLs($cmdstr, $list, $db_conn, $success) {
 
 
 function processPage($db_conn, $success) {
-	echo "<div class=\"hidden\">";
-			echo "select * from orders where curr_location =".strtoupper($_GET['prov']);
-			echo "</div>";
+			//echo "select * from orders where curr_location =".strtoupper($_GET['prov']);
 			$province = array (
  				":bind1" => isset($_GET['prov'])? strtoupper($_GET['prov']):null
 				//":bind1" => strtoupper($_GET['prov'])
@@ -203,6 +201,9 @@ if ($db_conn) {
 		I am a logo! CPSC 304 2016
 		<!-- End Footer -->
 		</div>
-	</body>
-</html>	
-			
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+<?php echo "select * from orders where curr_location =".strtoupper($_GET['prov']);?>
+</span>
+</body>
+</html>		
