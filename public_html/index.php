@@ -10,9 +10,13 @@
 	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
 		<ul class="nav">
 			<a href="index.php" style="float:left" title="I am a logo!">
-				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -33,6 +37,7 @@
 			<p><b>Track</b> your order</p>
 		</div>
 		<div class="content">
+		<div class="icons"><img src="images/index.png"></div>
 			<form id="home" action="clientinfo.php" method="post" name="track">
 				
 					<h4>Tracking Number:</h4>
@@ -43,14 +48,14 @@
 					<input type="checkbox" name="to" value="to">Destination Information<br>
 					<input type="checkbox" name="dt" value="dt">Delivery Type<br>
 					<input type="checkbox" name="pt" value="pt">Package Type<br>
-
+					<br>
 				<input type="submit" name='submit' value="Get My Order">
 			</form>
 		</div>
 
 		<!-- Footer -->
 		<div class="footer">
-		<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 		</a><br>
 		I am a logo! CPSC 304 2016
 		<!-- End Footer -->

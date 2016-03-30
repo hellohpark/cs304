@@ -129,17 +129,33 @@ input[type=text]:focus, input[type=password]:focus {
 	padding: 10px;
 }
 
-input[type=submit] {
+input[type=submit], a.button {
 	background-color: #093f72;
 	border: none;
 	color: white;
 	padding: 10px 38px;
-	margin: 25px 0;
+	margin: 10px 0;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	font-size: 16px;
 	border-radius: 5px;
+}
+
+.icons {
+    background-color: #fff;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    left: 0;
+    right: 0;
+    margin: 30px auto;
+}
+
+.icons img {
+    height: 150px;
+    width: 150px;
+    margin-top: 23px;
 }
 
 .footer {
@@ -152,4 +168,11 @@ input[type=submit] {
 	font-size: 12px;
 	color: black;
 	text-decoration: none;
+}
+
+table, th, td {
+    padding: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
 }

@@ -2,7 +2,7 @@
 	
 	require_once 'functions.php';
 	
-	session_save_path('/home/g/g3d9/public_html');
+	session_save_path('/home/v/v7e8/public_html');
 	session_start();
 
 	$authentication = $_SESSION['authenticated'];
@@ -24,9 +24,13 @@
 	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
 		<ul class="nav">
 			<a href="index.php" style="float:left" title="I am a logo!">
-				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -47,8 +51,9 @@
 			<p><b>Manage</b> orders in post office</p>
 		</div>
 		<div class="content">
+		<div class="icons"><img src="images/stats.png"></div>
 	
-	<p><a href="login.php">Log out</a></p>
+	<p><a href="login.php" class="button">Log out</a></p>
 	
 	<form method="GET" action="view_orders.php">
 	<h3>View Orders in Post Office</h3>
@@ -93,7 +98,7 @@
 	</div>
 	<!-- Footer -->
 	<div class="footer">
-	<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+	<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 	</a><br>
 	I am a logo! CPSC 304 2016
 	<!-- End Footer -->

@@ -1,4 +1,4 @@
-<html>
+s<html>
 <head>
 <title>Price Calculator - CPSC 304 Post Office</title>
 <link rel="stylesheet" type="text/css" href="postyle.css">
@@ -8,9 +8,13 @@
 <!-- Navigation Toolbar (declared in reverse order due to float:right) -->
 		<ul class="nav">
 			<a href="index.php" style="float:left" title="I am a logo!">
-				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -31,6 +35,7 @@
 			<p><b>Estimate</b> the cost of your package</p>
 	</div>
 	<div class="content">
+	<div class="icons"><img src="images/estimate.png"></div>
 		<h1></h1>
 		<form action="estimate.php" method="post">
 				<h4>Destination Province:</h4>
@@ -73,7 +78,7 @@
 
 	<!-- Footer -->
 	<div class="footer">
-	<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+	<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 	</a><br>
 	I am a logo! CPSC 304 2016
 	<!-- End Footer -->

@@ -1,5 +1,5 @@
 <?php 
-session_save_path('/home/g/g3d9/public_html');
+session_save_path('/home/v/v7e8/public_html');
 session_start();
 require 'functions.php';
 
@@ -27,9 +27,13 @@ $_SESSION['tracking_num'] = $tracking_num;
 	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
 		<ul class="nav">
 			<a href="index.php" style="float:left" title="I am a logo!">
-				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -50,7 +54,9 @@ $_SESSION['tracking_num'] = $tracking_num;
 			<p><b>Place</b> a new order</p>
 		</div>
 		<div class="content">
-		<form action="price.php" method="post">
+
+		<div class="icons"><img src="images/order.png"></div>
+		<form action="order.php" method="post">
 			<h2>From:</h2>
 				<h4>Name:</h4>
 				<input type="text" name="fromname"><br>
@@ -100,7 +106,7 @@ $_SESSION['tracking_num'] = $tracking_num;
 				<input type="radio" name="deliverytype" value="express">Express<br>
 				<input type="radio" name="deliverytype" value="priority">Priority<br>
 
-			
+			<br>
 			<input type="submit" name="submit" value="Submit">
 
 		</form>
@@ -108,16 +114,6 @@ $_SESSION['tracking_num'] = $tracking_num;
    
 		<p><input type="submit" value="Reset" name="reset"></p>
 		</form>
-</div>
-<!-- Footer -->
-<div class="footer">
-<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
-</a><br>
-I am a logo! CPSC 304 2016
-<!-- End Footer -->
-</div>
-	</body>
-</html>	
 
 
 <?php
@@ -176,3 +172,13 @@ else {
 
 ?>
 
+</div>
+<!-- Footer -->
+<div class="footer">
+<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+</a><br>
+I am a logo! CPSC 304 2016
+<!-- End Footer -->
+</div>
+	</body>
+</html>	

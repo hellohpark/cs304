@@ -22,7 +22,11 @@ $success = true;
 			<a href="index.php" style="float:left" title="I am a logo!">
 				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -44,6 +48,7 @@ $success = true;
 		</div>
 
 <div class="content">
+<div class="icons"><img src="images/client_info.png"></div>
 <?php
 
 //Tracking number is invalid

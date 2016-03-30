@@ -2,7 +2,7 @@
 
 function dbConnect() {
 	// NOTE: Change DB information to your own
-	return OCILogon("ora_g3d9", "a30775134", "ug");
+	return OCILogon("ora_v7e8", "a29498110", "ug");
 }
 
 function dbLogout($db_conn) {
@@ -215,10 +215,10 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIBindByName($statement, ':bind', $tn);
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Name: ".$r[1]."\n");
-		echo nl2br("Address: ".$r[2]."\n");
-		echo nl2br("Province: ".$r[3]."\n");
-		echo nl2br("Phone: ".$r[4]."\n");
+		echo nl2br("Name: ".$r[0]."\n");
+		echo nl2br("Address: ".$r[1]."\n");
+		echo nl2br("Province: ".$r[2]."\n");
+		echo nl2br("Phone: ".$r[3]."\n");
 	}
 	if (isset($_POST['to'])) {
 		$sql = "select dst_name, dst_addr, dst_prov, dst_phone from orders where tracking_number=:bind";
@@ -226,10 +226,10 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIBindByName($statement, ':bind', $tn);
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
-		echo nl2br("Name: ".$r[1]."\n");
-		echo nl2br("Address: ".$r[2]."\n");
-		echo nl2br("Province: ".$r[3]."\n");
-		echo nl2br("Phone: ".$r[4]."\n");
+		echo nl2br("Name: ".$r[0]."\n");
+		echo nl2br("Address: ".$r[1]."\n");
+		echo nl2br("Province: ".$r[2]."\n");
+		echo nl2br("Phone: ".$r[3]."\n");
 	}
 	if (isset($_POST['dt'])) {
 		$sql = "select dl_type from orders where tracking_number=:bind";

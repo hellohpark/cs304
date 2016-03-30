@@ -1,6 +1,6 @@
 <?php
 require_once 'functions.php';
-session_save_path('/home/g/v7e8/public_html');
+session_save_path('/home/v/v7e8/public_html');
 session_start();
 
 $authentication = $_SESSION['authenticated'];
@@ -19,9 +19,13 @@ $authentication = $_SESSION['authenticated'];
 	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
 		<ul class="nav">
 			<a href="index.php" style="float:left" title="I am a logo!">
-				<img src="everseii.gif" style="height:60px; width:60px; padding:10px">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li><a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
@@ -42,20 +46,8 @@ $authentication = $_SESSION['authenticated'];
 			<p><b>View</b> all orders</p>
 		</div>
 		<div class="content">
+		<div class="icons"><img src="images/stats.png"></div>
 
-	<p><a href="select_province.php">Go back to select a post office</a></p>
-	</div>
-
-		<!-- Footer -->
-		<div class="footer">
-		<a href="index.php" title="I am a logo!"><img src="everseii.gif" style="height:60px; width:60px; padding:10px">
-		</a><br>
-		I am a logo! CPSC 304 2016
-		<!-- End Footer -->
-		</div>
-	</body>
-</html>	
-			
 <?php
 
 //this tells the system that it's no longer just parsing 
@@ -65,8 +57,6 @@ $success = True;
 $db_conn = dbConnect();
 
 function printResultViewOrder($result) { 
-	echo "<fieldset>
-				<legend>Orders</legend>";
 	echo "<table>";
 	echo "<tr><th>Tracking Number</th><th>Status</th><th>Source Address</th><th>Destination Address</th><th>Current Location</th><th>Delivery Type</th><th>Package Type</th><th>Edit</th></tr>";
 
@@ -108,7 +98,6 @@ function printResultViewOrder($result) {
 		
 	}
 	echo "</table>";
-	echo "</fieldset>";
 
 }
 
@@ -202,3 +191,16 @@ if ($db_conn) {
 	
 ?>
 
+<p><a href="select_province.php" class="button">Go back to post offices</a></p>
+	</div>
+
+		<!-- Footer -->
+		<div class="footer">
+		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+		</a><br>
+		I am a logo! CPSC 304 2016
+		<!-- End Footer -->
+		</div>
+	</body>
+</html>	
+			
