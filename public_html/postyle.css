@@ -1,0 +1,178 @@
+body {
+    background-color: white;
+    font-family: "Verdana";
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-family: inherit;
+}
+
+.contentheader {
+	position: static;
+	margin-top: 80px;
+    padding: 50px;
+    background-color: #5dabf4;
+    color: white;
+    text-align: center;
+	z-index: -1;
+}
+
+.contentheader h1 {
+	font-size: 64px;
+}
+
+.contentheader p {
+	font-size: 40px;
+	font-weight: thinner;
+}
+
+.content {
+    position: static;
+    padding: 50px;
+    background-color: #2671b7;
+    color: white;
+    text-align: center;
+}
+
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    height: 80px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+}
+
+.dropdown-content a {
+    font-family: Verdana;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #3d3d3d;
+}
+
+.dropdown-content a:hover {
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    background-color: black;
+}
+
+.dropdown-content section {
+    border-bottom: 1px solid white;
+    font-family: Verdana;
+    text-align: left;
+    font-size: 12px;
+}
+
+li{
+    float: right;
+}
+li a:link, a:visited, .dropbtn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 20px 20px;
+    text-align: right;
+    font-family: Verdana;
+    color: #636363;
+}
+li a:hover, .dropdown:hover .dropbtn {
+    color: #a5a5a5;
+}
+
+form {
+	max-width: 450px;
+	position: relative;
+	left: 0;
+	right: 0;
+	margin: auto;
+	overflow: auto;
+	text-align: left;
+	padding: 0;
+}
+
+input[type=text], input[type=password] {
+	height: 25px;
+	width: 390px;
+	border-radius: 5px;
+	border: none;
+	margin: 15px 0;
+	padding: 10px;
+	font-size: 16px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+	border: 2px solid #4cfff9;
+	border-radius: 5px;
+	margin: 14px 0;
+	height: 24px;
+	width: 389px;
+	padding: 10px;
+}
+
+input[type=submit], a.button {
+	background-color: #093f72;
+	border: none;
+	color: white;
+	padding: 10px 38px;
+	margin: 10px 0;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	border-radius: 5px;
+}
+
+.icons {
+    background-color: #fff;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    left: 0;
+    right: 0;
+    margin: 30px auto;
+}
+
+.icons img {
+    height: 150px;
+    width: 150px;
+    margin-top: 23px;
+}
+
+.footer {
+	background-color: white;
+	position: static;
+	display: block;
+	padding: 25px;
+	text-align: center;
+	font-family: Verdana;
+	font-size: 12px;
+	color: black;
+	text-decoration: none;
+}
+
+table, th, td {
+    padding: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}

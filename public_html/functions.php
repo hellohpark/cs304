@@ -86,17 +86,68 @@ function executeBoundSQL($cmdstr, $list, $db_conn, $success) {
 
 }
 
-function printResult($result) { 
-	echo "<br>Got data from table:<br>";
+function printOrdersTable($result) { 
+	echo "<br>ORDERS Table:<br>";
 	echo "<table>";
-	//echo "<tr><th>TrackingNumber</th><th>Status</th></tr><th>Src_Addr</th></tr><th>Dst_Addr</th></tr><th>CurrentProvince</th></tr>";
+	echo "<tr>
+	<th>TrackingNumber</th>
+	<th>Status</th>
+	<th>Source Information</th>
+	<th>Destination Information</th>
+	<th>Delivery Type</th>
+	<th>Package Type</th>
+	<th>Current Location</th>
+	</tr>";
 
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; 
+		echo "<tr><td>".$row[0]
+		."</td><td>".$row[1]
+		."</td><td>".$row[2]." ".$row[3]." ".$row[4]." ".$row[5]
+		."</td><td>".$row[6]." ".$row[7]." ".$row[8]." ".$row[9]
+		."</td><td>".$row[10]
+		."</td><td>".$row[11]
+		."</td><td>".$row[12]
+		."</td></tr>"; 
 	}
 	echo "</table>";
 
 }
+
+function printPriceTable($result) { 
+	echo "<br>PRICE Table:<br>";
+	echo "<table>";
+	echo "<tr>
+	<th>TrackingNumber</th>
+	<th>Total Price</th>
+	<th>Destination Provice</th>
+	<th>Delivery Type</th>
+	<th>Package Type</th>
+	</tr>";
+
+	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		echo "<tr><td>".$row[0]
+		."</td><td>".$row[1]
+		."</td><td>".$row[2]
+		."</td><td>".$row[3]
+		."</td><td>".$row[4]
+		."</td></tr>"; 
+	}
+	echo "</table>";
+
+}
+
+
+// function printResult($result) { 
+// 	echo "<br>Got data from table ORDERS:<br>";
+// 	echo "<table>";
+// 	//echo "<tr><th>TrackingNumber</th><th>Status</th></tr><th>Src_Addr</th></tr><th>Dst_Addr</th></tr><th>CurrentProvince</th></tr>";
+
+// 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+// 		echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; 
+// 	}
+// 	echo "</table>";
+
+// }
 
 
 function signIn($db_conn, $success){
@@ -164,7 +215,7 @@ function getPrice($tracking_num, $db_conn, $success) {
 
 }
 
-function getTotalPrice($tracking_number, $pr, $dt, $pt, $db_conn, $success){
+function getPriceInfo($tracking_number, $pr, $dt, $pt, $db_conn, $success){
 	$temp = executePlainSQL("select pr_price from provincialrate where pro_province_name='$pr'", $db_conn, $success);
 	while ($row = OCI_Fetch_Array($temp, OCI_BOTH)) {
 		echo nl2br("Provincial Rate for ".$pr." = "."$".$row[0]."\n");
@@ -205,9 +256,12 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIBindByName($statement, ':bind', $tn);
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
+		echo nl2br("STATUS INFORMATION\n");
 		echo nl2br("Tracking Number: ".$r[0]."\n");
 		echo nl2br("Status of package: ".$r[1]."\n");
 		echo nl2br("Current location of package: ".$r[2]."\n");
+		echo nl2br("\n");
+		echo nl2br("\n");
 	}
 	if (isset($_POST['from'])) {
 		$sql = "select src_name, src_addr, src_prov, src_phone from orders where tracking_number=:bind";
@@ -215,10 +269,13 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIBindByName($statement, ':bind', $tn);
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
+		echo nl2br("SOURCE/FROM INFORMATION\n");
 		echo nl2br("Name: ".$r[0]."\n");
 		echo nl2br("Address: ".$r[1]."\n");
 		echo nl2br("Province: ".$r[2]."\n");
 		echo nl2br("Phone: ".$r[3]."\n");
+		echo nl2br("\n");
+		echo nl2br("\n");
 	}
 	if (isset($_POST['to'])) {
 		$sql = "select dst_name, dst_addr, dst_prov, dst_phone from orders where tracking_number=:bind";
@@ -226,10 +283,13 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIBindByName($statement, ':bind', $tn);
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
+		echo nl2br("DESTINATION/TO INFORMATION\n");
 		echo nl2br("Name: ".$r[0]."\n");
 		echo nl2br("Address: ".$r[1]."\n");
 		echo nl2br("Province: ".$r[2]."\n");
 		echo nl2br("Phone: ".$r[3]."\n");
+		echo nl2br("\n");
+		echo nl2br("\n");
 	}
 	if (isset($_POST['dt'])) {
 		$sql = "select dl_type from orders where tracking_number=:bind";
@@ -238,6 +298,8 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
 		echo nl2br("Delivery Type: ".$r[0]."\n");
+		echo nl2br("\n");
+		echo nl2br("\n");
 	}
 	if (isset($_POST['pt'])) {
 		$sql = "select pk_type from orders where tracking_number=:bind";
@@ -246,6 +308,19 @@ function getClientInfo($tn, $db_conn, $success) {
 		OCIExecute($statement, OCI_DEFAULT);
 		$r = OCI_Fetch_Array($statement, OCI_BOTH);
 		echo nl2br("Package Type: ".$r[0]."\n");
+		echo nl2br("\n");
+		echo nl2br("\n");
+	}
+	if (isset($_POST['price'])) {
+		$sql = "select total_price, pr_province_name, dt_type, pt_type from price where tracking_number=:bind";
+		$statement = OCIParse($db_conn, $sql);
+		OCIBindByName($statement, ':bind', $tn);
+		OCIExecute($statement, OCI_DEFAULT);
+		$r = OCI_Fetch_Array($statement, OCI_BOTH);
+		$total_price = $r[0];
+		echo nl2br("PRICE INFORMATION\n");
+		getPriceInfo($tn, $r[1], $r[2], $r[3], $db_conn, $success);
+		echo nl2br("Total price you have paid: "."$".$r[0]."\n");
 	}
 
 }

@@ -1,5 +1,4 @@
 	<?php
-	
 	require_once 'functions.php';
 	
 	session_save_path('/home/g/g3d9/public_html');
@@ -12,20 +11,47 @@
 
 	?>
 	
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>Select Province - allow admin to select a post office and view order statistics</title>
+		<title>Orders Statistics - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
 	</head>
 
 	<body>
+
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li> <a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Orders Statistics</h1>
+			<p><b>Manage</b> orders in post office</p>
+		</div>
+		<div class="content">
+		<div class="icons"><img src="images/stats.png"></div>
 	
-	<h1>Orders Statistics</h1>
-	<p><a href="login.php">Log out</a></p>
+	<p><a href="login.php" class="button">Log out</a></p>
 	
 	<form method="GET" action="view_orders.php">
-	<fieldset>
-	<legend>View Orders in Post Office</legend>
-	<br>
+	<h3>View Orders in Post Office</h3>
 	  <input type="radio" name="prov" value="bc"> British Columbia<br>
 	  <input type="radio" name="prov" value="ab"> Alberta<br>
 	  <input type="radio" name="prov" value="sk"> Saskatchewan<br>
@@ -37,14 +63,11 @@
 	  <input type="radio" name="prov" value="nl"> Newfoundland and Labrador<br>
 	  <input type="radio" name="prov" value="ns"> Nova Scotia<br>
 	  <input type="submit" value="Submit">
-	</fieldset>
 	</form>
 
 	
 		<form action="select_province.php" method="post">
-			<fieldset>
-			<legend>Shutdown a Post Office - deletion on cascade for orders, not allowed if order has a price associated</legend>
-				<br>
+			<h3>Shutdown a Post Office - deletion on cascade for orders, not allowed if order has a price associated</h3>
 				<input type="radio" name="province" value="BC">British Columbia<br>
 				<input type="radio" name="province" value="AB">Alberta<br>
 				<input type="radio" name="province" value="SK">Saskatchewan<br>
@@ -57,23 +80,28 @@
 				<input type="radio" name="province" value="NS">Nova Scotia<br>
 			
 			<input type="submit" name="shut" value="Shutdown">
-			</fieldset>
 		</form>	
 		
 		
 		<form action="stats.php" method="post">
-			<fieldset>
-			<legend>Post Office with Max/Min Order Worth:</legend>
-				<br>
+			<h3>Post Office with Max/Min Order Worth:</h3>
 				<input type="radio" name="maxmin_OPTION" value="max" required>Max<br>
 				<input type="radio" name="maxmin_OPTION" value="min">Min<br>
 			
 			<input type="submit" name="maxmin" value="Find Post Office">
-			</fieldset>
 		</form>		
-	
-	</body>
-</html>	
+	</div>
+	<!-- Footer -->
+	<div class="footer">
+	<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+	</a><br>
+	I am a logo! CPSC 304 2016
+	<!-- End Footer -->
+	</div>
+
+	<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+
 
 <?php
 
@@ -142,9 +170,12 @@ if ($db_conn) {
 
 	if ($authentication){
 		
+		
 	} else {
 		header("location: login.php");
+
 	}
+		
 
 
 		if (array_key_exists('shut', $_POST)) {
@@ -175,6 +206,7 @@ if ($db_conn) {
 			inputResultMaxMin($maxminresult);
 
 		}
+	
 		
 	
 	
@@ -200,3 +232,7 @@ if ($db_conn) {
 }
 		
 ?>	
+</span>
+
+	</body>
+</html>	

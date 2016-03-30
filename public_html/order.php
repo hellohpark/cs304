@@ -6,30 +6,57 @@ require 'functions.php';
 $success = True; 
 $db_conn = dbConnect();
 
-//$tracking_num = getTrackingNumber();
 $tracking_num = isUniqueTrackingNumber($db_conn);
 $_SESSION['tracking_num'] = $tracking_num;
 
 ?>
 
-
-<!--TODO: Prevent empty forms from being submitted-->
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>Order Page - CPSC 304 Post Office</title>
+		<title>Order - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
 	</head>
 
 	<body>
-		<p><a href="index.php">HOME - TRACK YOUR ORDER </a></p>
-		<h1>Place An Order</h1>
+
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+			<li> <a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+				
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Place An Order</h1>
+			<p><b>Place</b> a new order</p>
+		</div>
+
+		<div class="content">
+
+		<div class="icons"><img src="images/order.png"></div>
 		<form action="order.php" method="post">
-			<fieldset>
-				<legend>From</legend>
-				Name:<br>
+			<h2>From:</h2>
+				<h4>Name:</h4>
 				<input type="text" name="fromname"><br>
-				Address:<br>
+				<h4>Address:</h4>
 				<input type="text" name="fromaddress"><br>
-				Province:<br>
+				<h4>Province:</h4>
 				<input type="radio" name="fromprovince" value="BC">British Columbia<br>
 				<input type="radio" name="fromprovince" value="AB">Alberta<br>
 				<input type="radio" name="fromprovince" value="SK">Saskatchewan<br>
@@ -40,16 +67,15 @@ $_SESSION['tracking_num'] = $tracking_num;
 				<input type="radio" name="fromprovince" value="PE">Prince Edward Islands<br>
 				<input type="radio" name="fromprovince" value="NL">Newfoundland andLabrador<br>
 				<input type="radio" name="fromprovince" value="NS">Nova Scotia<br>
-				Phone:<br>
+				<h4>Phone:</h4>
 				<input type="text" name="fromphone"><br>
-			</fieldset>
-			<fieldset>	
-				<legend>To</legend>
-				Name:<br>
+
+				<h3>To:</h3>
+				<h4>Name:</h4>
 				<input type="text" name="toname"><br>
-				Address:<br>
+				<h4>Address:</h4>
 				<input type="text" name="toaddress"><br>
-				Province:<br>
+				<h4>Province:</h4>
 				<input type="radio" name="toprovince" value="BC" required>British Columbia<br>
 				<input type="radio" name="toprovince" value="AB">Alberta<br>
 				<input type="radio" name="toprovince" value="SK">Saskatchewan<br>
@@ -60,23 +86,21 @@ $_SESSION['tracking_num'] = $tracking_num;
 				<input type="radio" name="toprovince" value="PE">Prince Edward Islands<br>
 				<input type="radio" name="toprovince" value="NL">Newfoundland andLabrador<br>
 				<input type="radio" name="toprovince" value="NS">Nova Scotia<br>
-				Phone:<br>
+				<h4>Phone:</h4>
 				<input type="text" name="tophone"><br>
-			</fieldset>
-			<fieldset>	
-				<legend>Package Type</legend>
+
+				<h4>Package Type:</h4>
 				<input type="radio" name="packagetype" value="regular letter" required>Regular Letter<br>
 				<input type="radio" name="packagetype" value="regular parcel">Regular Parcel<br>
 				<input type="radio" name="packagetype" value="large letter">Large Letter<br>
 				<input type="radio" name="packagetype" value="large parcel">Large Parcel<br>
-			</fieldset>
-			<fieldset>
-				<legend>Delivery Type</legend>
+
+				<h4>Delivery Type:</h4>
 				<input type="radio" name="deliverytype" value="standard" required>Standard<br>
 				<input type="radio" name="deliverytype" value="express">Express<br>
 				<input type="radio" name="deliverytype" value="priority">Priority<br>
-			</fieldset>
-			
+
+			<br>
 			<input type="submit" name="submit" value="Submit">
 
 		</form>
@@ -84,9 +108,6 @@ $_SESSION['tracking_num'] = $tracking_num;
    
 		<p><input type="submit" value="Reset" name="reset"></p>
 		</form>
-
-	</body>
-</html>	
 
 
 <?php
@@ -101,8 +122,8 @@ if ($db_conn) {
 
 	if (array_key_exists('reset', $_POST)) {
 		
-		executePlainSQL("delete from orders", $db_conn, $success);
 		executePlainSQL("delete from price", $db_conn, $success);
+		executePlainSQL("delete from orders", $db_conn, $success);
 		OCICommit($db_conn);
 
 		if ($_POST && $success) {		
@@ -124,14 +145,6 @@ if ($db_conn) {
 		}
 	}
 
-		$orders = executePlainSQL("select * from orders", $db_conn, $success);
-		printResult($orders);
-
-		$price = executePlainSQL("select * from price", $db_conn, $success);
-		printResult($price);
-		
-
-
 	dbLogout($db_conn);
 
 
@@ -145,3 +158,13 @@ else {
 
 ?>
 
+</div>
+<!-- Footer -->
+<div class="footer">
+<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+</a><br>
+I am a logo! CPSC 304 2016
+<!-- End Footer -->
+</div>
+	</body>
+</html>	

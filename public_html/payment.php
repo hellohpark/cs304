@@ -1,3 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment - CPSC 304 Post Office</title>
+<link rel="stylesheet" type="text/css" href="postyle.css">
+</head>
+
+<body>
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li> <a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Payment</h1>
+			<p><b>Provide payment</b> to place your order</p>
+		</div>
+
+<div class="content">
 <?php 
 session_save_path('/home/g/g3d9/public_html');
 session_start();
@@ -6,37 +41,44 @@ require 'functions.php';
 $tn = $_SESSION['tracking_num'];
 
 ?>
-
-<h1>Payment</h1>
 	<form action="tracking_confirmation.php" method="post">
-			<fieldset>
-				<legend>Payment Card</legend>
-				Card Number: <input type="text" name="cardname"><br>
-				Security Code: <input type="text" name="securitycode"><br>
-				Expiration Month:
-				<!--TODO: Drop down menu using Bootstrap-->
-				<input list="expmonths">
-					<datalist id="expmonths">
-						<option value="January">
-						<option value="February">
-						<option value="March">
-						<option value="April">
-						<option value="May">
-						<option value="June">
-						<option value="July">
-						<option value="August">
-						<option value="September">
-						<option value="October">
-						<option value="November">
-						<option value="December">
-					</datalist>
+				<h4>Card Number:</h4>
+				<input type="text" name="cardname"><br>
+
+				<h4>Security Code:</h4>
+				<input type="text" name="securitycode"><br>
+				
+				<h4>Expiration Month:</h4>
+				<select name="expmonths">
+					<option value="January">January</option>
+					<option value="February">February</option>
+					<option value="March">March</option>
+					<option value="April">April</option>
+					<option value="May">May</option>
+					<option value="June">June</option>
+					<option value="July">July</option>
+					<option value="August">August</option>
+					<option value="September">September</option>
+					<option value="October">October</option>
+					<option value="November">November</option>
+					<option value="December">December</option>
+				</select>
 				<br>
 					
-				Expiration Year:
-				<!--TODO: Drop down menu using Bootstrap, years from 2016 to 2025-->
-				
-			</fieldset>
-			
+				<h4>Expiration Year:</h4>
+				<select name="expyear">
+					<option value="2016">2016</option>
+					<option value="2017">2017</option>
+					<option value="2018">2018</option>
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+				</select>
+			<br>
 			<input type="submit" name="submit" value="continue">
 		</form>
 
@@ -52,8 +94,8 @@ if ($db_conn) {
 
 	if (array_key_exists('cancel', $_POST)) {
 		
-		executePlainSQL("delete from orders where tracking_number='$tn'", $db_conn, $success);
 		executePlainSQL("delete from price where tracking_number='$tn'", $db_conn, $success);
+		executePlainSQL("delete from orders where tracking_number='$tn'", $db_conn, $success);
 		OCICommit($db_conn);
 	}
 
@@ -62,3 +104,13 @@ if ($db_conn) {
 	}
 }
 ?>
+</div>
+<!-- Footer -->
+<div class="footer">
+<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+</a><br>
+I am a logo! CPSC 304 2016
+<!-- End Footer -->
+</div>
+</body>
+</html>
