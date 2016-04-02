@@ -19,11 +19,7 @@ $success = true;
 			<a href="index.php" style="float:left" title="I am a logo!">
 				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
 			</a>
-  			<li class="dropdown">
-  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
-  				<div class="dropdown-content">
-  					<section>
-  						<a href="index.php">LOGOUT</a></section></div></li>
+  			<li> <a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
   			<li class="dropdown">
     			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
     			<div class="dropdown-content">
