@@ -1,0 +1,30 @@
+List of SQLs:
+
+login.php
+select * from login where username =$username and password= $password
+
+select_province.php
+DELETE FROM postoffice WHERE po_province_name =$province
+select curr_location, count(curr_location) as order_count from orders group by (curr_location)
+select dl_type, count(dl_type) as dl_count from orders O1 group by dl_type having 1 < (select count(*) from orders O2 where O1.dl_type = O2.dl_type)
+SELECT distinct curr_location FROM orders PS1 WHERE NOT EXISTS (SELECT * FROM deliverytype WHERE NOT EXISTS (SELECT * FROM orders PS2 WHERE PS1.curr_location = PS2.curr_location AND PS2.dl_type = deliverytype.dt_type))
+
+view_orders.php
+select * from orders
+select * from orders where curr_location = :bind1
+delete from orders where TRACKING_NUMBER =$tracking_number
+
+edit_orders.php
+select * from orders where TRACKING_NUMBER =$tracking_number
+update orders set status=:bind2, curr_location=:bind13,SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,SRC_PHONE=:bind6, DST_NAME=:bind7, DST_ADDR=:bind8, DST_PROV=:bind9, DST_PHONE=:bind10, DL_TYPE=:bind11, PK_TYPE=:bind12 where TRACKING_NUMBER=:bind1
+
+
+view_order_price.php
+DELETE FROM price WHERE tracking_number=$tracking_number
+insert into price select $tracking_number ,pr_price + pt_price + dt_price, $toprovince, $deliverytype, $packagetype from pricematrix where pro_province_name= $toprovince and dt_type= $deliverytype and pt_type =$packagetype
+select * from price where TRACKING_NUMBER =$tracking_number
+
+stats.php
+DELETE FROM price
+insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('5555',	8.4,	'SK',	'express',	'regular letter')"
+SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select $max_or_min(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))

@@ -6,17 +6,44 @@ session_start();
 $authentication = $_SESSION['authenticated'];
 ?>
 
+
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>View Orders - view all orders in the orders table</title>
+		<title>Orders in Province - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
 	</head>
 
 	<body>
-	<h1>Orders in Province</h1>
-	<p><a href="select_province.php">Go back to select a post office</a></p>
-	</body>
-</html>	
-			
+
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li> <a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Orders in Province</h1>
+			<p><b>View</b> all orders</p>
+		</div>
+		<div class="content">
+		<div class="icons"><img src="images/stats.png"></div>
+
 <?php
 
 //this tells the system that it's no longer just parsing 
@@ -26,8 +53,7 @@ $success = True;
 $db_conn = dbConnect();
 
 function printResultViewOrder($result) { 
-	echo "<fieldset>
-				<legend>Orders</legend>";
+	echo "<fieldset> <legend>Orders</legend>";
 	echo "<table>";
 	echo "<tr><th>Tracking Number</th><th>Status</th><th>Source Address</th><th>Destination Address</th><th>Current Location</th><th>Delivery Type</th><th>Package Type</th><th>Edit</th></tr>";
 
@@ -63,13 +89,18 @@ function printResultViewOrder($result) {
 		<input type='hidden' name='toprovince' value='$DST_PROV'>
 		<input type='hidden' name='deliverytype' value='$DL_TYPE'>
 		<input type='hidden' name='packagetype' value='$PK_TYPE'>
-		<input type='submit' name='price' value='Price' />
-		</form></td>
+		<input type='submit' name='price' value='Recalculate Price' />
+		</form>
+		<form action='view_orders.php' method='POST'>
+		<input type='hidden' name='tracking_number' value='$TRACKING_NUMBER'>
+		<input type='submit' name='delete_order' value='Delete Order' />
+		</form>
+		</td>
 		</tr>";
 		
 	}
 	echo "</table>";
-	echo "</fieldset>";
+	echo "</fieldset";
 
 }
 
@@ -112,7 +143,7 @@ function executeBoundSQLs($cmdstr, $list, $db_conn, $success) {
 
 
 function processPage($db_conn, $success) {
-			echo "select * from orders where curr_location =".strtoupper($_GET['prov']);
+			//echo "select * from orders where curr_location =".strtoupper($_GET['prov']);
 			$province = array (
  				":bind1" => isset($_GET['prov'])? strtoupper($_GET['prov']):null
 				//":bind1" => strtoupper($_GET['prov'])
@@ -137,6 +168,17 @@ if ($db_conn) {
 		header("location: login.php");
 	}
 
+	
+	
+	if (array_key_exists('delete_order', $_POST)) {
+		$cmdstring2 = "delete from orders where TRACKING_NUMBER = '".strval($_POST['tracking_number'])."'";
+		executePlainSQL($cmdstring2,$db_conn, $success);
+		OCICommit($db_conn);
+	}
+		
+	
+	
+	
 	$province = $_GET['prov'];
 	
 	if (!isset($_GET['prov'])){
@@ -163,3 +205,19 @@ if ($db_conn) {
 	
 ?>
 
+<p><a href="select_province.php" class="button">Go back to post offices</a></p>
+	</div>
+
+		<!-- Footer -->
+		<div class="footer">
+		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+		</a><br>
+		I am a logo! CPSC 304 2016
+		<!-- End Footer -->
+		</div>
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+<?php echo "select * from orders where curr_location =".strtoupper($_GET['prov']);?>
+</span>
+</body>
+</html>		

@@ -5,19 +5,49 @@
 	session_start();
 
 	$authentication = $_SESSION['authenticated'];
+	// $sqlstring;
 	?>
 
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>Edit Order - edit an order with update constraints</title>
+		<title>Edit Orders - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
 	</head>
 
 	<body>
-	<h1>Edit Order</h1>
-	<p><a href="view_orders.php">Go back to view orders</a></p>
 
-	</body>
-</html>	
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li class="dropdown">
+  				<a class="dropbtn" href="login.php"><b>ADMIN LOGIN</b><br>______________</a>
+  				<div class="dropdown-content">
+  					<section>
+  						<a href="index.php">LOGOUT</a></section></div></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Edit Order</h1>
+			<p><b>Edit</b> your order</p>
+		</div>
+		<div class="content">
+
 
 
 <?php
@@ -35,7 +65,6 @@ function updateOrder($db_conn, $success) {
 	$tuple = array (
 				":bind1" => $_POST['tracking_number'],
 				":bind2" => isset($_POST['status_new'])? $_POST['status_new']:null, //$_POST['status'], UPDATE CONSTRAINT
-				":bind13" => isset($_POST['curr_location_new'])? $_POST['curr_location_new']:$_POST['curr_location'],
 				":bind3" => isset($_POST['fromname'])? $_POST['fromname']:null,
 				":bind4" => isset($_POST['fromaddress'])? $_POST['fromaddress']:null,
 				":bind5" => isset($_POST['fromprovince'])? $_POST['fromprovince']:$_POST['from_province_current'],
@@ -45,24 +74,28 @@ function updateOrder($db_conn, $success) {
 				":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:$_POST['to_province_now'],
 				":bind10" => isset($_POST['tophone'])? $_POST['tophone']:null,
 				":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:$_POST['deliverytype_now'],
- 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:$_POST['packagetype_now']
+ 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:$_POST['packagetype_now'],
+				":bind13" => isset($_POST['curr_location_new'])? $_POST['curr_location_new']:$_POST['curr_location']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("update orders set status=:bind2, curr_location=:bind13, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
+			$success = executeBoundSQLret("update orders set status=:bind2, curr_location=:bind13, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
 				SRC_PHONE=:bind6, DST_NAME=:bind7, DST_ADDR=:bind8, DST_PROV=:bind9, DST_PHONE=:bind10, DL_TYPE=:bind11, PK_TYPE=:bind12 where TRACKING_NUMBER=:bind1", $alltuples, $db_conn, $success);
-			
-								
+					
 			
 			OCICommit($db_conn);
+			
+			// global $sqlstring;
+			// $sqlstring = "update orders set status=".$tuple[1].", curr_location=".$tuple[12].", SRC_NAME=".$tuple[2].", SRC_ADDR=".$tuple[3].", SRC_PROV=".$tuple[4].",
+				// SRC_PHONE=".$tuple[5].", DST_NAME=".$tuple[6].", DST_ADDR=".$tuple[7].", DST_PROV=".$tuple[8].", DST_PHONE=".$tuple[9].", DL_TYPE=".$tuple[10].", PK_TYPE=".$tuple[11]." where TRACKING_NUMBER=".$tuple[0]."";		
+			
+			return $success;
 }
 
 
 
 function inputResultEditOrder($result) { 
-	echo "<fieldset>
-				<legend>Edit Orders</legend>";
 	
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
 		
@@ -83,12 +116,12 @@ function inputResultEditOrder($result) {
 		
 		
 		echo "<form action='edit_orders.php' method='post'> 
-		Tracking Number:  <input type='text' name='tracking_number' value='$tracking_number' readonly><br> 
+		Tracking Number:  <input type='text' name='tracking_number' value='$tracking_number' readonly><br> <br>
 		Status (SELECT AN OPTION REQUIRED):  <input type='text' name='status' value='$status' readonly><br>	
 				<input type='radio' name='status_new' value='pending'>pending<br>
 				<input type='radio' name='status_new' value='delivered'>delivered<br>
 				<input type='radio' name='status_new' value='being processed'>being processed<br>
-				<input type='radio' name='status_new' value='in transit'>in transit<br>				
+				<input type='radio' name='status_new' value='in transit'>in transit<br>	<br>		
 		Current Location:  <input type='text' name='curr_location' value='$CURR_LOCATION' readonly><br>
 				<input type='radio' name='curr_location_new' value='BC'>British Columbia<br>
 				<input type='radio' name='curr_location_new' value='AB'>Alberta<br>
@@ -99,15 +132,14 @@ function inputResultEditOrder($result) {
 				<input type='radio' name='curr_location_new' value='NB'>New Brunswick<br>
 				<input type='radio' name='curr_location_new' value='PE'>Prince Edward Islands<br>
 				<input type='radio' name='curr_location_new' value='NL'>Newfoundland andLabrador<br>
-				<input type='radio' name='curr_location_new' value='NS'>Nova Scotia<br>";	
+				<input type='radio' name='curr_location_new' value='NS'>Nova Scotia<br><br>";	
 			
-		echo	"<fieldset>
-				<legend>From</legend>
-				Name:<br>
+		echo	"<h3>From</h3>
+				<h4>Name:</h4>
 				<input type='text' name='fromname' value='$SRC_NAME'><br>
-				Address:<br>
+				<h4>Address:</h4>
 				<input type='text' name='fromaddress' value='$SRC_ADDR'><br>
-				Province:<br>
+				<h4>Province:</h4>
 				<input type='text' name='from_province_current' value='$SRC_PROV' readonly><br>
 				<input type='radio' name='fromprovince' value='BC'>British Columbia<br>
 				<input type='radio' name='fromprovince' value='AB'>Alberta<br>
@@ -119,16 +151,14 @@ function inputResultEditOrder($result) {
 				<input type='radio' name='fromprovince' value='PE'>Prince Edward Islands<br>
 				<input type='radio' name='fromprovince' value='NL'>Newfoundland andLabrador<br>
 				<input type='radio' name='fromprovince' value='NS'>Nova Scotia<br>
-				Phone:<br>
+				<h4>Phone:</h4>
 				<input type='text' name='fromphone' value='$SRC_PHONE'><br>
-			</fieldset>
-			<fieldset>	
-				<legend>To</legend>
-				Name:<br>
+				<h3>To</h3>
+				<h4>Name:</h4>
 				<input type='text' name='toname' value='$DST_NAME'><br>
-				Address:<br>
+				<h4>Address:</h4>
 				<input type='text' name='toaddress' value='$DST_ADDR'><br>
-				Province:<br>
+				<h4>Province:</h4>
 				<input type='text' name='to_province_now' value='$DST_PROV' readonly><br>
 				<input type='radio' name='toprovince' value='BC'>British Columbia<br>
 				<input type='radio' name='toprovince' value='AB'>Alberta<br>
@@ -140,35 +170,58 @@ function inputResultEditOrder($result) {
 				<input type='radio' name='toprovince' value='PE'>Prince Edward Islands<br>
 				<input type='radio' name='toprovince' value='NL'>Newfoundland andLabrador<br>
 				<input type='radio' name='toprovince' value='NS'>Nova Scotia<br>
-				Phone:<br>
-				<input type='text' name='tophone' value='$DST_PHONE'><br>
-			</fieldset>
-			<fieldset>	
-				<legend>Package Type</legend>
+				<h4>Phone:</h4>
+				<input type='text' name='tophone' value='$DST_PHONE'><br><br>
+				<h4>Package Type</h4>
 				<input type='text' name='packagetype_now' value='$PK_TYPE' readonly><br>
 				<input type='radio' name='packagetype' value='regular letter'>Regular Letter<br>
 				<input type='radio' name='packagetype' value='regular parcel'>Regular Parcel<br>
 				<input type='radio' name='packagetype' value='large letter'>Large Letter<br>
 				<input type='radio' name='packagetype' value='large parcel'>Large Parcel<br>
-			</fieldset>
-			<fieldset>
-				<legend>Delivery Type</legend>
+				<h4>Delivery Type</h4>
 				<input type='text' name='deliverytype_now' value='$DL_TYPE' readonly><br>
 				<input type='radio' name='deliverytype' value='standard'>Standard<br>
 				<input type='radio' name='deliverytype' value='express'>Express<br>
-				<input type='radio' name='deliverytype' value='priority'>Priority<br>
-			</fieldset>
+				<input type='radio' name='deliverytype' value='priority'>Priority<br><br>
 			
 			<input type='submit' name='submit' value='Submit'>
 
 		</form>		";
 
 	}
-
-	echo "</fieldset>";
 }
 
+function executeBoundSQLret($cmdstr, $list, $db_conn, $success) {
+	
+	$statement = OCIParse($db_conn, $cmdstr);
 
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn);
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	foreach ($list as $tuple) {
+		foreach ($tuple as $bind => $val) {
+			
+			OCIBindByName($statement, $bind, $val);
+			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+
+		}
+		$r = OCIExecute($statement, OCI_DEFAULT);
+		if (!$r) {
+			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+			$e = OCI_Error($statement); 
+			echo htmlentities($e['message']);
+			echo "<br>";
+			$success = False;
+		}
+	}
+	
+	return $success;
+
+}
 
 
 // Connect Oracle...
@@ -183,15 +236,24 @@ if ($db_conn) {
 
 
 			//collectClientInfo($client_id, $db_conn, $success);
-			updateOrder($db_conn, $success);
-			header("location: view_orders.php");
+			$success = updateOrder($db_conn, $success);
+			
+			if ($success == True){
+				// echo "<script> alert($sqlstring);
+ // +				window.location = 'view_orders.php';</script>";
+				header("location: view_orders.php");
+			} else {
+				echo "<script> alert('SQL execution failed.');
+	 +			window.location = 'edit_orders.php';</script>";		
+			}
+			
 		}
 		
 
 		
 	//echo $_POST['tracking_number'];
 	$cmdstring = "select * from orders where TRACKING_NUMBER =".strval($_POST['tracking_number']);
-	echo $cmdstring;
+	//echo $cmdstring;
 	$result = executePlainSQL($cmdstring,$db_conn, $success);
 	
 
@@ -208,3 +270,26 @@ if ($db_conn) {
 
 	
 ?>
+
+	<p><a href="view_orders.php" class="button">Go back to view orders</a></p>
+</div>
+
+		<!-- Footer -->
+		<div class="footer">
+		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+		</a><br>
+		I am a logo! CPSC 304 2016
+		<!-- End Footer -->
+		</div>
+
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+
+<?php 	$cmdstring = "select * from orders where TRACKING_NUMBER =".strval($_POST['tracking_number']);
+	echo $cmdstring; ?>
+
+</span>
+
+
+	</body>
+</html>	

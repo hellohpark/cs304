@@ -24,7 +24,7 @@ create table postoffice
 
 create table orders
 	(tracking_number char(4) not null,  
-	status varchar(50) not null,
+	status varchar(50),
 	src_name varchar(50),
 	src_addr varchar(50),
 	src_prov char(2),
@@ -37,7 +37,8 @@ create table orders
 	pk_type varchar(50),
 	curr_location char(2),
 	primary key (tracking_number),
-	foreign key (curr_location) references postoffice ON DELETE CASCADE); 
+	foreign key (curr_location) references postoffice ON DELETE CASCADE,
+	check (status is not NULL)); 
 
 
 create table deliverytype
@@ -51,7 +52,7 @@ create table price
 	pr_province_name char(2),
 	dt_type varchar(30),
 	pt_type varchar(30),
-	primary key (tracking_number, total_price),	
+	primary key (tracking_number),
 	foreign key (pr_province_name) references provincialrate, 
 	foreign key (dt_type) references deliverytype, 
 	foreign key (pt_type) references packagetype, 
@@ -101,29 +102,27 @@ insert into deliverytype values ('priority', 10.0);
 
 insert into login values ('admin', 'admin');
 
+--TODO: Make 1 order per province EXCEPT BC (standard and express delivery types)
 insert into orders values ('1111', 'pending', 'John Smith', '100 Brooklyn Street', 'BC', '416-756-2595','James Bond','200 King Kong Rd','BC','999-999-9999','standard','regular letter','BC');
-insert into orders values ('2222', 'pending', 'Bob Smith', '200 Downtown Street', 'BC', '647-453-3402','James Bond','200 Bong Kong Rd','BC','999-999-9999','standard','regular letter','BC');
-insert into orders values ('3333', 'delivered', 'John Green', '2100 Westbrook Mall', 'BC', '111-111-1111','James Bond','200 King Ping Rd','BC','999-999-9999','standard','regular letter','BC');
+insert into orders values ('2222', 'pending', 'Bob Smith', '200 Downtown Street', 'BC', '647-453-3402','James Bond','200 Bong Kong Rd','BC','999-999-9999','express','regular letter','BC');
+-- 1 order per province
 insert into orders values ('4444', 'delivered', 'John Smith', '2000 Lower Mall', 'BC', '111-111-1111','James Bond','200 King Kong Rd','AB','999-999-9999','standard','regular letter','AB');
 insert into orders values ('5555', 'being processed', 'John Smith', '10 Main Mall', 'BC', '111-111-1111','James Bond','200 Pong Kong Rd','SK','999-999-9999','express','regular letter','SK');
-insert into orders values ('6666', 'being processed', 'Mike Park', '3000 University Ave.', 'BC', '111-111-1111','James Bond','200 Roast Kong Rd','MA','999-999-9999','express','regular parcel','SK');
+insert into orders values ('6666', 'being processed', 'Mike Park', '3000 University Ave.', 'BC', '111-111-1111','James Bond','200 Roast Kong Rd','MA','999-999-9999','express','regular parcel','MA');
 insert into orders values ('7777', 'being processed', 'Hannah', '100 College St', 'BC', '111-111-8888','James Bond','200 King Loan Rd','ON','999-999-9999','express','regular parcel','ON');
-insert into orders values ('8888', 'being processed', 'Haoran', '86 Purple Sagaway', 'BC', '111-111-1111','James Bond','200 King Surplus Rd','QC','999-999-9999','express','regular parcel','ON');
-insert into orders values ('9999', 'being processed', 'Nicole', '10 Threadneedle Rd', 'BC', '222-111-1111','James Bond','200 King Transfer Rd','NB','999-999-9999','priority','regular letter','ON');
-insert into orders values ('1234', 'being processed', 'John Smith', '5100 Don Mills Road', 'BC', '111-111-1111','James Bond','200 King Kong Rd','PE','999-999-9999','priority','large letter','ON');
-insert into orders values ('2345', 'being processed', 'Kent Kennedy', '100 German Mills Rd', 'BC', '111-111-1111','James Bond','200 King Kong Rd','NL','999-999-9999','express','large letter','ON');
-insert into orders values ('3456', 'in transit', 'John Smith', '5000 Finch Ave', 'BC', '111-333-1111','James Bond','200 King Kong Rd','NS','999-999-9999','standard','large letter','ON');
-insert into orders values ('4567', 'in transit', 'Donald Trump', '5100 Leslie Ave', 'BC', '111-111-4444','James Bond','200 King Kong Rd','ON','999-999-9999','priority','large parcel','ON');
-insert into orders values ('5678', 'in transit', 'Hilary Clinton', '2000 Steeles Ave East', 'BC', '111-111-1111','James Bond','200 King Kong Rd','ON','999-999-9999','priority','large parcel','ON');
-insert into orders values ('6789', 'in transit', 'John Smith', '300 White House Blvd', 'BC', '111-666-1111','James Bond','200 King Kong Rd','BC','999-999-9999','priority','large parcel','BC');
+insert into orders values ('8888', 'being processed', 'Haoran', '86 Purple Sagaway', 'BC', '111-111-1111','James Bond','200 King Surplus Rd','QC','999-999-9999','express','regular parcel','QC');
+insert into orders values ('9999', 'being processed', 'Nicole', '10 Threadneedle Rd', 'BC', '222-111-1111','James Bond','200 King Transfer Rd','NB','999-999-9999','priority','regular letter','NB');
+insert into orders values ('1234', 'being processed', 'John Smith', '5100 Don Mills Road', 'BC', '111-111-1111','James Bond','200 King Kong Rd','PE','999-999-9999','priority','large letter','PE');
+insert into orders values ('2345', 'being processed', 'Kent Kennedy', '100 German Mills Rd', 'BC', '111-111-1111','James Bond','200 King Kong Rd','NL','999-999-9999','express','large letter','NL');
+insert into orders values ('3456', 'in transit', 'John Smith', '5000 Finch Ave', 'BC', '111-333-1111','James Bond','200 King Kong Rd','NS','999-999-9999','standard','large letter','NS');
+-- ON needs to have 3 delivery_types for DIVISION query
+insert into orders values ('4567', 'in transit', 'Donald Acton', '5100 Leslie Ave', 'BC', '111-111-4444','James Bond','200 King Kong Rd','ON','999-999-9999','priority','large parcel','ON');
+insert into orders values ('5678', 'in transit', 'Paul Carter', '2000 Steeles Ave East', 'BC', '111-111-1111','James Bond','200 King Kong Rd','ON','999-999-9999','standard','large parcel','ON');
 
 CREATE view pricematrix as
 SELECT * from provincialrate
 CROSS JOIN packagetype
 CROSS JOIN deliverytype;
 
-insert into price select '1111',pr_price + pt_price + dt_price,'BC','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
-insert into price select '2222',pr_price + pt_price + dt_price,'BC','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
-insert into price select '3333',pr_price + pt_price + dt_price,'BC','standard','regular letter' from pricematrix where pro_province_name='BC' and dt_type='standard' and pt_type='regular letter';
-insert into price select '4444',pr_price + pt_price + dt_price,'AB','standard','regular letter' from pricematrix where pro_province_name='AB' and dt_type='standard' and pt_type='regular letter';
-insert into price select '5555',pr_price + pt_price + dt_price,'SK','express','regular letter' from pricematrix where pro_province_name='SK' and dt_type='express' and pt_type='regular letter';
+
+

@@ -6,16 +6,42 @@ session_start();
 $authentication = $_SESSION['authenticated'];
 ?>
 
+<!DOCTYPE html>
 <html>
 	<head>
-		<title>View Order Price - view price of an order, recalculate price at each page load</title>
+		<title>Order Price - CPSC 304 Post Office</title>
+		<link rel="stylesheet" type="text/css" href="postyle.css">
 	</head>
 
 	<body>
-	<h1>Order Price</h1>
-	<p><a href="view_orders.php">Go back to view orders</a></p>
-	</body>
-</html>	
+
+	<!-- Navigation Toolbar (declared in reverse order due to float:right) -->
+		<ul class="nav">
+			<a href="index.php" style="float:left" title="I am a logo!">
+				<img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+			</a>
+  			<li> <a href="login.php"><b>ADMIN LOGIN</b><br>______________</a></li>
+  			<li class="dropdown">
+    			<a class="dropbtn" href="order.php"><b>ORDER</b><br>______________</a>
+    			<div class="dropdown-content">
+        			<section>
+       					<a href="order.php">PLACE AN ORDER</a>
+       					</section><section>
+        				<a href="estimateprice.php">PRICE CALCULATOR</a>
+    				</section>
+    			</div>
+  			</li>
+  			<li><a href="index.php#track"><b>TRACK</b><br>______________</a></li>
+  			<li><a href="index.php"><b>HOME</b><br>______________</a></li>
+		</ul>
+	<!-- End navigation -->
+
+		<div class="contentheader">
+			<h1>Order Price</h1>
+			<p><b>View</b> price of an order</p>
+		</div>
+		<div class="content">
+		<div class="icons"><img src="images/stats.png"></div>
 			
 <?php
 
@@ -30,7 +56,7 @@ function deletePrice($db_conn, $success) {
 
 
 	$cmdstring = "DELETE FROM price WHERE tracking_number ='".strval($_GET['tracking_number'])."'";
-	echo "<br>".$cmdstring."<br>";
+	//echo "<br>".$cmdstring."<br>";
 
 	executePlainSQL($cmdstring,$db_conn, $success);
 	
@@ -48,7 +74,7 @@ function recalculatePrice($db_conn, $success) {
 		
 		$cmdstring = "insert into price select '".$tracking_number."' ,pr_price + pt_price + dt_price, '".$toprovince."' , '".$deliverytype."', '".$packagetype."' from pricematrix where pro_province_name= '".$toprovince."' and dt_type= '".$deliverytype."' and pt_type = '".$packagetype."'";
 		
-	echo $cmdstring;
+	//echo $cmdstring;
 	
 	executePlainSQL($cmdstring,$db_conn, $success);
 		
@@ -57,8 +83,6 @@ function recalculatePrice($db_conn, $success) {
 
 
 function inputResultPrice($priceresult){
-	echo "<fieldset>
-				<legend>Order Price</legend>";
 				
 		while ($row = OCI_Fetch_Array($priceresult, OCI_BOTH)) {
 		
@@ -82,8 +106,6 @@ function inputResultPrice($priceresult){
 			
 		}
 	
-	
-	echo "</fieldset>";	
 }
 
 
@@ -107,7 +129,7 @@ if ($db_conn) {
 	recalculatePrice($db_conn, $success);
 	
 	$cmdstring2 = "select * from price where TRACKING_NUMBER = '".strval($_GET['tracking_number'])."'";
-	echo "<br>".$cmdstring2."<br>";
+	//echo "<br>".$cmdstring2."<br>";
 	$priceresult = executePlainSQL($cmdstring2,$db_conn, $success);
 
 	
@@ -124,3 +146,42 @@ if ($db_conn) {
 	
 ?>
 
+	<p><a href="select_province.php" class="button">Go back to post offices</a></p>
+	</div>
+
+			<!-- Footer -->
+		<div class="footer">
+		<a href="index.php" title="I am a logo!"><img src="images/everseii.gif" style="height:60px; width:60px; padding:10px">
+		</a><br>
+		I am a logo! CPSC 304 2016
+		<!-- End Footer -->
+		</div>
+
+
+<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
+document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
+
+		<?php
+		$cmdstring = "DELETE FROM price WHERE tracking_number ='".strval($_GET['tracking_number'])."'";
+		echo "<br>".$cmdstring."<br>";
+
+		$cmdstring2 = "select * from price where TRACKING_NUMBER = '".strval($_GET['tracking_number'])."'";
+		//echo "<br>".$cmdstring2."<br>";
+
+		$tracking_number = strval($_GET['tracking_number']);
+		$toprovince = isset($_GET['toprovince'])? $_GET['toprovince']:null;
+		$deliverytype = isset($_GET['deliverytype'])? $_GET['deliverytype']:null;
+		$packagetype = isset($_GET['packagetype'])? $_GET['packagetype']:null;
+	
+		
+		$cmdstring = "insert into price select '".$tracking_number."' ,pr_price + pt_price + dt_price, '".$toprovince."' , '".$deliverytype."', '".$packagetype."' from pricematrix where pro_province_name= '".$toprovince."' and dt_type= '".$deliverytype."' and pt_type = '".$packagetype."'";
+		
+		echo $cmdstring;
+
+		$cmdstring2 = "select * from price where TRACKING_NUMBER = '".strval($_GET['tracking_number'])."'";
+		echo "<br>".$cmdstring2."<br>";
+		?>
+</span>
+
+	</body>
+</html>	
