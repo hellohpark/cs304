@@ -30,7 +30,7 @@
 
 		<div class="contentheader">
 			<h1>Tracking Confirmation</h1>
-			<p>Please take note of your <b>Tracking Number</b></p>
+			<p>Thank you for placing an order with Send 'N Track. Please take note of your <b>Tracking Number</b></p>
 		</div>
 		<div class="content">
 

@@ -137,19 +137,6 @@ function printPriceTable($result) {
 }
 
 
-// function printResult($result) { 
-// 	echo "<br>Got data from table ORDERS:<br>";
-// 	echo "<table>";
-// 	//echo "<tr><th>TrackingNumber</th><th>Status</th></tr><th>Src_Addr</th></tr><th>Dst_Addr</th></tr><th>CurrentProvince</th></tr>";
-
-// 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-// 		echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; 
-// 	}
-// 	echo "</table>";
-
-// }
-
-
 function signIn($db_conn, $success){
 		$orders = executePlainSQL("select * from login", $db_conn, $success);	
 	
@@ -374,6 +361,128 @@ function checkValidOrder($phonenum, $name) {
 	else return true;
 
 }
+
+function inputResultProvince($result){
+	echo "<fieldset>
+				<legend>Post Office Order Status - aggregation query</legend>";
+		echo "<table>";		
+		echo "<tr><th>Post Office</th><th>Number of Orders</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
+			$curr_location = $row['CURR_LOCATION'];
+			$order_count = $row['ORDER_COUNT'];
+
+			echo "<tr><td>" . 
+			$curr_location . "</td><td>" . 
+			$order_count . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
+function inputResultProvince2($result){
+	echo "<fieldset>
+				<legend>Post Office Order Status - aggregation query</legend>";
+		echo "<table>";		
+		echo "<tr><th>Delivery Type</th><th>Number of Orders with the Delivery Type</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
+			$curr_location = $row['DL_TYPE'];
+			$order_count = $row['DL_COUNT'];
+
+			echo "<tr><td>" . 
+			$curr_location . "</td><td>" . 
+			$order_count . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
+function inputResultPriority($result){
+	echo "<fieldset>
+				<legend>Post Office with High Priority Status - division query</legend>";
+		echo "<table>";		
+		echo "<tr><th>Post Office</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
+			$curr_location = $row['CURR_LOCATION'];
+
+			echo "<tr><td>" . 
+			$curr_location . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
+// function inputResultMaxMin($maxminresult){
+// 	echo "<fieldset>
+// 				<legend>Post Office with Highest Average Order Worth - nested aggregation query</legend>";
+// 		echo "<table>";		
+// 		echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
+				
+// 		while ($row = OCI_Fetch_Array($maxminresult, OCI_BOTH)) {
+		
+
+// 			echo "<tr><td>" . 
+// 			$row['CU'] . "</td><td>" . 
+// 			$row['AP'] . "</td></tr>";
+			
+// 		}
+	
+// 	echo "</table>";
+// 	echo "</fieldset>";	
+// }
+
+
+function inputResultMaxMin($maxminresult){
+
+	echo "<table>";		
+	echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
+				
+	while ($row = OCI_Fetch_Array($maxminresult, OCI_BOTH)) {
+		echo "<tr><td>" . 
+		$row['CU'] . "</td><td>" . 
+		$row['AP'] . "</td></tr>";
+			
+	}
+	echo "</table>";
+}
+
+function inputResultPrice($priceresult){
+	echo "<fieldset>
+				<legend>All Noncancelled Orders - all orders with a price associated</legend>";
+	echo "<table>";		
+	echo "<tr><th>Tracking Number</th><th>Total Price</th><th>Current Location</th><th>Delivery Type</th><th>Package Type</th></tr>";		
+				
+	while ($row = OCI_Fetch_Array($priceresult, OCI_BOTH)) {
+		echo "<tr><td>" . 
+		$row['TRACKING_NUMBER'] . "</td><td>" . 
+		$row['TOTAL_PRICE'] . "</td><td>" .
+		$row['PR_PROVINCE_NAME'] . "</td><td>" .
+		$row['DT_TYPE'] . "</td><td>" .
+		$row['PT_TYPE'] . "</td></tr>";
+	}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
+function deletePrice($db_conn, $success) {
+	$cmdstring = "DELETE FROM price WHERE tracking_number ='".strval($_GET['tracking_number'])."'";
+	executePlainSQL($cmdstring,$db_conn, $success);
+	
+	OCICommit($db_conn);	
+}
+
 
 
 

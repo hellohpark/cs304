@@ -1,16 +1,13 @@
-	<?php
-	
-	require_once 'functions.php';
-	
-	session_save_path('/home/g/g3d9/public_html');
-	session_start();
+<?php
+require 'functions.php';
+session_save_path('/home/g/g3d9/public_html');
+session_start();
 
-	$authentication = $_SESSION['authenticated'];
-	
-	$success = True;
-	$db_conn = dbConnect();
+$authentication = $_SESSION['authenticated'];
+$success = True;
+$db_conn = dbConnect();
 
-	?>
+?>
 	
 <!DOCTYPE html>
 <html>
@@ -52,63 +49,65 @@
 
 <?php
 
-
-function inputResultMaxMin($maxminresult){
-
-		echo "<table>";		
-		echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
-				
-		while ($row = OCI_Fetch_Array($maxminresult, OCI_BOTH)) {
-		
-
-			echo "<tr><td>" . 
-			$row['CU'] . "</td><td>" . 
-			$row['AP'] . "</td></tr>";
-			
-		}
-	
-	echo "</table>";
-}
-
-
 if ($db_conn) {
 	if ($authentication){
 		
 	} else {
 		header("location: login.php");
 	}
-		if (array_key_exists('login', $_POST)) {
-
-			$password = $_POST['password'];
-			$username = $_POST['username'];
-
-			$cmdstring = "select * from admin where username =".$username."and password=".strval($password);
-			echo $cmdstring;
-			$result = executePlainSQL($cmdstring,$db_conn, $success);
-			
-			
-			header("location: select_province.php");
-
-		}
-
-		
-		if (array_key_exists('maxmin', $_POST)) {
-
-			$maxmin = $_POST['maxmin_OPTION'];
-			
-			
-			$cmdstringMaxmin = "SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select ".$maxmin."(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))";
-			
-			//echo $cmdstringMaxmin;
-			
-			$maxminresult = executePlainSQL($cmdstringMaxmin,$db_conn, $success);
-			
-			inputResultMaxMin($maxminresult);
-
-		}
-		
 	
+	if (array_key_exists('reset_prices', $_POST)) {
+		$cmdstring0 = "DELETE FROM price";
+		$cmdstring1 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('5555',	8.4,	'SK',	'express',	'regular letter')";
+		$cmdstring2 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('6666',	16.6,	'MA',	'express',	'regular parcel')";
+		$cmdstring3 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('7777',	16.8,	'ON',	'express',	'regular parcel')";
+		$cmdstring4 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('8888',	17,		'QC',	'express',	'regular parcel')";
+		$cmdstring5 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('9999',	14.2,	'NB',	'priority',	'regular letter')";
+		$cmdstring6 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('5678',	22.8,	'ON',	'standard',	'large parcel')";
+		$cmdstring7 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('1111',	4,		'BC',	'standard',	'regular letter')";
+		$cmdstring8 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('2222',	8,		'BC',	'express',	'regular letter')";
+		$cmdstring9 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('4444',	4.2,	'AB',	'standard',	'regular letter')";
+		$cmdstring10 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('1234',	16.4,	'PE',	'priority',	'large letter')";
+		$cmdstring11 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('2345',	11.6,	'NL',	'express',	'large letter')";
+		$cmdstring12 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('3456',	7.8,	'NS',	'standard',	'large letter')";
+		$cmdstring13 = "insert into price (tracking_number,total_price,pr_province_name,dt_type,pt_type)  values ('4567',	31.8,	'ON',	'priority',	'large parcel')";
+		executePlainSQL($cmdstring0,$db_conn, $success);
+		executePlainSQL($cmdstring1,$db_conn, $success);
+		executePlainSQL($cmdstring2,$db_conn, $success);
+		executePlainSQL($cmdstring3,$db_conn, $success);
+		executePlainSQL($cmdstring4,$db_conn, $success);
+		executePlainSQL($cmdstring5,$db_conn, $success);
+		executePlainSQL($cmdstring6,$db_conn, $success);
+		executePlainSQL($cmdstring7,$db_conn, $success);
+		executePlainSQL($cmdstring8,$db_conn, $success);
+		executePlainSQL($cmdstring9,$db_conn, $success);
+		executePlainSQL($cmdstring10,$db_conn, $success);
+		executePlainSQL($cmdstring11,$db_conn, $success);
+		executePlainSQL($cmdstring12,$db_conn, $success);
+		executePlainSQL($cmdstring13,$db_conn, $success);
+		OCICommit($db_conn);
+	}
+	
+	if (array_key_exists('login', $_POST)) {
+		$password = $_POST['password'];
+		$username = $_POST['username'];
+		$cmdstring = "select * from admin where username =".$username."and password=".strval($password);
+		echo $cmdstring;
+		$result = executePlainSQL($cmdstring,$db_conn, $success);
+		header("location: select_province.php");
+	}
+
+	if (array_key_exists('maxmin', $_POST)) {
+		$maxmin = $_POST['maxmin_OPTION'];
+		$cmdstringMaxmin = "SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select ".$maxmin."(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))";
+		$maxminresult = executePlainSQL($cmdstringMaxmin,$db_conn, $success);
+		inputResultMaxMin($maxminresult);
+	}
 		
+	$cmdstringProjection = "SELECT * FROM price";
+	$priceresult = executePlainSQL($cmdstringProjection,$db_conn, $success);
+	inputResultPrice($priceresult);
+			
 	//Commit to save changes...
 	OCILogoff($db_conn);
 } else {

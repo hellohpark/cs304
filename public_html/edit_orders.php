@@ -1,11 +1,9 @@
-	<?php
-	
-	require_once 'functions.php';
-	session_save_path('/home/g/g3d9/public_html');
-	session_start();
-
-	$authentication = $_SESSION['authenticated'];
-	?>
+<?php
+require_once 'functions.php';
+session_save_path('/home/g/g3d9/public_html');
+session_start();
+$authentication = $_SESSION['authenticated'];
+?>
 
 <!DOCTYPE html>
 <html>
@@ -51,20 +49,13 @@
 
 <?php
 
-//this tells the system that it's no longer just parsing 
-//html; it's now parsing PHP
-
 $success = True;
 $db_conn = dbConnect();
-
-
-
 
 function updateOrder($db_conn, $success) {
 	$tuple = array (
 				":bind1" => $_POST['tracking_number'],
 				":bind2" => isset($_POST['status_new'])? $_POST['status_new']:null, //$_POST['status'], UPDATE CONSTRAINT
-				":bind13" => isset($_POST['curr_location_new'])? $_POST['curr_location_new']:$_POST['curr_location'],
 				":bind3" => isset($_POST['fromname'])? $_POST['fromname']:null,
 				":bind4" => isset($_POST['fromaddress'])? $_POST['fromaddress']:null,
 				":bind5" => isset($_POST['fromprovince'])? $_POST['fromprovince']:$_POST['from_province_current'],
@@ -74,17 +65,17 @@ function updateOrder($db_conn, $success) {
 				":bind9" => isset($_POST['toprovince'])? $_POST['toprovince']:$_POST['to_province_now'],
 				":bind10" => isset($_POST['tophone'])? $_POST['tophone']:null,
 				":bind11" => isset($_POST['deliverytype'])? $_POST['deliverytype']:$_POST['deliverytype_now'],
- 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:$_POST['packagetype_now']
+ 				":bind12" => isset($_POST['packagetype'])? $_POST['packagetype']:$_POST['packagetype_now'],
+				":bind13" => isset($_POST['curr_location_new'])? $_POST['curr_location_new']:$_POST['curr_location']
 			);
 			$alltuples = array (
 				$tuple
 			);
-			executeBoundSQL("update orders set status=:bind2, curr_location=:bind13, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
+			$success = executeBoundSQLret("update orders set status=:bind2, curr_location=:bind13, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
 				SRC_PHONE=:bind6, DST_NAME=:bind7, DST_ADDR=:bind8, DST_PROV=:bind9, DST_PHONE=:bind10, DL_TYPE=:bind11, PK_TYPE=:bind12 where TRACKING_NUMBER=:bind1", $alltuples, $db_conn, $success);
-			
-								
-			
+					
 			OCICommit($db_conn);
+			return $success;
 }
 
 
@@ -185,7 +176,37 @@ function inputResultEditOrder($result) {
 	}
 }
 
+function executeBoundSQLret($cmdstr, $list, $db_conn, $success) {
+	
+	$statement = OCIParse($db_conn, $cmdstr);
 
+	if (!$statement) {
+		echo "<br>Cannot parse the following command: " . $cmdstr . "<br>";
+		$e = OCI_Error($db_conn);
+		echo htmlentities($e['message']);
+		$success = False;
+	}
+
+	foreach ($list as $tuple) {
+		foreach ($tuple as $bind => $val) {
+			
+			OCIBindByName($statement, $bind, $val);
+			unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
+
+		}
+		$r = OCIExecute($statement, OCI_DEFAULT);
+		if (!$r) {
+			echo "<br>Cannot execute the following command: " . $cmdstr . "<br>";
+			$e = OCI_Error($statement); 
+			echo htmlentities($e['message']);
+			echo "<br>";
+			$success = False;
+		}
+	}
+	
+	return $success;
+
+}
 
 
 // Connect Oracle...
@@ -200,8 +221,17 @@ if ($db_conn) {
 
 
 			//collectClientInfo($client_id, $db_conn, $success);
-			updateOrder($db_conn, $success);
-			header("location: view_orders.php");
+			$success = updateOrder($db_conn, $success);
+			
+			if ($success == True){
+				// echo "<script> alert($sqlstring);
+ // +				window.location = 'view_orders.php';</script>";
+				header("location: view_orders.php");
+			} else {
+				echo "<script> alert('SQL execution failed.');
+	 +			window.location = 'edit_orders.php';</script>";		
+			}
+			
 		}
 		
 

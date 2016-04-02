@@ -53,11 +53,11 @@ $_SESSION['tracking_num'] = $tracking_num;
 		<form action="order.php" method="post">
 			<h2>From:</h2>
 				<h4>Name:</h4>
-				<input type="text" name="fromname"><br>
+				<input type="text" name="fromname" required><br>
 				<h4>Address:</h4>
-				<input type="text" name="fromaddress"><br>
+				<input type="text" name="fromaddress" required><br>
 				<h4>Province:</h4>
-				<input type="radio" name="fromprovince" value="BC">British Columbia<br>
+				<input type="radio" name="fromprovince" value="BC" required>British Columbia<br>
 				<input type="radio" name="fromprovince" value="AB">Alberta<br>
 				<input type="radio" name="fromprovince" value="SK">Saskatchewan<br>
 				<input type="radio" name="fromprovince" value="MA">Manitoba<br>
@@ -68,13 +68,13 @@ $_SESSION['tracking_num'] = $tracking_num;
 				<input type="radio" name="fromprovince" value="NL">Newfoundland andLabrador<br>
 				<input type="radio" name="fromprovince" value="NS">Nova Scotia<br>
 				<h4>Phone:</h4>
-				<input type="text" name="fromphone"><br>
+				<input type="text" name="fromphone" required><br>
 
 				<h3>To:</h3>
 				<h4>Name:</h4>
-				<input type="text" name="toname"><br>
+				<input type="text" name="toname" required><br>
 				<h4>Address:</h4>
-				<input type="text" name="toaddress"><br>
+				<input type="text" name="toaddress" required><br>
 				<h4>Province:</h4>
 				<input type="radio" name="toprovince" value="BC" required>British Columbia<br>
 				<input type="radio" name="toprovince" value="AB">Alberta<br>
@@ -87,7 +87,7 @@ $_SESSION['tracking_num'] = $tracking_num;
 				<input type="radio" name="toprovince" value="NL">Newfoundland andLabrador<br>
 				<input type="radio" name="toprovince" value="NS">Nova Scotia<br>
 				<h4>Phone:</h4>
-				<input type="text" name="tophone"><br>
+				<input type="text" name="tophone" required><br>
 
 				<h4>Package Type:</h4>
 				<input type="radio" name="packagetype" value="regular letter" required>Regular Letter<br>
@@ -104,10 +104,6 @@ $_SESSION['tracking_num'] = $tracking_num;
 			<input type="submit" name="submit" value="Submit">
 
 		</form>
-		<form method="POST" action="order.php">
-   
-		<p><input type="submit" value="Reset" name="reset"></p>
-		</form>
 
 
 <?php
@@ -120,17 +116,7 @@ $_SESSION['db'] = $db_conn;
 
 if ($db_conn) {
 
-	if (array_key_exists('reset', $_POST)) {
-		
-		executePlainSQL("delete from price", $db_conn, $success);
-		executePlainSQL("delete from orders", $db_conn, $success);
-		OCICommit($db_conn);
-
-		if ($_POST && $success) {		
-			header("location: order.php");
-		}
-
-	} else if (array_key_exists('submit', $_POST)) {
+	if (array_key_exists('submit', $_POST)) {
 
 		//Invalid phone number
 		if (checkValidOrder($_POST['tophone'],$_POST['toname'])&&checkValidOrder($_POST['fromphone'],$_POST['fromname'])) {

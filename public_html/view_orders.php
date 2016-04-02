@@ -1,5 +1,5 @@
 <?php
-require_once 'functions.php';
+require 'functions.php';
 session_save_path('/home/g/g3d9/public_html');
 session_start();
 
@@ -46,9 +46,6 @@ $authentication = $_SESSION['authenticated'];
 
 <?php
 
-//this tells the system that it's no longer just parsing 
-//html; it's now parsing PHP
-
 $success = True;
 $db_conn = dbConnect();
 
@@ -89,8 +86,13 @@ function printResultViewOrder($result) {
 		<input type='hidden' name='toprovince' value='$DST_PROV'>
 		<input type='hidden' name='deliverytype' value='$DL_TYPE'>
 		<input type='hidden' name='packagetype' value='$PK_TYPE'>
-		<input type='submit' name='price' value='Price' />
-		</form></td>
+		<input type='submit' name='price' value='Recalculate Price' />
+		</form>
+		<form action='view_orders.php' method='POST'>
+		<input type='hidden' name='tracking_number' value='$TRACKING_NUMBER'>
+		<input type='submit' name='delete_order' value='Delete Order' />
+		</form>
+		</td>
 		</tr>";
 		
 	}
@@ -162,7 +164,13 @@ if ($db_conn) {
 	} else {
 		header("location: login.php");
 	}
-
+	
+	if (array_key_exists('delete_order', $_POST)) {
+		$cmdstring2 = "delete from orders where TRACKING_NUMBER = '".strval($_POST['tracking_number'])."'";
+		executePlainSQL($cmdstring2,$db_conn, $success);
+		OCICommit($db_conn);
+	}
+		
 	$province = $_GET['prov'];
 	
 	if (!isset($_GET['prov'])){
@@ -174,7 +182,6 @@ if ($db_conn) {
 		$query_result = executePlainSQL("select * from orders", $db_conn, $success);
 		echo "select * from orders";
 	}
-	
 	
 	printResultViewOrder($query_result);
 
