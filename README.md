@@ -13,4 +13,5 @@
 # view_orders.php
 # aggregation.php
 # division.php
+# stats.php
 # functions.php --> connectDB() change information
