@@ -137,6 +137,19 @@ function printPriceTable($result) {
 }
 
 
+// function printResult($result) { 
+// 	echo "<br>Got data from table ORDERS:<br>";
+// 	echo "<table>";
+// 	//echo "<tr><th>TrackingNumber</th><th>Status</th></tr><th>Src_Addr</th></tr><th>Dst_Addr</th></tr><th>CurrentProvince</th></tr>";
+
+// 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+// 		echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td></tr>"; 
+// 	}
+// 	echo "</table>";
+
+// }
+
+
 function signIn($db_conn, $success){
 		$orders = executePlainSQL("select * from login", $db_conn, $success);	
 	
@@ -361,6 +374,7 @@ function checkValidOrder($phonenum, $name) {
 	else return true;
 
 }
+
 
 
 ?>

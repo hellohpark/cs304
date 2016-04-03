@@ -49,6 +49,50 @@ $db_conn = dbConnect();
 	<div class="icons"><img src="images/stats.png"></div>
 
 <?php
+
+function inputResultProvince($result){
+	echo "<fieldset>
+				<legend>Post Office Order Status - aggregation query</legend>";
+		echo "<table>";		
+		echo "<tr><th>Post Office</th><th>Number of Orders</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
+			$curr_location = $row['CURR_LOCATION'];
+			$order_count = $row['ORDER_COUNT'];
+
+			echo "<tr><td>" . 
+			$curr_location . "</td><td>" . 
+			$order_count . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
+
+function inputResultProvince2($result){
+	echo "<fieldset>
+				<legend>Post Office Order Status - aggregation query</legend>";
+		echo "<table>";		
+		echo "<tr><th>Delivery Type</th><th>Number of Orders with the Delivery Type</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
+			$curr_location = $row['DL_TYPE'];
+			$order_count = $row['DL_COUNT'];
+
+			echo "<tr><td>" . 
+			$curr_location . "</td><td>" . 
+			$order_count . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
 if ($db_conn) {
 
 	if ($authentication){		

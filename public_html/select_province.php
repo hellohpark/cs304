@@ -1,15 +1,12 @@
-	<?php
-	require_once 'functions.php';
-	
-	session_save_path('/home/g/g3d9/public_html');
-	session_start();
+<?php
+require 'functions.php';
+session_save_path('/home/g/g3d9/public_html');
+session_start();
 
-	$authentication = $_SESSION['authenticated'];
-	
-	$success = True;
-	$db_conn = dbConnect();
-
-	?>
+$authentication = $_SESSION['authenticated'];
+$success = True;
+$db_conn = dbConnect();
+?>
 	
 <!DOCTYPE html>
 <html>
@@ -52,7 +49,7 @@
 	
 	<form method="GET" action="view_orders.php">
 	<h3>View Orders in Post Office</h3>
-	  <input type="radio" name="prov" value="bc"> British Columbia<br>
+	  <input type="radio" name="prov" value="bc" required> British Columbia<br>
 	  <input type="radio" name="prov" value="ab"> Alberta<br>
 	  <input type="radio" name="prov" value="sk"> Saskatchewan<br>
 	  <input type="radio" name="prov" value="ma"> Manitoba<br>
@@ -68,7 +65,7 @@
 	
 		<form action="select_province.php" method="post">
 			<h3>Shutdown a Post Office - deletion on cascade for orders, not allowed if order has a price associated</h3>
-				<input type="radio" name="province" value="BC">British Columbia<br>
+				<input type="radio" name="province" value="BC" required>British Columbia<br>
 				<input type="radio" name="province" value="AB">Alberta<br>
 				<input type="radio" name="province" value="SK">Saskatchewan<br>
 				<input type="radio" name="province" value="MA">Manitoba<br>
@@ -89,7 +86,23 @@
 				<input type="radio" name="maxmin_OPTION" value="min">Min<br>
 			
 			<input type="submit" name="maxmin" value="Find Post Office">
-		</form>		
+		</form>	
+
+		<form action="aggregation.php" method="post">
+			<h3>Post Office Status:</h3>
+				<input type="checkbox" name="num_orders" value="num_orders">Number of orders from each province<br>
+				<input type="checkbox" name="num_dt" value="num_dt">Number of orders for each delivery type<br>
+			<input type="submit" name="aggr_submit" value="Submit">
+		</form>	
+
+		<form action="division.php" method="post">
+			<h3>High Priority Post Office:</h3>
+				<input type="radio" name="division" value="division" required>Post office with the highest priority<br>
+			<input type="submit" name="div_submit" value="Find">
+		</form>
+
+		<br>
+		<br>
 		
 		<form action="stats.php" method="post">	
 			<input type="submit" name="reset_prices" value="Clear Price Table and Reset Prices To Default">
@@ -103,162 +116,23 @@
 	<!-- End Footer -->
 	</div>
 
-	<a id="show_id" onclick="document.getElementById('spoiler_id').style.display=''; 
-document.getElementById('show_id').style.display='none';" class="link">[Show]</a><span id="spoiler_id" style="display: none"><a onclick="document.getElementById('spoiler_id').style.display='none'; document.getElementById('show_id').style.display='';" class="link" style="text-align:left">[Hide]</a><br>
-
-
 <?php
-
-function inputResultProvince($result){
-	echo "<fieldset>
-				<legend>Post Office Order Status - aggregation query</legend>";
-		echo "<table>";		
-		echo "<tr><th>Post Office</th><th>Number of Orders</th></tr>";		
-				
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		
-			$curr_location = $row['CURR_LOCATION'];
-			$order_count = $row['ORDER_COUNT'];
-
-			echo "<tr><td>" . 
-			$curr_location . "</td><td>" . 
-			$order_count . "</td></tr>";
-			
-		}
-	
-	echo "</table>";
-	echo "</fieldset>";	
-}
-
-
-function inputResultProvince2($result){
-	echo "<fieldset>
-				<legend>Post Office Order Status - aggregation query</legend>";
-		echo "<table>";		
-		echo "<tr><th>Delivery Type</th><th>Number of Orders with the Delivery Type</th></tr>";		
-				
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		
-			$curr_location = $row['DL_TYPE'];
-			$order_count = $row['DL_COUNT'];
-
-			echo "<tr><td>" . 
-			$curr_location . "</td><td>" . 
-			$order_count . "</td></tr>";
-			
-		}
-	
-	echo "</table>";
-	echo "</fieldset>";	
-}
-
-
-function inputResultPriority($result){
-	echo "<fieldset>
-				<legend>Post Office with High Priority Status - division query</legend>";
-		echo "<table>";		
-		echo "<tr><th>Post Office</th></tr>";		
-				
-		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		
-			$curr_location = $row['CURR_LOCATION'];
-
-			echo "<tr><td>" . 
-			$curr_location . "</td></tr>";
-			
-		}
-	
-	echo "</table>";
-	echo "</fieldset>";	
-}
-
-function inputResultMaxMin($maxminresult){
-	echo "<fieldset>
-				<legend>Post Office with Highest Average Order Worth - nested aggregation query</legend>";
-		echo "<table>";		
-		echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
-				
-		while ($row = OCI_Fetch_Array($maxminresult, OCI_BOTH)) {
-		
-
-			echo "<tr><td>" . 
-			$row['CU'] . "</td><td>" . 
-			$row['AP'] . "</td></tr>";
-			
-		}
-	
-	echo "</table>";
-	echo "</fieldset>";	
-}
-
-
-
-
 if ($db_conn) {
 
-
 	if ($authentication){
-		
-		
 	} else {
 		header("location: login.php");
-
 	}
-		
 
+	if (array_key_exists('shut', $_POST)) {
 
-		if (array_key_exists('shut', $_POST)) {
+		$province = $_POST['province'];
+		$cmdstring = "DELETE FROM postoffice WHERE po_province_name ='".$province."'";
+		echo $cmdstring;
+		$result = executePlainSQL($cmdstring,$db_conn, $success);
 
-			$province = $_POST['province'];
-
-			$cmdstring = "DELETE FROM postoffice WHERE po_province_name ='".$province."'";
-
-			
-			echo $cmdstring;
-			
-			$result = executePlainSQL($cmdstring,$db_conn, $success);
-
-			OCICommit($db_conn);
-		}
-		
-		if (array_key_exists('maxmin', $_POST)) {
-
-			$maxmin = $_POST['maxmin_OPTION'];
-			
-			
-			$cmdstringMaxmin = "SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select ".$maxmin."(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))";
-			
-			echo $cmdstringMaxmin;
-			
-			$maxminresult = executePlainSQL($cmdstringMaxmin,$db_conn, $success);
-			
-			inputResultMaxMin($maxminresult);
-
-		}
-	
-		
-	
-	
-	$cmdstring2 = "select curr_location, count(curr_location) as order_count from orders group by (curr_location)";
-	echo "<br>".$cmdstring2."<br>";
-	$provinceresult = executePlainSQL($cmdstring2,$db_conn, $success);
-	inputResultProvince($provinceresult);
-	
-	$cmdstring3 = "select dl_type, count(dl_type) as dl_count from orders O1 group by dl_type having 1 < (select count(*) from orders O2 where O1.dl_type = O2.dl_type) ";
-	echo "<br>".$cmdstring3."<br>";
-	$provinceresult2 = executePlainSQL($cmdstring3,$db_conn, $success);
-	inputResultProvince2($provinceresult2);
-	
-	
-	$cmdstringDivision = "SELECT distinct curr_location FROM orders PS1 WHERE NOT EXISTS (SELECT * FROM deliverytype WHERE NOT EXISTS (SELECT * FROM orders PS2 WHERE PS1.curr_location = PS2.curr_location AND PS2.dl_type = deliverytype.dt_type))";
-	echo "<br>".$cmdstringDivision."<br>";
-	$priorityresult = executePlainSQL($cmdstringDivision,$db_conn, $success);
-	inputResultPriority($priorityresult);
-	
-	
-	
-
-	
+		OCICommit($db_conn);
+	}
 
 	//Commit to save changes...
 	OCILogoff($db_conn);

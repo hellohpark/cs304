@@ -67,9 +67,11 @@
 			class="link" style="text-align:left">[Hide]</a><br>
 
 		<!-- Reset DB -->
-		<form method="POST" action="index.php">
-			<p><input type="submit" value="Reset Database" name="reset"></p>
+		<form method="POST" action="order.php">
+   
+		<p><input type="submit" value="Reset Database" name="reset"></p>
 		</form>
+	
 
 	</body>
 </html>
@@ -90,8 +92,7 @@ if ($db_conn) {
 		if ($_POST && $success) {		
 			header("location: index.php");
 		}
-	} 
-	else {
+	} else {
 		$orders = executePlainSQL("select * from orders", $db_conn, $success);
 		printOrdersTable($orders);
 

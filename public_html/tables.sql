@@ -126,5 +126,3 @@ CROSS JOIN deliverytype;
 
 
 
-
-

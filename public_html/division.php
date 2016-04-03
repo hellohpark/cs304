@@ -47,6 +47,27 @@ $db_conn = dbConnect();
 	<div class="icons"><img src="images/stats.png"></div>
 
 <?php
+
+
+function inputResultPriority($result){
+	echo "<fieldset>
+				<legend>Post Office with High Priority Status - division query</legend>";
+		echo "<table>";		
+		echo "<tr><th>Post Office</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+		
+			$curr_location = $row['CURR_LOCATION'];
+
+			echo "<tr><td>" . 
+			$curr_location . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
 if ($db_conn) {
 
 	if ($authentication){		
