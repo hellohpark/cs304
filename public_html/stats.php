@@ -1,13 +1,16 @@
-<?php
-require 'functions.php';
-session_save_path('/home/g/g3d9/public_html');
-session_start();
+	<?php
+	
+	require_once 'functions.php';
+	
+	session_save_path('/home/g/g3d9/public_html');
+	session_start();
 
-$authentication = $_SESSION['authenticated'];
-$success = True;
-$db_conn = dbConnect();
+	$authentication = $_SESSION['authenticated'];
+	
+	$success = True;
+	$db_conn = dbConnect();
 
-?>
+	?>
 	
 <!DOCTYPE html>
 <html>
@@ -49,6 +52,45 @@ $db_conn = dbConnect();
 
 <?php
 
+
+function inputResultMaxMin($maxminresult){
+
+		echo "<table>";		
+		echo "<tr><th>Post Office</th><th>Average Order Worth</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($maxminresult, OCI_BOTH)) {
+		
+
+			echo "<tr><td>" . 
+			$row['CU'] . "</td><td>" . 
+			$row['AP'] . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+}
+function inputResultPrice($priceresult){
+	echo "<fieldset>
+				<legend>All Noncancelled Orders - all orders with a price associated</legend>";
+		echo "<table>";		
+		echo "<tr><th>Tracking Number</th><th>Total Price</th><th>Current Location</th><th>Delivery Type</th><th>Package Type</th></tr>";		
+				
+		while ($row = OCI_Fetch_Array($priceresult, OCI_BOTH)) {
+		
+
+			echo "<tr><td>" . 
+			$row['TRACKING_NUMBER'] . "</td><td>" . 
+			$row['TOTAL_PRICE'] . "</td><td>" .
+			$row['PR_PROVINCE_NAME'] . "</td><td>" .
+			$row['DT_TYPE'] . "</td><td>" .
+			$row['PT_TYPE'] . "</td></tr>";
+			
+		}
+	
+	echo "</table>";
+	echo "</fieldset>";	
+}
+
 if ($db_conn) {
 	if ($authentication){
 		
@@ -88,26 +130,42 @@ if ($db_conn) {
 		OCICommit($db_conn);
 	}
 	
-	if (array_key_exists('login', $_POST)) {
-		$password = $_POST['password'];
-		$username = $_POST['username'];
-		$cmdstring = "select * from admin where username =".$username."and password=".strval($password);
-		echo $cmdstring;
-		$result = executePlainSQL($cmdstring,$db_conn, $success);
-		header("location: select_province.php");
-	}
+		if (array_key_exists('login', $_POST)) {
 
-	if (array_key_exists('maxmin', $_POST)) {
-		$maxmin = $_POST['maxmin_OPTION'];
-		$cmdstringMaxmin = "SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select ".$maxmin."(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))";
-		$maxminresult = executePlainSQL($cmdstringMaxmin,$db_conn, $success);
-		inputResultMaxMin($maxminresult);
-	}
+			$password = $_POST['password'];
+			$username = $_POST['username'];
+
+			$cmdstring = "select * from admin where username =".$username."and password=".strval($password);
+			echo $cmdstring;
+			$result = executePlainSQL($cmdstring,$db_conn, $success);
+			
+			
+			header("location: select_province.php");
+
+		}
+
+		
+		if (array_key_exists('maxmin', $_POST)) {
+
+			$maxmin = $_POST['maxmin_OPTION'];
+			
+			
+			$cmdstringMaxmin = "SELECT curr_location as cu, average_price as ap FROM (SELECT curr_location, AVG(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location) where average_price= (select ".$maxmin."(average_price) from (SELECT curr_location, avg(total_price) as average_price FROM orders, price where orders.tracking_number = price.tracking_number group by curr_location))";
+			
+			//echo $cmdstringMaxmin;
+			
+			$maxminresult = executePlainSQL($cmdstringMaxmin,$db_conn, $success);
+			
+			inputResultMaxMin($maxminresult);
+
+		}
 		
 	$cmdstringProjection = "SELECT * FROM price";
+	echo "<br>".$cmdstringProjection."<br>";
 	$priceresult = executePlainSQL($cmdstringProjection,$db_conn, $success);
 	inputResultPrice($priceresult);
-			
+		
+		
 	//Commit to save changes...
 	OCILogoff($db_conn);
 } else {

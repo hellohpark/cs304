@@ -1,9 +1,12 @@
-<?php
-require_once 'functions.php';
-session_save_path('/home/g/g3d9/public_html');
-session_start();
-$authentication = $_SESSION['authenticated'];
-?>
+	<?php
+	
+	require_once 'functions.php';
+	session_save_path('/home/g/g3d9/public_html');
+	session_start();
+
+	$authentication = $_SESSION['authenticated'];
+	// $sqlstring;
+	?>
 
 <!DOCTYPE html>
 <html>
@@ -49,8 +52,14 @@ $authentication = $_SESSION['authenticated'];
 
 <?php
 
+//this tells the system that it's no longer just parsing 
+//html; it's now parsing PHP
+
 $success = True;
 $db_conn = dbConnect();
+
+
+
 
 function updateOrder($db_conn, $success) {
 	$tuple = array (
@@ -74,7 +83,13 @@ function updateOrder($db_conn, $success) {
 			$success = executeBoundSQLret("update orders set status=:bind2, curr_location=:bind13, SRC_NAME=:bind3, SRC_ADDR=:bind4, SRC_PROV=:bind5,
 				SRC_PHONE=:bind6, DST_NAME=:bind7, DST_ADDR=:bind8, DST_PROV=:bind9, DST_PHONE=:bind10, DL_TYPE=:bind11, PK_TYPE=:bind12 where TRACKING_NUMBER=:bind1", $alltuples, $db_conn, $success);
 					
+			
 			OCICommit($db_conn);
+			
+			// global $sqlstring;
+			// $sqlstring = "update orders set status=".$tuple[1].", curr_location=".$tuple[12].", SRC_NAME=".$tuple[2].", SRC_ADDR=".$tuple[3].", SRC_PROV=".$tuple[4].",
+				// SRC_PHONE=".$tuple[5].", DST_NAME=".$tuple[6].", DST_ADDR=".$tuple[7].", DST_PROV=".$tuple[8].", DST_PHONE=".$tuple[9].", DL_TYPE=".$tuple[10].", PK_TYPE=".$tuple[11]." where TRACKING_NUMBER=".$tuple[0]."";		
+			
 			return $success;
 }
 

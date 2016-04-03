@@ -71,10 +71,6 @@
 			<p><input type="submit" value="Reset Database" name="reset"></p>
 		</form>
 
-		<form method="POST" action="index.php">
-			<p><input type="submit" value="Pre-load Database: NOT WORKING AT THE MOMENT" name="preload"></p>
-		</form>
-
 	</body>
 </html>
 
@@ -94,14 +90,7 @@ if ($db_conn) {
 		if ($_POST && $success) {		
 			header("location: index.php");
 		}
-	} else if (array_key_exists('preload', $_POST)) {
-		executePlainSQL("start tables.sql", $db_conn, $success);
-		OCICommit($db_conn);
-
-		if ($_POST && $success) {		
-			header("location: index.php");
-		}
-	}
+	} 
 	else {
 		$orders = executePlainSQL("select * from orders", $db_conn, $success);
 		printOrdersTable($orders);
