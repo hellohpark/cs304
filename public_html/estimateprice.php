@@ -65,7 +65,7 @@ s<html>
 				<input type="checkbox" name="estimatepr" value="estimatepr">Provincial Rate<br>
 				<input type="checkbox" name="estimatept" value="estimatept">Package Type Price<br>
 				<input type="checkbox" name="estimatedt" value="estimatedt">Delivery Type Price<br>
-				<input type="checkbox" name="estimatetotal" value="estimatetotal">Total Price<br>
+				<input type="checkbox" name="estimatetotal" value="estimatetotal" checked>Total Price<br>
 			
 				<input type="submit" name="submit" value="Submit">
 
