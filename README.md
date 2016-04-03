@@ -11,4 +11,6 @@
 # tracking_confirmation.php
 # view_order_price.php
 # view_orders.php
+# aggregation.php
+# division.php
 # functions.php --> connectDB() change information
